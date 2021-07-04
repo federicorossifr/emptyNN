@@ -35,8 +35,11 @@ Factory.o: include/emptyNN/Factory.hpp src/Factory.cc
 	$(CC) -c ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} src/Factory.cc -o Factory.o
 
 
-examples: examples/seqnet.cc Layers LayersImpl Factory.o Types.o Activations
-	$(CC) ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} ${LAYER_OBJS} ${ACT_OBJS} ${IMPL_OBJS} Types.o Factory.o examples/seqnet.cc -o seqnet
+seqnet: examples/seqnet.cc Layers LayersImpl Factory.o Types.o Activations
+	$(CC) ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} ${LAYER_OBJS} ${ACT_OBJS} ${IMPL_OBJS} Types.o Factory.o examples/seqnet.cc -o seqnet.exe
+
+examples: seqnet
+
 clean:
 	rm -rf *.o
 
