@@ -10,6 +10,9 @@ namespace emptyNN {
             ConvCPUImpl<Type>::ConvCPUImpl(Shape in, ConvParams cp,Activation<Type>* a): Conv<Type>(in,cp,a){}
 
             template <class Type>
+            ConvCPUImpl<Type>::~ConvCPUImpl() {}
+
+            template <class Type>
             void ConvCPUImpl<Type>::forward() {
                 Shape out = this->o_shape;
                 Shape in = this->i_shape;

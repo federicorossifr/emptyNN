@@ -13,7 +13,11 @@ namespace emptyNN {
         public:
             Layer(Shape in, Shape out,Activation<Type>* a = nullptr);
             Layer(Shape in,Activation<Type>* a = nullptr);
+            virtual ~Layer();
             void fillInTensor(Type* i);
+            Shape getOutputShape();
+            Shape getInputShape();
+            
             Type* operator()();
             virtual void forward() = 0;
             virtual void backward() = 0;

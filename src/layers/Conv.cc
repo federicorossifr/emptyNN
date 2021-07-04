@@ -1,10 +1,17 @@
 #include "emptyNN/layers/Conv.hpp"
-
+#include <iostream>
 namespace emptyNN {
     namespace Layers {
+
+
         template <class Type>
         Conv<Type>::Conv(Shape in, Shape out, ConvParams cp,Activation<Type>* a): Layer<Type>(in,out,a),f_shape(cp.filter),params(cp) {
             filter = new Type[cp.filter.height*cp.filter.width*cp.kernels];
+        }
+
+        template <class Type>
+        Conv<Type>::~Conv() {
+            delete[] filter;
         }
 
         template <class Type>

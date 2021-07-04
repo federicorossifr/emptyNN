@@ -1,5 +1,4 @@
 #include "emptyNN/activations/Elu.hpp"
-
 namespace emptyNN {
     namespace Activations {
         template <class Type>

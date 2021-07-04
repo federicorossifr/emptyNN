@@ -8,7 +8,7 @@ namespace emptyNN {
             private:
                 Type alpha;
             public:
-                EluFunctor(Type alpha=1);
+                EluFunctor(Type alpha=1.);
                 Type operator()(Type el); 
                 Type grad(Type el); 
         };

@@ -20,6 +20,11 @@ namespace emptyNN {
         return msg.c_str();
     }
 
+    bool operator==(Shape a,Shape b) {
+        return (a.depth == b.depth) &
+               (a.width == b.width) &
+               (a.height == b.height);
+    }
 }    
 
 

@@ -11,6 +11,7 @@ namespace emptyNN {
                 ConvParams params;
             public:
                 Conv(Shape in, Shape out, ConvParams cp,Activation<Type>* a);
+                virtual ~Conv();
                 Conv(Shape in, ConvParams cp,Activation<Type>* a);
         };
     }

@@ -12,6 +12,7 @@ namespace emptyNN {
 
         size_t size() {return width*height*depth;};
     } Shape;
+    bool operator==(Shape a,Shape b);
 
     typedef struct  {
         Shape filter;
