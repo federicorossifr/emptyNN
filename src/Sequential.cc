@@ -13,10 +13,22 @@ namespace emptyNN
 
     template <class Type>    
     void Sequential<Type>::stackLayer(Layer<Type>* layer) {
-        if(layers.size() > 0) 
-            assert(layers.back()->getOutputShape() == layer->getInputShape());
+        
+        if(layers.size() > 0) {
+            if( ! (layers.back()->getOutputShape() == layer->getInputShape()) ) {
+                std::cout << "Last Layer: " << layers.back()->getOutputShape().width << " " << layers.back()->getOutputShape().height << " " << layers.back()->getOutputShape().depth << std::endl;
+                std::cout << "New Layer: " << layer->getInputShape().width << " " << layer->getInputShape().height << " " << layer->getInputShape().depth << std::endl;            
+                assert(layers.back()->getOutputShape() == layer->getInputShape());
+            }
+        }
         layers.push_back(layer);
     }
+
+    template <class Type>    
+    void Sequential<Type>::stackLayers(std::vector<Layer<Type>*> group) {
+        for(Layer<Type>* l: group)
+            stackLayer(l);
+    }    
 
     template <class Type>    
     Type* Sequential<Type>::predict(Type* in_tensor) {

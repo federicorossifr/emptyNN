@@ -17,5 +17,6 @@ namespace emptyNN
             Shape getInputShape();
             Shape getOutputShape();
             void stackLayer(Layer<Type>* layer);
+            void stackLayers(std::vector<Layer<Type>*> group);
     };
 } // namespace emptyNN

@@ -31,6 +31,9 @@ namespace emptyNN {
                             for(size_t depth = 0; depth < fil.depth; ++depth) {
 
                                 Type* i_pin = &i_tensor[depth*(in.height*in.width)];
+
+                                // ToDo: handle padding here
+
                                 Type* f_pin = &filter[depth*(fil.height*fil.width)];
                                 Type accum(0);
 

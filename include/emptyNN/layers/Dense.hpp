@@ -8,7 +8,7 @@ namespace emptyNN {
             protected:
                 Type* connections;
             public:
-                Dense(Shape in, Shape out);
+                Dense(Shape in, Shape out,Activation<Type>* a);
                 virtual ~Dense();
         };        
     } // namespace Layers

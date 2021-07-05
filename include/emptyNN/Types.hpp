@@ -14,11 +14,21 @@ namespace emptyNN {
     } Shape;
     bool operator==(Shape a,Shape b);
 
+    typedef enum {
+        ZERO,SAME,NONE
+    } PaddingType;
+
     typedef struct  {
         Shape filter;
         size_t kernels;
         size_t stride;
+        PaddingType padding;
     } ConvParams;
+
+    typedef struct  {
+        Shape factor;
+        size_t stride;
+    } PoolParams;    
 
     typedef enum {
         CPU,CPU_RVV,CPU_SVE,GPU
