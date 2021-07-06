@@ -16,6 +16,8 @@ namespace emptyNN {
                 Type* i_tensor = this->i_tensor;
                 Type* o_tensor = this->o_tensor;
                 size_t in_size = this->i_shape.size();
+
+                #pragma omp simd
                 for(int i = 0; i < in_size; ++i)
                     o_tensor[i] = (i_tensor[i]-mu)/sigma;
             }

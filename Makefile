@@ -3,7 +3,7 @@ CC=$(CXX)
 
 OPTIONS := -DUSE_POSIT
 
-EXTRA_C_FLAGS := -Ofast -march=native -std=c++17 -fopenmp ${OPTIONS}
+EXTRA_C_FLAGS := -Ofast  -march=native -std=c++17 -fopenmp ${OPTIONS}
 # EXTRA_C_FLAGS :=  -g
 
 LAYER_OBJS := Layer.o Conv.o Dense.o BatchNormalization.o MaxPooling.o LayerBlock.o
