@@ -56,10 +56,24 @@ namespace emptyNN {
 
             }                    
 
+            template <class Type>
+            Layer<Type>* ResBlock(Shape in,Shape out,ResBlockParams params, Device device) {
+                switch (device)
+                {
+                    case CPU:
+                        return new emptyNN::Layers::Impl::ResidualBlockCPUImpl<Type>(in,out,params);
+                
+                    default:
+                        throw DeviceNotAllowed(device);
+                }
+
+            }   
+
             template Layer<float>* Convolution(Shape in,ConvParams params,Activation<float>* a,Device device);
             template Layer<float>* Dense(Shape in,Shape out,Activation<float>* a,Device device);
             template Layer<float>* BatchNorm(Shape in,float mu,float sigma,Activation<float>* a,Device device);
             template Layer<float>* MaxPool(Shape in,PoolParams params,Activation<float>* a,Device device);
+            template Layer<float>* ResBlock(Shape in,Shape out,ResBlockParams params, Device device);
 
 
         }

@@ -12,6 +12,7 @@ namespace emptyNN
             ~Sequential();
             virtual void serialize(std::ofstream& out);
             virtual void deserialize(std::ifstream& in);      
+            void summary();
 
             Type* predict(Type* in_tensor);      
             Shape getInputShape();

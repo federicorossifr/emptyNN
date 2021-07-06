@@ -35,6 +35,7 @@ namespace emptyNN
         Type* handle = in_tensor, 
             *out_tensor = new Type[layers.back()->getOutputShape().size()];
         for(Layer<Type>* l: layers) {
+            l->summary();
             l->fillInTensor(handle);
             handle = (*l)();
         }
@@ -57,7 +58,12 @@ namespace emptyNN
     template <class Type>    
     void Sequential<Type>::deserialize(std::ifstream& in) {}
 
-    
+    template <class Type>
+    void Sequential<Type>::summary() {
+        for(Layer<Type>* l:layers) {
+            l->summary();
+        }
+    }
 
     template class Sequential<float>;
 } // namespace emptyNN

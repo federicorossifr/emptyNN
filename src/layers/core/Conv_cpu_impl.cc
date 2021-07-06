@@ -17,33 +17,39 @@ namespace emptyNN {
                 Shape out = this->o_shape;
                 Shape in = this->i_shape;
                 Shape fil = this->f_shape;
+                Shape padding = this->padding;
                 Type* filter = this->filter;
                 Type* i_tensor = this->i_tensor;
                 Type* o_tensor = this->o_tensor;
                 size_t stride = this->params.stride;
                 size_t kernels = this->params.kernels;
+                #pragma omp parallel for                
                 for(size_t kernel = 0; kernel < kernels; ++kernel) {
                     Type* o_pin = &o_tensor[kernel*(out.height*out.width)];
                     for(size_t i = 0; i < out.height; ++i) {
                         for(size_t j = 0; j < out.width; ++j) {
                             Type daccum(0);
 
+
                             for(size_t depth = 0; depth < fil.depth; ++depth) {
 
                                 Type* i_pin = &i_tensor[depth*(in.height*in.width)];
-
-                                // ToDo: handle padding here
+                                Type* i_padded = new Type[(in.height+padding.height )*(in.width+padding.width )];
+                                // ToDo: handle padding in a better way
+                                memcpy(i_padded,i_pin,in.height*in.width);
 
                                 Type* f_pin = &filter[depth*(fil.height*fil.width)];
                                 Type accum(0);
 
                                 for(size_t k = 0; k < fil.height; ++k) {
                                     for(size_t l = 0; l < fil.width; ++l) {
-
-                                        accum += f_pin[ k*fil.width + l ] * i_pin[ (i*stride+k)*in.width + l+j*stride ];
+                                        Type _a = f_pin[ k*fil.width + l ];
+                                        Type _b = i_padded[ (i*stride+k)*in.width + l+j*stride ];
+                                        accum +=  _a * _b;
                                     }
                                 }
                                 daccum+=accum;
+                                delete [] i_padded;
                             }
                             o_pin[i*out.width+j] = daccum;
 

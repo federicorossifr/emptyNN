@@ -9,6 +9,7 @@ namespace emptyNN {
                 Type* filter;
                 Shape f_shape;
                 ConvParams params;
+                Shape padding;
             public:
                 Conv(Shape in, Shape out, ConvParams cp,Activation<Type>* a);
                 virtual ~Conv();

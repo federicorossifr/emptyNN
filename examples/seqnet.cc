@@ -4,15 +4,15 @@
 using namespace emptyNN;
 int main() {
     Sequential<float> s("Example");
-    /*s.stackLayer( Factory::Layers::Convolution<float>({224,224,3}, {{5,5,3}, 16, 1}, Factory::Activations::Elu<float>(1.), CPU));
-    s.stackLayer( Factory::Layers::Convolution<float>({220,220,16}, {{5,5,16}, 16, 1}, Factory::Activations::Elu<float>(1.), CPU));
-    s.stackLayer( Factory::Layers::Convolution<float>({216,216,16}, {{5,5,16}, 16, 1}, Factory::Activations::Elu<float>(1.), CPU));*/
+    
+    
     #define ELU Factory::Activations::Elu<float>(1.)
+    Layer<float>* shortcut;
     s.stackLayers({
         Factory::Layers::Convolution<float>({224,224,3}, {{11,11,3}, 96, 4,PaddingType::ZERO}, ELU, CPU),
         Factory::Layers::MaxPool<float>({54,54,96},{{3,3},2},nullptr,CPU),
         Factory::Layers::Convolution<float>({26,26,96}, {{5,5,96}, 256, 1,PaddingType::SAME}, ELU, CPU),
-        Factory::Layers::MaxPool<float>({26,26,256},{{3,3},2},nullptr,CPU),
+        shortcut = Factory::Layers::MaxPool<float>({26,26,256},{{3,3},2},nullptr,CPU),
         Factory::Layers::Convolution<float>({12,12,256}, {{5,5,256}, 384, 1,PaddingType::SAME}, ELU, CPU),
         Factory::Layers::Convolution<float>({12,12,384}, {{5,5,384}, 384, 1,PaddingType::SAME}, ELU, CPU),
         Factory::Layers::Convolution<float>({12,12,384}, {{5,5,384}, 256, 1,PaddingType::SAME}, ELU, CPU),

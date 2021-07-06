@@ -3,6 +3,7 @@
 #include "emptyNN/layers/core/Dense_cpu_impl.hpp"
 #include "emptyNN/layers/core/BatchNorm_cpu_impl.hpp"
 #include "emptyNN/layers/core/MaxPool_cpu_impl.hpp"
+#include "emptyNN/layers/core/ResBlock_cpu_impl.hpp"
 #include "emptyNN/activations/Elu.hpp"
 
 namespace emptyNN {
@@ -20,6 +21,9 @@ namespace emptyNN {
 
             template <class Type>
             Layer<Type>* MaxPool(Shape in, PoolParams params, Activation<Type>* a, Device device);
+
+            template <class Type>
+            Layer<Type>* ResBlock(Shape in,Shape out,ResBlockParams params, Device device);            
 
         }
 

@@ -1,8 +1,8 @@
 CC=$(CXX)
-EXTRA_C_FLAGS := -O3 
-LAYER_OBJS := Layer.o Conv.o Dense.o BatchNormalization.o MaxPooling.o
+EXTRA_C_FLAGS := -Ofast -march=native -std=c++17 -fopenmp 
+LAYER_OBJS := Layer.o Conv.o Dense.o BatchNormalization.o MaxPooling.o LayerBlock.o
 ACT_OBJS := Activation.o Elu.o 
-IMPL_OBJS := ConvCpuImpl.o DenseCpuImpl.o BatchNormCpuImpl.o MaxPoolCpuImpl.o
+IMPL_OBJS := ConvCpuImpl.o DenseCpuImpl.o BatchNormCpuImpl.o MaxPoolCpuImpl.o ResBlock_cpu_impl.o
 MODEL_OBJS := Model.o Sequential.o
 INCL_FLAGS := -I./include/
 
@@ -29,6 +29,8 @@ MaxPooling.o: src/layers/MaxPooling.cc include/emptyNN/layers/MaxPooling.hpp
 BatchNormalization.o: src/layers/BatchNormalization.cc include/emptyNN/layers/BatchNormalization.hpp
 	$(CC) -c ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} src/layers/BatchNormalization.cc -o BatchNormalization.o	
 
+LayerBlock.o: src/layers/LayerBlock.cc include/emptyNN/layers/LayerBlock.hpp
+	$(CC) -c ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} src/layers/LayerBlock.cc -o LayerBlock.o	
 
 ConvCpuImpl.o: src/layers/core/Conv_cpu_impl.cc include/emptyNN/layers/core/Conv_cpu_impl.hpp
 	$(CC) -c ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} src/layers/core/Conv_cpu_impl.cc -o ConvCpuImpl.o
@@ -41,6 +43,9 @@ BatchNormCpuImpl.o: src/layers/core/BatchNorm_cpu_impl.cc include/emptyNN/layers
 
 MaxPoolCpuImpl.o: src/layers/core/MaxPool_cpu_impl.cc include/emptyNN/layers/core/MaxPool_cpu_impl.hpp
 	$(CC) -c ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} src/layers/core/MaxPool_cpu_impl.cc -o MaxPoolCpuImpl.o
+
+ResBlock_cpu_impl.o: src/layers/core/ResBlock_cpu_impl.cc include/emptyNN/layers/core/ResBlock_cpu_impl.hpp
+	$(CC) -c ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} src/layers/core/ResBlock_cpu_impl.cc -o ResBlock_cpu_impl.o
 
 Layers: ${LAYER_OBJS}
 
@@ -66,7 +71,10 @@ Sequential.o: include/emptyNN/Sequential.hpp src/Sequential.cc
 seqnet: examples/seqnet.cc Layers LayersImpl Models Factory.o Types.o Activations 
 	$(CC) ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} ${LAYER_OBJS} ${ACT_OBJS} ${IMPL_OBJS} ${MODEL_OBJS} Types.o Factory.o examples/seqnet.cc -o seqnet.exe
 
-examples: seqnet
+resnet: examples/resnet.cc Layers LayersImpl Models Factory.o Types.o Activations 
+	$(CC) ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} ${LAYER_OBJS} ${ACT_OBJS} ${IMPL_OBJS} ${MODEL_OBJS} Types.o Factory.o examples/resnet.cc -o resnet.exe	
+
+examples: seqnet resnet
 
 clean:
 	rm -rf *.o

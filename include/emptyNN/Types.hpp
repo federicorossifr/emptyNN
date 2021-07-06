@@ -34,6 +34,12 @@ namespace emptyNN {
         CPU,CPU_RVV,CPU_SVE,GPU
     } Device;
 
+    typedef struct {
+        bool halve;
+        size_t block_size;
+        bool identity;
+    } ResBlockParams;
+
 
     class DeviceNotAllowed: public std::exception {
         Device d;
