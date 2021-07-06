@@ -34,7 +34,7 @@ namespace emptyNN {
             }
         }
 
-        template class LayerBlock<float>;
+        REGISTER_CLASS(LayerBlock,float);
 
 
     } // namespace Layers

@@ -31,5 +31,12 @@ namespace emptyNN {
             template <class Type>
             Activation<Type>* Elu(Type alpha = 1);
         }
+
+        #define REGISTER_FACTORY_LAYER(TYPE) \
+            template Layer<TYPE>* Convolution(Shape in,ConvParams params,Activation<TYPE>* a,Device device); \
+            template Layer<TYPE>* Dense(Shape in,Shape out,Activation<TYPE>* a,Device device); \
+            template Layer<TYPE>* BatchNorm(Shape in,TYPE mu,TYPE sigma,Activation<TYPE>* a,Device device); \
+            template Layer<TYPE>* MaxPool(Shape in,PoolParams params,Activation<TYPE>* a,Device device);  \
+            template Layer<TYPE>* ResBlock(Shape in,Shape out,ResBlockParams params, Device device); 
     }
 }

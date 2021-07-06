@@ -58,7 +58,7 @@ namespace emptyNN {
             template <class Type>
             void MaxPoolCPUImpl<Type>::backward() {}            
 
-            template class MaxPoolCPUImpl<float>;
+            REGISTER_CLASS(MaxPoolCPUImpl,float);
        
         }
     }

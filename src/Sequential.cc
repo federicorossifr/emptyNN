@@ -65,5 +65,5 @@ namespace emptyNN
         }
     }
 
-    template class Sequential<float>;
+    REGISTER_CLASS(Sequential,float);
 } // namespace emptyNN

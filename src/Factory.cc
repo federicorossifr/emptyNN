@@ -69,12 +69,12 @@ namespace emptyNN {
 
             }   
 
-            template Layer<float>* Convolution(Shape in,ConvParams params,Activation<float>* a,Device device);
-            template Layer<float>* Dense(Shape in,Shape out,Activation<float>* a,Device device);
-            template Layer<float>* BatchNorm(Shape in,float mu,float sigma,Activation<float>* a,Device device);
-            template Layer<float>* MaxPool(Shape in,PoolParams params,Activation<float>* a,Device device);
-            template Layer<float>* ResBlock(Shape in,Shape out,ResBlockParams params, Device device);
-
+            REGISTER_FACTORY_LAYER(float)
+            
+            #ifdef USE_POSIT
+            REGISTER_FACTORY_LAYER(Posit16_0)
+            REGISTER_FACTORY_LAYER(Posit8_0)
+            #endif
 
         }
 
@@ -86,7 +86,12 @@ namespace emptyNN {
             };
 
             template Activation<float>* Elu(float alpha);
-        
+
+            #ifdef USE_POSIT
+            template Activation<Posit16_0>* Elu(Posit16_0 alpha);
+            template Activation<Posit16_1>* Elu(Posit16_1 alpha);
+            template Activation<Posit8_0>* Elu(Posit8_0 alpha);
+            #endif
         }        
 
 

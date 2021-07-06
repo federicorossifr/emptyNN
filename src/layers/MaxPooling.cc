@@ -17,7 +17,7 @@ namespace emptyNN {
         template <class Type>
         MaxPooling<Type>::~MaxPooling() {}    
 
-        template class MaxPooling<float>;
+        REGISTER_CLASS(MaxPooling,float);
 
     }
 }

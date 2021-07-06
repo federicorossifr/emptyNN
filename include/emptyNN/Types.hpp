@@ -5,6 +5,11 @@
 #include <string>
 #include <omp.h>
 #include <exception>
+
+#ifdef USE_POSIT
+#include <posit.h>
+#endif
+
 namespace emptyNN {
     typedef struct {
         size_t width;
@@ -51,8 +56,16 @@ namespace emptyNN {
 
     };    
 
-    #define REGISTER_LAYER_TYPE(TYPE) template class Layer<TYPE>;
-    #define REGISTER_CONV(TYPE) template class Layers::Conv<TYPE>;
-    #define REGISTER_CONV_CPU_IMPL(TYPE) template class Layers::Impl::ConvCPUImpl<TYPE>;
+    #define REGISTER_CLASS(CLASS,TYPE) \
+        template class CLASS<float>; \
+        template class CLASS<P16_1>; \
+        template class CLASS<P16_0>; \
+        template class CLASS<P8>; 
 
+
+    #ifdef USE_POSIT
+        using Posit16_1 = P16_1;
+        using Posit16_0 = P16_0;
+        using Posit8_0 = P8;
+    #endif
 }

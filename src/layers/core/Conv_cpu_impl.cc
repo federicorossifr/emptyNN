@@ -76,10 +76,12 @@ namespace emptyNN {
             template <class Type>
             void ConvCPUImpl<Type>::backward() {}            
                 
+
+            REGISTER_CLASS(ConvCPUImpl,float)
+
         }
     }
 
 
 
-    REGISTER_CONV_CPU_IMPL(float)
 }

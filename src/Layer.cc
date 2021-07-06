@@ -54,6 +54,6 @@ namespace emptyNN {
         return o_shape;
     }    
     /* Type specific implementations */
-    REGISTER_LAYER_TYPE(float)
+    REGISTER_CLASS(Layer,float)
 
 }

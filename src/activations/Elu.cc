@@ -5,12 +5,12 @@ namespace emptyNN {
         EluFunctor<Type>::EluFunctor(Type alpha): alpha(alpha){};
         
         template <class Type>
-        Type EluFunctor<Type>::operator()(Type el) { return (el >= 0)? el : alpha*(std::exp(el)-1); }
+        Type EluFunctor<Type>::operator()(Type el) { return (el >= Type(0.f))? el : alpha*(std::exp(el)-Type(1.f)); }
 
         template <class Type>
-        Type EluFunctor<Type>::grad(Type el) { return (el >= 0)? 1 : alpha*( std::exp(el) ); };
+        Type EluFunctor<Type>::grad(Type el) { return (el >= Type(0.f))? Type(1.f) : alpha*( std::exp(el) ); };
 
         
-        template class EluFunctor<float>;
+        REGISTER_CLASS(EluFunctor,float);
     }
 }

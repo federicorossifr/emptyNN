@@ -8,7 +8,7 @@ namespace emptyNN {
         template <class Type>
         BatchNormalization<Type>::~BatchNormalization() {}    
 
-        template class BatchNormalization<float>;
+        REGISTER_CLASS(BatchNormalization,float);
 
     }
 }

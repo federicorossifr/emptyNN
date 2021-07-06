@@ -37,8 +37,10 @@ namespace emptyNN {
             this->o_tensor = new Type[out.width*out.height*out.depth];
             this->o_shape = out;
         }        
+        REGISTER_CLASS(Conv,float)
+
     }
 
 
-    REGISTER_CONV(float)
+    
 }

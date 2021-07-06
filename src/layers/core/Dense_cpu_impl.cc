@@ -45,7 +45,7 @@ namespace emptyNN {
             template <class Type>
             void DenseCPUImpl<Type>::backward() {}            
 
-            template class DenseCPUImpl<float>;
+            REGISTER_CLASS(DenseCPUImpl,float);
        
         }
     }

@@ -1,5 +1,5 @@
 #include "emptyNN/Activation.hpp"
 
 namespace emptyNN {
-    template class Activation<float>;
+    REGISTER_CLASS(Activation,float);
 }

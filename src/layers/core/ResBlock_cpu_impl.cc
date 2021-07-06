@@ -53,7 +53,7 @@ namespace emptyNN {
                 return o_tensor;
             }   
 
-            template class ResidualBlockCPUImpl<float>;
+            REGISTER_CLASS(ResidualBlockCPUImpl,float);
 
         } // namespace Impl
     } // namespace Layers

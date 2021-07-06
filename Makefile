@@ -1,12 +1,18 @@
 CC=$(CXX)
-EXTRA_C_FLAGS := -Ofast -march=native -std=c++17 -fopenmp 
+
+
+OPTIONS := -DUSE_POSIT
+
+EXTRA_C_FLAGS := -Ofast -march=native -std=c++17 -fopenmp ${OPTIONS}
 # EXTRA_C_FLAGS :=  -g
 
 LAYER_OBJS := Layer.o Conv.o Dense.o BatchNormalization.o MaxPooling.o LayerBlock.o
 ACT_OBJS := Activation.o Elu.o 
 IMPL_OBJS := ConvCpuImpl.o DenseCpuImpl.o BatchNormCpuImpl.o MaxPoolCpuImpl.o ResBlock_cpu_impl.o
 MODEL_OBJS := Model.o Sequential.o
-INCL_FLAGS := -I./include/
+INCL_FLAGS := -I./include/ -I../cppposit_private/include
+
+
 
 Activation.o: src/Activation.cc include/emptyNN/Activation.hpp
 	$(CC) -c ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} src/Activation.cc -o Activation.o

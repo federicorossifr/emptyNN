@@ -16,7 +16,7 @@ namespace emptyNN {
             delete[] connections;
         }    
 
-        template class Dense<float>;
+        REGISTER_CLASS(Dense,float);
 
     }
 }
