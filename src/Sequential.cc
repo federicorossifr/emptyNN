@@ -44,7 +44,7 @@ namespace emptyNN
 
     template <class Type>
     Shape Sequential<Type>::getInputShape() {
-        return layers.front()->getOutputShape();
+        return layers.front()->getInputShape();
     }    
 
     template <class Type>

@@ -26,6 +26,8 @@ namespace emptyNN {
                 #pragma omp parallel for                
                 for(size_t kernel = 0; kernel < kernels; ++kernel) {
                     Type* o_pin = &o_tensor[kernel*(out.height*out.width)];
+                    Type* i_padded = new Type[ (in.height+padding.height )*(in.width+padding.width )];     
+                    std::fill(i_padded,i_padded+( in.height + padding.height )*( in.width + padding.width ), 0x0);                                   
                     for(size_t i = 0; i < out.height; ++i) {
                         for(size_t j = 0; j < out.width; ++j) {
                             Type daccum(0);
@@ -34,9 +36,10 @@ namespace emptyNN {
                             for(size_t depth = 0; depth < fil.depth; ++depth) {
 
                                 Type* i_pin = &i_tensor[depth*(in.height*in.width)];
-                                Type* i_padded = new Type[(in.height+padding.height )*(in.width+padding.width )];
+                                
                                 // ToDo: handle padding in a better way
-                                memcpy(i_padded,i_pin,in.height*in.width);
+                                
+                                std::copy(i_pin,i_pin+in.height*in.width,i_padded);
 
                                 Type* f_pin = &filter[depth*(fil.height*fil.width)];
                                 Type accum(0);
@@ -49,12 +52,13 @@ namespace emptyNN {
                                     }
                                 }
                                 daccum+=accum;
-                                delete [] i_padded;
+                                
                             }
                             o_pin[i*out.width+j] = daccum;
 
                         }
                     }
+                    delete [] i_padded;                    
                 }
             }
 

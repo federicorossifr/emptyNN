@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <cstring>
 #include <string>
+#include <omp.h>
 #include <exception>
 namespace emptyNN {
     typedef struct {

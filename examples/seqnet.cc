@@ -22,8 +22,8 @@ int main() {
         Factory::Layers::Dense<float>({4096,1,1},{1000,1,1},ELU,CPU)
     });
     float* in_tensor = new float[s.getInputShape().size()];
-    //std::cout << "Predicting" << std::endl;
+    std::fill(in_tensor,in_tensor+s.getInputShape().size(),0x1);
     float* out_tensor = s.predict(in_tensor);
-    //delete[] in_tensor;
-    // delete[] out_tensor;
+    delete[] in_tensor;
+    delete[] out_tensor;
 }

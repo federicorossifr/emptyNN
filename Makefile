@@ -1,5 +1,7 @@
 CC=$(CXX)
 EXTRA_C_FLAGS := -Ofast -march=native -std=c++17 -fopenmp 
+# EXTRA_C_FLAGS :=  -g
+
 LAYER_OBJS := Layer.o Conv.o Dense.o BatchNormalization.o MaxPooling.o LayerBlock.o
 ACT_OBJS := Activation.o Elu.o 
 IMPL_OBJS := ConvCpuImpl.o DenseCpuImpl.o BatchNormCpuImpl.o MaxPoolCpuImpl.o ResBlock_cpu_impl.o
@@ -76,6 +78,11 @@ resnet: examples/resnet.cc Layers LayersImpl Models Factory.o Types.o Activation
 
 examples: seqnet resnet
 
-clean:
+clean-objs:
 	rm -rf *.o
+
+clean-exe:
+	rm -rf *.exe
+
+clean: clean-objs clean-exe
 
