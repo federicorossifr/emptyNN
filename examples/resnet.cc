@@ -3,7 +3,7 @@
 #include <iostream>
 using namespace emptyNN;
 int main() {
-    using floatx = Posit8_0;
+    using floatx = float;
     Sequential<floatx> s("Example");
     
     #define ELU Factory::Activations::Elu<floatx>(1.)

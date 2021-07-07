@@ -26,8 +26,6 @@ namespace emptyNN {
     template <class Type>
     void Layer<Type>::fillInTensor(Type* in) {
         std::copy(in,in+i_shape.size(),i_tensor);
-        std::copy(in,in+i_shape.size(),i_tensor);
-
     }
 
     template <class Type>

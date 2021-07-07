@@ -50,6 +50,8 @@ namespace emptyNN {
                 Shape out = this->o_shape;
                 Type* o_tensor = this->o_tensor;
                 if( a == nullptr) return;
+                
+                #pragma omp parallel for simd
                 for(size_t i = 0; i < out.size(); ++i) {
                     o_tensor[i] = (*a)(o_tensor[i]);
                 }

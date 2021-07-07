@@ -28,8 +28,14 @@ namespace emptyNN {
                 in.height*(cp.stride - 1)+cp.filter.height - 1
             };
 
-            if (cp.padding == PaddingType::SAME) this->padding = req_padding;
-            else                                 this->padding = {0,0,0};
+            if (cp.padding == PaddingType::SAME) {
+                this->padding = req_padding;
+                delete[] this->i_tensor;
+
+                // Expand the input tensor buffer to the padded dimension
+                this->i_tensor = new Type[ ( in.width + req_padding.width )*( in.height + req_padding.height )*in.depth ];
+            }
+            else this->padding = {0,0,0};
             Shape out = {des_o_width,
                          des_o_height,
                          cp.kernels};

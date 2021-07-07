@@ -42,6 +42,8 @@ namespace emptyNN {
 
                     size_t stride = (params.halve && params.identity) ? 2:1;
                     size_t linearized_size = out.width*out.height;
+
+                    #pragma omp parallel for simd
                     for(size_t j = 0; j < linearized_size; ++j) {
                         Type _a = conv_tensor[j];
                         Type _b = shortcut[stride*j];

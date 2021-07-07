@@ -26,8 +26,8 @@ namespace emptyNN {
                 #pragma omp parallel for                
                 for(size_t kernel = 0; kernel < kernels; ++kernel) {
                     Type* o_pin = &o_tensor[kernel*(out.height*out.width)];
-                    Type* i_padded = new Type[ (in.height+padding.height )*(in.width+padding.width )];     
-                    std::fill(i_padded,i_padded+( in.height + padding.height )*( in.width + padding.width ), 0x0);                                   
+                    //Type* i_padded = new Type[ (in.height+padding.height )*(in.width+padding.width )];     
+                    //std::fill(i_padded,i_padded+( in.height + padding.height )*( in.width + padding.width ), 0x0);                                   
                     for(size_t i = 0; i < out.height; ++i) {
                         for(size_t j = 0; j < out.width; ++j) {
                             Type daccum(0);
@@ -38,8 +38,7 @@ namespace emptyNN {
                                 Type* i_pin = &i_tensor[depth*(in.height*in.width)];
                                 
                                 // ToDo: handle padding in a better way
-                                
-                                std::copy(i_pin,i_pin+in.height*in.width,i_padded);
+                                //std::copy(i_pin,i_pin+in.height*in.width,i_padded);
 
                                 Type* f_pin = &filter[depth*(fil.height*fil.width)];
                                 Type accum(0);
@@ -47,7 +46,8 @@ namespace emptyNN {
                                 for(size_t k = 0; k < fil.height; ++k) {
                                     for(size_t l = 0; l < fil.width; ++l) {
                                         Type _a = f_pin[ k*fil.width + l ];
-                                        Type _b = i_padded[ (i*stride+k)*in.width + l+j*stride ];
+                                        //Type _b = i_padded[ (i*stride+k)*in.width + l+j*stride ];
+                                        Type _b = i_pin[ (i*stride+k)*in.width + l+j*stride ];
                                         accum +=  _a * _b;
                                     }
                                 }
@@ -58,7 +58,7 @@ namespace emptyNN {
 
                         }
                     }
-                    delete [] i_padded;                    
+                    //delete [] i_padded;                    
                 }
             }
 
@@ -68,6 +68,8 @@ namespace emptyNN {
                 Shape out = this->o_shape;
                 Type* o_tensor = this->o_tensor;
                 if( a == nullptr) return;
+
+                #pragma omp parallel for simd
                 for(size_t i = 0; i < out.size(); ++i) {
                     o_tensor[i] = (*a)(o_tensor[i]);
                 }

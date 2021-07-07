@@ -1,7 +1,7 @@
 CC=$(CXX)
 
 
-OPTIONS := -DUSE_POSIT
+OPTIONS := -DUSE_POSIT -ftree-vectorizer-verbose=2
 
 EXTRA_C_FLAGS := -Ofast  -march=native -std=c++17 -fopenmp ${OPTIONS}
 # EXTRA_C_FLAGS :=  -g
