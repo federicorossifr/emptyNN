@@ -4,11 +4,11 @@ CC=$(CXX)
 OPTIONS := -DUSE_POSIT -ftree-vectorizer-verbose=2
 
 EXTRA_C_FLAGS := -Ofast  -march=native -std=c++17 -fopenmp ${OPTIONS}
-# EXTRA_C_FLAGS :=  -g
+# EXTRA_C_FLAGS :=  -g -DUSE_POSIT -std=c++17
 
-LAYER_OBJS := Layer.o Conv.o Dense.o BatchNormalization.o MaxPooling.o LayerBlock.o
+LAYER_OBJS := Layer.o Conv.o Dense.o BatchNormalization.o MaxPooling.o LayerBlock.o 
 ACT_OBJS := Activation.o Elu.o 
-IMPL_OBJS := ConvCpuImpl.o DenseCpuImpl.o BatchNormCpuImpl.o MaxPoolCpuImpl.o ResBlock_cpu_impl.o
+IMPL_OBJS := ConvCpuImpl.o DenseCpuImpl.o BatchNormCpuImpl.o MaxPoolCpuImpl.o ResBlock_cpu_impl.o Concat_cpu_impl.o
 MODEL_OBJS := Model.o Sequential.o
 INCL_FLAGS := -I./include/ -I../cppposit_private/include
 
@@ -54,6 +54,9 @@ MaxPoolCpuImpl.o: src/layers/core/MaxPool_cpu_impl.cc include/emptyNN/layers/cor
 
 ResBlock_cpu_impl.o: src/layers/core/ResBlock_cpu_impl.cc include/emptyNN/layers/core/ResBlock_cpu_impl.hpp
 	$(CC) -c ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} src/layers/core/ResBlock_cpu_impl.cc -o ResBlock_cpu_impl.o
+
+Concat_cpu_impl.o: src/layers/core/Concat_cpu_impl.cc include/emptyNN/layers/core/Concat_cpu_impl.hpp
+	$(CC) -c ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} src/layers/core/Concat_cpu_impl.cc -o Concat_cpu_impl.o	
 
 Layers: ${LAYER_OBJS}
 

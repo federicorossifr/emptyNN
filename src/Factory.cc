@@ -69,6 +69,18 @@ namespace emptyNN {
 
             }   
 
+            template <class Type>
+            Layer<Type>* Concat(Shape in, Shape out,std::vector<std::vector<Layer<Type>*>> _block, Device device) {
+                switch (device)
+                {
+                    case CPU:
+                        return new emptyNN::Layers::Impl::ConcatCPUImpl<Type>(in,out,_block);
+                
+                    default:
+                        throw DeviceNotAllowed(device);
+                }                
+            }      
+
             REGISTER_FACTORY_LAYER(float)
             
             #ifdef USE_POSIT

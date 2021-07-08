@@ -38,6 +38,53 @@ namespace emptyNN
             });            
             return s;
         }
+
+        template <class Type>
+        Sequential<Type>* VGG16(size_t num_classes=1000, bool include_top=true, Shape input_shape={224,224,3}) {
+            Sequential<Type>* s = new Sequential<Type>("VGG16");
+            Layer<Type>* sc;
+            Shape tmp;
+            s->stackLayers({
+                #define RELU Factory::Activations::Elu<Type>(1.)
+                #define SMAX Factory::Activations::Elu<Type>(1.)
+                //conv_1
+                Factory::Layers::Convolution<Type>(input_shape, {{3,3,3}, 64, 1,PaddingType::SAME}, RELU, CPU),
+                Factory::Layers::Convolution<Type>({input_shape.width,input_shape.height,64}, {{3,3,64}, 64, 1,PaddingType::SAME}, RELU, CPU),
+                sc = Factory::Layers::MaxPool<Type>({input_shape.width,input_shape.height,64},{{2,2},2},nullptr,CPU),
+
+                //conv_2
+                Factory::Layers::Convolution<Type>(tmp=sc->getOutputShape(), {{3,3,64}, 128, 1,PaddingType::SAME}, RELU, CPU),
+                Factory::Layers::Convolution<Type>({tmp.width,tmp.height,128}, {{3,3,128}, 128, 1,PaddingType::SAME}, RELU, CPU),
+                sc = Factory::Layers::MaxPool<Type>({tmp.width,tmp.height,128},{{1,1},2},nullptr,CPU),
+
+                //conv_3
+                Factory::Layers::Convolution<Type>(tmp=sc->getOutputShape(), {{3,3,128}, 256, 1,PaddingType::SAME}, RELU, CPU),
+                Factory::Layers::Convolution<Type>({tmp.width,tmp.height,256}, {{3,3,256}, 256, 1,PaddingType::SAME}, RELU, CPU),                
+                Factory::Layers::Convolution<Type>({tmp.width,tmp.height,256}, {{3,3,256}, 256, 1,PaddingType::SAME}, RELU, CPU),                
+                sc =Factory::Layers::MaxPool<Type>({tmp.width,tmp.height,256},{{1,1},2},nullptr,CPU),
+
+                //conv_4
+                Factory::Layers::Convolution<Type>(tmp=sc->getOutputShape(), {{3,3,256}, 512, 1,PaddingType::SAME}, RELU, CPU),
+                Factory::Layers::Convolution<Type>({tmp.width,tmp.height,512}, {{3,3,512}, 512, 1,PaddingType::SAME}, RELU, CPU),                
+                Factory::Layers::Convolution<Type>({tmp.width,tmp.height,512}, {{3,3,512}, 512, 1,PaddingType::SAME}, RELU, CPU),                
+                sc = Factory::Layers::MaxPool<Type>({tmp.width,tmp.height,512},{{1,1},2},nullptr,CPU),
+
+                //conv_5
+                Factory::Layers::Convolution<Type>(tmp=sc->getOutputShape(), {{3,3,512}, 512, 1,PaddingType::SAME}, RELU, CPU),
+                Factory::Layers::Convolution<Type>({tmp.width,tmp.height,512}, {{3,3,512}, 512, 1,PaddingType::SAME}, RELU, CPU),                
+                Factory::Layers::Convolution<Type>({tmp.width,tmp.height,512}, {{3,3,512}, 512, 1,PaddingType::SAME}, RELU, CPU),                
+                sc = Factory::Layers::MaxPool<Type>({tmp.width,tmp.height,512},{{1,1},2},nullptr,CPU)
+            });
+            if(include_top) {
+                s->stackLayers({
+                    Factory::Layers::Dense(sc->getOutputShape(),{1,1,4096},RELU,CPU),
+                    Factory::Layers::Dense({1,1,4096},{1,1,4096},RELU,CPU),
+                    Factory::Layers::Dense({1,1,4096},{1,1,num_classes},SMAX,CPU),
+                });
+            }
+
+            return s;
+        }
     } // namespace Models
     
 } // namespace emptyNN

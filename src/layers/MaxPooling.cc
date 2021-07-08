@@ -5,8 +5,8 @@ namespace emptyNN {
         template <class Type>
         MaxPooling<Type>::MaxPooling(Shape in, PoolParams params,Activation<Type>* a): Layer<Type>(in,a),params(params) {
             Shape out = {
-                (size_t)floor( double( (in.width-params.factor.width+1)/params.stride ) ),
-                (size_t)floor( double( (in.height-params.factor.height+1)/params.stride ) ),
+                (size_t)ceil( double( double(in.width-params.factor.width+1)/params.stride ) ),
+                (size_t)ceil( double( double(in.height-params.factor.height+1)/params.stride ) ),
                 in.depth
             };
             this->o_shape = out;
