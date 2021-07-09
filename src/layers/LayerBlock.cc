@@ -48,6 +48,19 @@ namespace emptyNN {
             }
         }
 
+        template <class Type>
+        void LayerBlock<Type>::summary() {
+            std::cout << this << "In: (" << this->getInputShape().width << ", " << this->getInputShape().height << "," << this->getInputShape().depth << ")" 
+            << " Out: (" << this->getOutputShape().width << ", " << this->getOutputShape().height << "," << this->getOutputShape().depth << ")" <<std::endl;            
+            std::cout << "vvv" << std::endl;
+           for(size_t i = 0; i < block.size(); ++i) {
+                for(Layer<Type>* l: block[i]) {
+                    l->summary();
+                }
+                std::cout << "--\n";
+            }                            
+        }
+
         REGISTER_CLASS(LayerBlock,float);
 
 

@@ -2,11 +2,11 @@ CC=$(CXX)
 
 
 OPTIONS := -DUSE_POSIT -ftree-vectorizer-verbose=2
-
-EXTRA_C_FLAGS := -Ofast  -march=native -std=c++17 -fopenmp ${OPTIONS}
+ARCH_FLAGS := -march=native
+EXTRA_C_FLAGS := -Ofast ${ARCH_FLAGS}  -std=c++17 -fopenmp ${OPTIONS}
 # EXTRA_C_FLAGS :=  -g -DUSE_POSIT -std=c++17
 
-LAYER_OBJS := Layer.o Conv.o Dense.o BatchNormalization.o MaxPooling.o LayerBlock.o 
+LAYER_OBJS := Layer.o Conv.o Dense.o BatchNormalization.o MaxPooling.o LayerBlock.o Flatten.o
 ACT_OBJS := Activation.o Elu.o 
 IMPL_OBJS := ConvCpuImpl.o DenseCpuImpl.o BatchNormCpuImpl.o MaxPoolCpuImpl.o ResBlock_cpu_impl.o Concat_cpu_impl.o
 MODEL_OBJS := Model.o Sequential.o
@@ -36,6 +36,9 @@ MaxPooling.o: src/layers/MaxPooling.cc include/emptyNN/layers/MaxPooling.hpp
 
 BatchNormalization.o: src/layers/BatchNormalization.cc include/emptyNN/layers/BatchNormalization.hpp
 	$(CC) -c ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} src/layers/BatchNormalization.cc -o BatchNormalization.o	
+
+Flatten.o: src/layers/Flatten.cc include/emptyNN/layers/Flatten.hpp
+	$(CC) -c ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} src/layers/Flatten.cc -o Flatten.o	
 
 LayerBlock.o: src/layers/LayerBlock.cc include/emptyNN/layers/LayerBlock.hpp
 	$(CC) -c ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} src/layers/LayerBlock.cc -o LayerBlock.o	

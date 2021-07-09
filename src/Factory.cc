@@ -79,7 +79,22 @@ namespace emptyNN {
                     default:
                         throw DeviceNotAllowed(device);
                 }                
-            }      
+            }
+
+            template <class Type>
+            Layer<Type>* Flatten(Shape in, Device device) {
+                switch (device)
+                {
+                    case CPU:
+                    case GPU:
+                    case CPU_RVV:
+                    case CPU_SVE:
+                        return new emptyNN::Layers::Flatten<Type>(in);
+                
+                    default:
+                        throw DeviceNotAllowed(device);
+                }                      
+            }            
 
             REGISTER_FACTORY_LAYER(float)
             

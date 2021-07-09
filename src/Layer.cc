@@ -42,8 +42,8 @@ namespace emptyNN {
 
     template <class Type>
     void Layer<Type>::summary() {
-        std::cout << this << " In: (" << getInputShape().height << ", " << getInputShape().width << "," << getInputShape().depth << ")" 
-                          << " Out: (" << getOutputShape().height << ", " << getOutputShape().width << "," << getOutputShape().depth << ")" <<std::endl;
+        std::cout << this << " In: (" << getInputShape().width << ", " << getInputShape().height << "," << getInputShape().depth << ")" 
+                          << " Out: (" << getOutputShape().width << ", " << getOutputShape().height << "," << getOutputShape().depth << ")" <<std::endl;
 
     }    
 

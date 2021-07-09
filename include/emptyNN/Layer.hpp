@@ -17,7 +17,7 @@ namespace emptyNN {
             void fillInTensor(Type* i);
             Shape getOutputShape();
             Shape getInputShape();
-            void summary();
+            virtual void summary();
             
             Type* operator()();
             virtual void forward() = 0;

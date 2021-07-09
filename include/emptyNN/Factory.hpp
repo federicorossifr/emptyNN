@@ -5,6 +5,7 @@
 #include "emptyNN/layers/core/MaxPool_cpu_impl.hpp"
 #include "emptyNN/layers/core/ResBlock_cpu_impl.hpp"
 #include "emptyNN/layers/core/Concat_cpu_impl.hpp"
+#include "emptyNN/layers/Flatten.hpp"
 #include "emptyNN/activations/Elu.hpp"
 
 namespace emptyNN {
@@ -27,7 +28,10 @@ namespace emptyNN {
             Layer<Type>* ResBlock(Shape in,Shape out,ResBlockParams params, Device device);            
 
             template <class Type>
-            Layer<Type>* Concat(Shape in, Shape out,std::vector<std::vector<Layer<Type>*>> _block,Device device);            
+            Layer<Type>* Concat(Shape in, Shape out,std::vector<std::vector<Layer<Type>*>> _block,Device device);          
+
+            template <class Type>
+            Layer<Type>* Flatten(Shape in, Device device);                          
 
         }
 
@@ -42,6 +46,7 @@ namespace emptyNN {
             template Layer<TYPE>* BatchNorm(Shape in,TYPE mu,TYPE sigma,Activation<TYPE>* a,Device device); \
             template Layer<TYPE>* MaxPool(Shape in,PoolParams params,Activation<TYPE>* a,Device device);  \
             template Layer<TYPE>* ResBlock(Shape in,Shape out,ResBlockParams params, Device device); \
-            template Layer<TYPE>* Concat(Shape in, Shape out,std::vector<std::vector<Layer<TYPE>*>> _block,Device device); 
+            template Layer<TYPE>* Concat(Shape in, Shape out,std::vector<std::vector<Layer<TYPE>*>> _block,Device device); \
+            template Layer<TYPE>* Flatten(Shape in, Device device); 
     }
 }
