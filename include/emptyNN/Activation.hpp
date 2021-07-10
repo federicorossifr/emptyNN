@@ -7,5 +7,6 @@ namespace emptyNN {
         public:
             virtual Type operator()(Type el) = 0;
             virtual Type grad(Type el) = 0;
+            virtual ~Activation() {};
     };
 }

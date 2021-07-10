@@ -1,5 +1,6 @@
 #pragma once
 #include "emptyNN/layers/core/Conv_cpu_impl.hpp"
+#include "emptyNN/layers/core/Conv_rvv_impl.hpp"
 #include "emptyNN/layers/core/Dense_cpu_impl.hpp"
 #include "emptyNN/layers/core/BatchNorm_cpu_impl.hpp"
 #include "emptyNN/layers/core/MaxPool_cpu_impl.hpp"

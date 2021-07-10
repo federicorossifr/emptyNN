@@ -15,9 +15,9 @@ namespace emptyNN {
 
     DeviceNotAllowed::DeviceNotAllowed(Device d): d(d){};
     const char* DeviceNotAllowed::what() const throw() {
-        std::string msg("Device: ");
-        msg += DeviceToStr_(d) + " not allowed";
-        return msg.c_str();
+        std::string* msg = new std::string("Device: ");
+        *msg += DeviceToStr_(d) + " not allowed";
+        return msg->c_str();
     }
 
     bool operator==(Shape a,Shape b) {

@@ -6,7 +6,7 @@ int main() {
     using floatx = float;
     
     Sequential<floatx>* s = Models::ResNet34<floatx>(100);
-
+    
     floatx* in_tensor = new floatx[s->getInputShape().size()];
     std::fill(in_tensor,in_tensor+s->getInputShape().size(),0x01);
     //std::cout << "Predicting" << std::endl;

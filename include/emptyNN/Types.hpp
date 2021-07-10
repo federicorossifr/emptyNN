@@ -11,7 +11,7 @@
 #endif
 
 namespace emptyNN {
-    typedef struct {
+    typedef struct Shape {
         size_t width;
         size_t height;
         size_t depth;

@@ -11,6 +11,8 @@ namespace emptyNN {
                 EluFunctor(Type alpha=1.);
                 Type operator()(Type el); 
                 Type grad(Type el); 
+                virtual ~EluFunctor() {};
+
         };
     }
 }
