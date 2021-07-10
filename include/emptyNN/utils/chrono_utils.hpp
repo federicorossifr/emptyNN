@@ -1,19 +1,18 @@
 #include <chrono>
+#include <functional>
 using  s = std::chrono::seconds;
 using  ns = std::chrono::nanoseconds;
 using  ms = std::chrono::milliseconds;
-using get_time = std::chrono::steady_clock ;
+using get_time = std::chrono::steady_clock;
 
-template <class Fun>
-void chronoIt(Fun codeBlock) {
+void chronoIt(std::function<void(void)> codeBlock) {
     auto start = get_time::now();
     codeBlock();
     auto end = get_time::now();
-    std::cout << "\rFPS: " << 1e9/double(std::chrono::duration_cast<ns>(end - start).count()) << std::endl;    
+    std::cout << "Frame-time: " << double(std::chrono::duration_cast<ns>(end - start).count())/1e6 << " ms" << std::endl;    
 }
 
-template <class Fun, class Fun2>
-void chronoIt(Fun codeBlock, Fun2 callback) {
+void chronoIt(std::function<void(void)> codeBlock, std::function<void(double)> callback) {
     auto start = get_time::now();
     codeBlock();
     auto end = get_time::now();

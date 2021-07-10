@@ -26,6 +26,7 @@ namespace emptyNN {
                 #pragma omp parallel for                
                 for(size_t kernel = 0; kernel < kernels; ++kernel) {
                     Type* o_pin = &o_tensor[kernel*(out.height*out.width)];
+                    Type* f_pin = &filter[kernel*(fil.height*fil.width*fil.depth)];
 
                     for(size_t i = 0; i < out.height; ++i) {
                         for(size_t j = 0; j < out.width; ++j) {
@@ -36,12 +37,12 @@ namespace emptyNN {
 
                                 Type* i_pin = &i_tensor[depth*(in.height*in.width)];
                                 
-                                Type* f_pin = &filter[depth*(fil.height*fil.width)];
+                                Type* ff_pin = &f_pin[depth*(fil.height*fil.width)];
                                 Type accum(0);
 
                                 for(size_t k = 0; k < fil.height; ++k) {
                                     for(size_t l = 0; l < fil.width; ++l) {
-                                        Type _a = f_pin[ k*fil.width + l ];
+                                        Type _a = ff_pin[ k*fil.width + l ];
                                         Type _b = i_pin[ (i*stride+k)*in.width + l+j*stride ];
                                         accum +=  _a * _b;
                                     }
