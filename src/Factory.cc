@@ -11,7 +11,11 @@ namespace emptyNN {
                     case CPU:
                         return new emptyNN::Layers::Impl::ConvCPUImpl<Type>(in,params,a);
                     case CPU_RVV:
-                        return new emptyNN::Layers::Impl::ConvRVVImpl<Type>(in,params,a);
+                        #ifdef USE_RVV
+                            return new emptyNN::Layers::Impl::ConvRVVImpl<Type>(in,params,a);
+                        #else 
+                            throw DeviceNotAllowed(device);
+                        #endif
 
                     default:
                         throw DeviceNotAllowed(device);

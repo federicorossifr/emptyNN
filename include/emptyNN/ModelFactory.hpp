@@ -8,6 +8,22 @@ namespace emptyNN
 {
     namespace Models
     {
+
+        template <class Type>
+        Sequential<Type>* LeNet5() {
+            Sequential<Type>* s = new Sequential<Type>("LeNet5");
+            s->stackLayers({
+                Convolution<Type>({32,32,3},{{5,5,3},6,1},RELU,CPU),
+                MaxPool<Type>({28,28,6},{{2,2},2},nullptr,CPU),
+                Convolution<Type>({14,14,6},{{5,5,1},16,1},RELU,CPU),
+                MaxPool<Type>({10,10,16},{{2,2},2},nullptr,CPU),         
+                Dense<Type>({5,5,16},{120,1,1},RELU,CPU),
+                Dense<Type>({120,1,1},{84,1,1},RELU,CPU),
+                Dense<Type>({84,1,1},{10,1,1},SMAX,CPU)       
+            });
+            return s;
+        }
+
         template <class Type>
         Sequential<Type>* ResNet34(size_t num_classes) {
             Sequential<Type>* s = new Sequential<Type>("ResNet34");

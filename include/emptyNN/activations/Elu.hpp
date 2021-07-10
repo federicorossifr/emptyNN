@@ -9,7 +9,7 @@ namespace emptyNN {
                 Type alpha;
             public:
                 EluFunctor(Type alpha=1.);
-                Type operator()(Type el); 
+                virtual void operator()(Type* in_tensor, Shape in_shape);
                 Type grad(Type el); 
                 virtual ~EluFunctor() {};
 

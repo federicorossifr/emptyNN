@@ -1,9 +1,9 @@
 CC=$(CXX)
 
-
+LIBRARY_OPTS := -DUSE_RVV
 OPTIONS := -fPIC 
-ARCH_FLAGS := -mepi
-EXTRA_C_FLAGS := -O3 ${ARCH_FLAGS}  -std=c++17 ${OPTIONS}
+ARCH_FLAGS := -mepi 
+EXTRA_C_FLAGS := -O3 ${ARCH_FLAGS}  -std=c++17 ${OPTIONS} ${LIBRARY_OPTS}
 
 
 
