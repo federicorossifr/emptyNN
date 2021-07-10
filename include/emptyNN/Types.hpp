@@ -56,12 +56,16 @@ namespace emptyNN {
 
     };    
 
+    #ifdef USE_POSIT
     #define REGISTER_CLASS(CLASS,TYPE) \
         template class CLASS<float>; \
         template class CLASS<P16_1>; \
         template class CLASS<P16_0>; \
         template class CLASS<P8>; 
-
+    #else
+    #define REGISTER_CLASS(CLASS,TYPE) \
+        template class CLASS<float>;
+    #endif
 
     #ifdef USE_POSIT
         using Posit16_1 = P16_1;

@@ -1,23 +1,24 @@
 CC=$(CXX)
 
 
-OPTIONS := -DUSE_POSIT -ftree-vectorizer-verbose=2
+OPTIONS := -fPIC
 ARCH_FLAGS := -march=native
 EXTRA_C_FLAGS := -Ofast ${ARCH_FLAGS}  -std=c++17 -fopenmp ${OPTIONS}
 # EXTRA_C_FLAGS :=  -g -DUSE_POSIT -std=c++17
+
 
 LAYER_OBJS := Layer.o Conv.o Dense.o BatchNormalization.o MaxPooling.o LayerBlock.o Flatten.o
 ACT_OBJS := Activation.o Elu.o 
 IMPL_OBJS := ConvCpuImpl.o DenseCpuImpl.o BatchNormCpuImpl.o MaxPoolCpuImpl.o ResBlock_cpu_impl.o Concat_cpu_impl.o
 MODEL_OBJS := Model.o Sequential.o
+UTIL_OBJS := Types.o Factory.o
 INCL_FLAGS := -I./include/ -I../cppposit_private/include
 
+LIB_OBJS := ${LAYER_OBJS} ${ACT_OBJS} ${IMPL_OBJS} ${MODEL_OBJS} ${UTIL_OBJS}
 
 
 Activation.o: src/Activation.cc include/emptyNN/Activation.hpp
 	$(CC) -c ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} src/Activation.cc -o Activation.o
-
-
 
 Elu.o: src/activations/Elu.cc include/emptyNN/activations/Elu.hpp include/emptyNN/Activation.hpp
 	$(CC) -c ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} src/activations/Elu.cc -o Elu.o
@@ -61,13 +62,7 @@ ResBlock_cpu_impl.o: src/layers/core/ResBlock_cpu_impl.cc include/emptyNN/layers
 Concat_cpu_impl.o: src/layers/core/Concat_cpu_impl.cc include/emptyNN/layers/core/Concat_cpu_impl.hpp
 	$(CC) -c ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} src/layers/core/Concat_cpu_impl.cc -o Concat_cpu_impl.o	
 
-Layers: ${LAYER_OBJS}
 
-Activations: ${ACT_OBJS}
-
-LayersImpl: ${IMPL_OBJS}
-
-Models: ${MODEL_OBJS}
 
 Types.o: src/Types.cc
 	$(CC) -c ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} src/Types.cc -o Types.o
@@ -81,17 +76,29 @@ Model.o: include/emptyNN/Model.hpp src/Model.cc
 Sequential.o: include/emptyNN/Sequential.hpp src/Sequential.cc
 	$(CC) -c ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} src/Sequential.cc -o Sequential.o
 
+Layers: ${LAYER_OBJS}
 
-seqnet: examples/seqnet.cc Layers LayersImpl Models Factory.o Types.o Activations 
-	$(CC) ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} ${LAYER_OBJS} ${ACT_OBJS} ${IMPL_OBJS} ${MODEL_OBJS} Types.o Factory.o examples/seqnet.cc -o seqnet.exe
+Activations: ${ACT_OBJS}
 
-resnet: examples/resnet.cc Layers LayersImpl Models Factory.o Types.o Activations 
-	$(CC) ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} ${LAYER_OBJS} ${ACT_OBJS} ${IMPL_OBJS} ${MODEL_OBJS} Types.o Factory.o examples/resnet.cc -o resnet.exe	
+LayersImpl: ${IMPL_OBJS}
+
+Models: ${MODEL_OBJS}
+
+Utils: ${UTIL_OBJS}	
+
+libemptynn.so: Layers LayersImpl Models Utils Activations
+	$(CC) -shared ${LIB_OBJS} -o libemptynn.so
+
+seqnet: examples/seqnet.cc Layers LayersImpl Models Utils Activations 
+	$(CC) ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} ${LIB_OBJS} examples/seqnet.cc -o seqnet.exe
+
+resnet: examples/resnet.cc Layers LayersImpl Models Utils Activations 
+	$(CC) ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} ${LIB_OBJS} examples/resnet.cc -o resnet.exe	
 
 examples: seqnet resnet
 
 clean-objs:
-	rm -rf *.o
+	rm -rf *.o *.so
 
 clean-exe:
 	rm -rf *.exe
