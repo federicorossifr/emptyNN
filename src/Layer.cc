@@ -51,6 +51,16 @@ namespace emptyNN {
     Shape Layer<Type>::getOutputShape() {
         return o_shape;
     }    
+
+    template <class Type>
+    void Layer<Type>::activate() {
+        Activation<Type>* a = this->activation;
+        Shape out = this->o_shape;
+        Type* o_tensor = this->o_tensor;
+        if( a == nullptr) return;
+
+        (*a)(o_tensor,out);
+    }           
     /* Type specific implementations */
     REGISTER_CLASS(Layer,float)
 

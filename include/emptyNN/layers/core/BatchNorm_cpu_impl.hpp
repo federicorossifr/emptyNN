@@ -11,7 +11,6 @@ namespace emptyNN {
                     ~BatchNormCPUImpl();
                     virtual void forward();
                     virtual void backward();
-                    virtual void activate();
 
             };
         }

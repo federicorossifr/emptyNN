@@ -1,5 +1,6 @@
 #pragma once
 #include "emptyNN/layers/core/Conv_cpu_impl.hpp"
+#include "emptyNN/layers/core/DepthWiseConv_cpu_impl.hpp"
 #include "emptyNN/layers/core/Conv_rvv_impl.hpp"
 #include "emptyNN/layers/core/Dense_cpu_impl.hpp"
 #include "emptyNN/layers/core/BatchNorm_cpu_impl.hpp"
@@ -7,6 +8,7 @@
 #include "emptyNN/layers/core/ResBlock_cpu_impl.hpp"
 #include "emptyNN/layers/core/Concat_cpu_impl.hpp"
 #include "emptyNN/layers/Flatten.hpp"
+#include "emptyNN/layers/Pad.hpp"
 #include "emptyNN/activations/Elu.hpp"
 
 namespace emptyNN {
@@ -15,6 +17,9 @@ namespace emptyNN {
             
             template <class Type>
             Layer<Type>* Convolution(Shape in,ConvParams params,Activation<Type>* a,Device device);
+
+            template <class Type>
+            Layer<Type>* DWConvolution(Shape in,ConvParams params,Activation<Type>* a,Device device);            
 
             template <class Type>
             Layer<Type>* Dense(Shape in,Shape out,Activation<Type>* a,Device device);
@@ -34,6 +39,8 @@ namespace emptyNN {
             template <class Type>
             Layer<Type>* Flatten(Shape in, Device device);                          
 
+            template <class Type>
+            Layer<Type>* Pad(Shape in, Shape out, Device device);       
         }
 
         namespace Activations {
@@ -43,11 +50,13 @@ namespace emptyNN {
 
         #define REGISTER_FACTORY_LAYER(TYPE) \
             template Layer<TYPE>* Convolution(Shape in,ConvParams params,Activation<TYPE>* a,Device device); \
+            template Layer<TYPE>* DWConvolution(Shape in,ConvParams params,Activation<TYPE>* a,Device device); \
             template Layer<TYPE>* Dense(Shape in,Shape out,Activation<TYPE>* a,Device device); \
             template Layer<TYPE>* BatchNorm(Shape in,TYPE mu,TYPE sigma,Activation<TYPE>* a,Device device); \
             template Layer<TYPE>* MaxPool(Shape in,PoolParams params,Activation<TYPE>* a,Device device);  \
             template Layer<TYPE>* ResBlock(Shape in,Shape out,ResBlockParams params, Device device); \
             template Layer<TYPE>* Concat(Shape in, Shape out,std::vector<std::vector<Layer<TYPE>*>> _block,Device device); \
-            template Layer<TYPE>* Flatten(Shape in, Device device); 
+            template Layer<TYPE>* Flatten(Shape in, Device device); \
+            template Layer<TYPE>* Pad(Shape in, Shape out, Device device); 
     }
 }

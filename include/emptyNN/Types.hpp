@@ -29,6 +29,7 @@ namespace emptyNN {
         size_t kernels;
         size_t stride;
         PaddingType padding;
+        bool isDepthWise;
     } ConvParams;
 
     typedef struct  {

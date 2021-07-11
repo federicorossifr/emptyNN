@@ -21,7 +21,26 @@ namespace emptyNN {
                         throw DeviceNotAllowed(device);
                 }
 
-            }            
+            }     
+
+            template <class Type>
+            Layer<Type>* DWConvolution(Shape in,ConvParams params,Activation<Type>* a,Device device) {
+                switch (device)
+                {
+                    case CPU:
+                        return new emptyNN::Layers::Impl::DWConvCPUImpl<Type>(in,params,a);
+                    case CPU_RVV:
+                        #ifdef USE_RVV
+
+                        #else 
+                            throw DeviceNotAllowed(device);
+                        #endif
+
+                    default:
+                        throw DeviceNotAllowed(device);
+                }
+
+            }                        
 
             template <class Type>
             Layer<Type>* Dense(Shape in,Shape out,Activation<Type>* a,Device device) {
@@ -100,7 +119,22 @@ namespace emptyNN {
                     default:
                         throw DeviceNotAllowed(device);
                 }                      
-            }            
+            }
+
+            template <class Type>
+            Layer<Type>* Pad(Shape in, Shape out, Device device) {
+                switch (device)
+                {
+                    case CPU:
+                    case GPU:
+                    case CPU_RVV:
+                    case CPU_SVE:
+                        return new emptyNN::Layers::Pad<Type>(in,out);
+                
+                    default:
+                        throw DeviceNotAllowed(device);
+                }                      
+            }                            
 
             REGISTER_FACTORY_LAYER(float)
             

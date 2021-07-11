@@ -10,6 +10,55 @@ namespace emptyNN
     {
 
         template <class Type>
+        Sequential<Type>* MobileNet() {
+            Sequential<Type>* s = new Sequential<Type>("Mobilenet");
+            s->stackLayers({
+                Convolution<Type>({224,224,3},{{3,3,3},32,2, PaddingType::NONE},nullptr,CPU),
+                Pad<Type>({111,111,32},{1,1,0},CPU),
+                DWConvolution<Type>({112,112,32},{{3,3,32},32,1, PaddingType::SAME,true},nullptr,CPU),
+                Convolution<Type>({112,112,32},{{1,1,32},64,1, PaddingType::SAME},nullptr,CPU),
+                DWConvolution<Type>({112,112,64},{{3,3,64},64,2, PaddingType::NONE,true},nullptr,CPU),
+                Pad<Type>({55,55,64},{1,1,0},CPU),
+
+                Convolution<Type>({56,56,64},{{1,1,64},128,2, PaddingType::SAME},nullptr,CPU),
+                DWConvolution<Type>({56,56,128},{{3,3,128},128,1, PaddingType::SAME,true},nullptr,CPU),
+                Convolution<Type>({56,56,128},{{1,1,128},128,1, PaddingType::SAME},nullptr,CPU),
+                DWConvolution<Type>({56,56,128},{{3,3,128},128,2, PaddingType::NONE,true},nullptr,CPU),
+                Pad<Type>({27,27,128},{1,1,0},CPU),
+
+                Convolution<Type>({28,28,128},{{1,1,128},256,1, PaddingType::SAME},nullptr,CPU),
+                DWConvolution<Type>({28,28,256},{{3,3,256},256,2, PaddingType::SAME,true},nullptr,CPU),
+                Convolution<Type>({28,28,256},{{1,1,256},256,1, PaddingType::SAME},nullptr,CPU),
+                DWConvolution<Type>({28,28,256},{{3,3,256},256,2, PaddingType::NONE,true},nullptr,CPU),
+                Pad<Type>({13,13,256},{1,1,0},CPU),
+
+                Convolution<Type>({14,14,256},{{1,1,256},512,1, PaddingType::SAME},nullptr,CPU), 
+
+                DWConvolution<Type>({14,14,512},{{3,3,512},512,1, PaddingType::SAME,true},nullptr,CPU),
+                Convolution<Type>({14,14,512},{{1,1,512},512,1, PaddingType::SAME},nullptr,CPU),
+                DWConvolution<Type>({14,14,512},{{3,3,512},512,1, PaddingType::SAME,true},nullptr,CPU),
+                Convolution<Type>({14,14,512},{{1,1,512},512,1, PaddingType::SAME},nullptr,CPU),
+                DWConvolution<Type>({14,14,512},{{3,3,512},512,1, PaddingType::SAME,true},nullptr,CPU),
+                Convolution<Type>({14,14,512},{{1,1,512},512,1, PaddingType::SAME},nullptr,CPU),
+                DWConvolution<Type>({14,14,512},{{3,3,512},512,1, PaddingType::SAME,true},nullptr,CPU),
+                Convolution<Type>({14,14,512},{{1,1,512},512,1, PaddingType::SAME},nullptr,CPU),
+                DWConvolution<Type>({14,14,512},{{3,3,512},512,1, PaddingType::SAME,true},nullptr,CPU),
+                Convolution<Type>({14,14,512},{{1,1,512},512,1, PaddingType::SAME},nullptr,CPU),
+
+                DWConvolution<Type>({14,14,512},{{3,3,512},512,2, PaddingType::NONE,true},nullptr,CPU),
+                Pad<Type>({6,6,512},{1,1,0},CPU),
+                Convolution<Type>({7,7,512},{{1,1,512},1024,1, PaddingType::SAME},nullptr,CPU),
+                DWConvolution<Type>({7,7,1024},{{3,3,1024},1024,2, PaddingType::SAME,true},nullptr,CPU),
+                Convolution<Type>({7,7,1024},{{1,1,1024},1024,1, PaddingType::SAME},nullptr,CPU),
+
+                MaxPool<Type>({7,7,1024},{{7,7},1},nullptr,CPU),
+                Dense<Type>({1,1,1024},{1000,1,1},Factory::Activations::Elu(1.f),CPU)
+
+            });    
+            return s;        
+        }
+
+        template <class Type>
         Sequential<Type>* LeNet5() {
             Sequential<Type>* s = new Sequential<Type>("LeNet5");
             s->stackLayers({

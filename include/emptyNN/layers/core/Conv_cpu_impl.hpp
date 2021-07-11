@@ -12,7 +12,6 @@ namespace emptyNN {
                     ConvCPUImpl(Shape in, ConvParams cp,Activation<Type>* a = nullptr);
                     virtual void forward();
                     virtual void backward();
-                    virtual void activate();
 
             };
         }

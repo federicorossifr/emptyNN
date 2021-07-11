@@ -11,7 +11,6 @@ namespace emptyNN {
                     ~MaxPoolCPUImpl();
                     virtual void forward();
                     virtual void backward();
-                    virtual void activate();
 
             };
         }

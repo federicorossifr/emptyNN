@@ -16,9 +16,11 @@ namespace emptyNN {
 
         template <class Type>
         Conv<Type>::Conv(Shape in, ConvParams cp,Activation<Type>* a): Layer<Type>(in,a),f_shape(cp.filter),params(cp) {
-            filter = new Type[cp.filter.height*cp.filter.width*cp.filter.depth*cp.kernels];
+            size_t filter_size = cp.filter.height*cp.filter.width*cp.filter.depth;
+            filter_size*= (cp.isDepthWise)? 1:cp.kernels;
+            filter = new Type[filter_size];
 
-            std::fill(filter,filter+cp.filter.size()*cp.kernels,0x1);
+            std::fill(filter,filter+filter_size,0x1);
 
             size_t des_o_width = (cp.padding == PaddingType::SAME)? in.width : ceil(float(in.width - cp.filter.width+1)/cp.stride);
             size_t des_o_height = (cp.padding == PaddingType::SAME)? in.height : ceil(float(in.height - cp.filter.height+1)/cp.stride);

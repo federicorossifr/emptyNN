@@ -58,16 +58,6 @@ namespace emptyNN {
             }
 
             template <class Type>
-            void ConvRVVImpl<Type>::activate() {
-                Activation<Type>* a = this->activation;
-                Shape out = this->o_shape;
-                Type* o_tensor = this->o_tensor;
-                if( a == nullptr) return;
-
-                (*a)(o_tensor,out);
-            }
-
-            template <class Type>
             void ConvRVVImpl<Type>::backward() {}            
                 
 

@@ -11,7 +11,6 @@ namespace emptyNN {
                     ~DenseCPUImpl();
                     virtual void forward();
                     virtual void backward();
-                    virtual void activate();
 
             };
         }

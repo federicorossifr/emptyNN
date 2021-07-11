@@ -22,6 +22,6 @@ namespace emptyNN {
             Type* operator()();
             virtual void forward() = 0;
             virtual void backward() = 0;
-            virtual void activate() = 0;
+            virtual void activate();
     };
 }
