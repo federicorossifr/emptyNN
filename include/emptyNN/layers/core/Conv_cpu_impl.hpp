@@ -1,6 +1,6 @@
 #pragma once
 #include "emptyNN/layers/Conv.hpp"
-
+#include <memory>
 namespace emptyNN {
     namespace Layers {
         namespace Impl {

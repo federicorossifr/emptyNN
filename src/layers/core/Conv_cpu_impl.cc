@@ -18,9 +18,9 @@ namespace emptyNN {
                 Shape in = this->i_shape;
                 Shape fil = this->f_shape;
                 Shape padding = this->padding;
-                Type* filter = this->filter;
-                Type* i_tensor = this->i_tensor;
-                Type* o_tensor = this->o_tensor;
+                Type* filter = this->filter.data();
+                Type* i_tensor = this->i_tensor.data();
+                Type* o_tensor = this->o_tensor.data();
                 size_t stride = this->params.stride;
                 size_t kernels = this->params.kernels;
                 #pragma omp parallel for                

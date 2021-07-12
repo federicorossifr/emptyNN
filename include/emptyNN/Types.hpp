@@ -5,12 +5,16 @@
 #include <string>
 #include <omp.h>
 #include <exception>
-
+#include <vector>
 #ifdef USE_POSIT
 #include <posit.h>
 #endif
 
 namespace emptyNN {
+
+    template <class Type>
+    using  Tensor = std::vector<Type>;
+    
     typedef struct Shape {
         size_t width;
         size_t height;

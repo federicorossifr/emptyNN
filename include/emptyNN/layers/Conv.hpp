@@ -6,7 +6,7 @@ namespace emptyNN {
         template <class Type>
         class Conv: public Layer<Type> {
             protected:
-                Type* filter;
+                Tensor<Type> filter;
                 Shape f_shape;
                 ConvParams params;
                 Shape padding;
