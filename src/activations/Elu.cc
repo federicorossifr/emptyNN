@@ -14,7 +14,7 @@ namespace emptyNN {
         }
 
         template <class Type>
-        Type EluFunctor<Type>::grad(Type el) { return (el >= Type(0.f))? Type(1.f) : alpha*( std::exp(el) ); };
+        Type EluFunctor<Type>::grad(Type el) { return (el >= Type(0.f))? Type(1.f) : alpha*( Type(std::exp(el)) ); };
 
         
         REGISTER_CLASS(EluFunctor,float);

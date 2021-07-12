@@ -3,7 +3,7 @@
 #include <new>
 using namespace emptyNN;
 int main() {
-    using floatx = float;
+    using floatx = Posit8_0;
     
     Sequential<floatx> s("RVV");
     s.stackLayers({

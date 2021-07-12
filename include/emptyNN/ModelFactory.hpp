@@ -2,8 +2,8 @@
 #include <emptyNN/Sequential.hpp>
 using namespace emptyNN;
 using namespace Factory::Layers;
-#define RELU Factory::Activations::Elu<Type>(1.)
-#define SMAX Factory::Activations::Elu<Type>(1.)
+#define RELU Factory::Activations::Elu<Type>(Type(1.))
+#define SMAX Factory::Activations::Elu<Type>(Type(1.))
 namespace emptyNN
 {
     namespace Models
@@ -52,7 +52,7 @@ namespace emptyNN
                 Convolution<Type>({7,7,1024},{{1,1,1024},1024,1, PaddingType::SAME},nullptr,CPU),
 
                 MaxPool<Type>({7,7,1024},{{7,7},1},nullptr,CPU),
-                Dense<Type>({1,1,1024},{1000,1,1},Factory::Activations::Elu(1.f),CPU)
+                Dense<Type>({1,1,1024},{1000,1,1},RELU,CPU)
 
             });    
             return s;        
@@ -76,7 +76,7 @@ namespace emptyNN
         template <class Type>
         Sequential<Type>* ResNet34(size_t num_classes) {
             Sequential<Type>* s = new Sequential<Type>("ResNet34");
-            #define ELU Factory::Activations::Elu<Type>(1.)
+            #define ELU Factory::Activations::Elu<Type>(Type(1.))
             s->stackLayers({
                 Factory::Layers::Convolution<Type>({224,224,3}, {{7,7,3}, 64, 2,PaddingType::SAME}, nullptr, CPU),
                 Factory::Layers::MaxPool<Type>({224,224,64},{{1,1},2},nullptr,CPU),

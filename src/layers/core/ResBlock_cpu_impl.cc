@@ -12,14 +12,14 @@ namespace emptyNN {
                 using ELU = emptyNN::Activations::EluFunctor<Type>;
                 Shape middle;
                 if(params.halve)
-                    convLayers.push_back(new ConvCPUImpl<Type>( in, { {3,3,in.depth}, 2*in.depth, 2, PaddingType::ZERO }  , new ELU(1.)) );
+                    convLayers.push_back(new ConvCPUImpl<Type>( in, { {3,3,in.depth}, 2*in.depth, 2, PaddingType::ZERO }  , new ELU(Type(1.))) );
                 else 
-                    convLayers.push_back(new ConvCPUImpl<Type>( in, { {3,3,in.depth}, in.depth, 1, PaddingType::SAME }  , new ELU(1.)) );
+                    convLayers.push_back(new ConvCPUImpl<Type>( in, { {3,3,in.depth}, in.depth, 1, PaddingType::SAME }  , new ELU(Type(1.))) );
                 
                 middle = convLayers.back()->getOutputShape();
 
                 for(size_t i = 1; i < params.block_size; ++i) {
-                    convLayers.push_back(new ConvCPUImpl<Type>( middle, { {3,3,middle.depth}, middle.depth, 1, PaddingType::SAME }  , new ELU(1.)) );
+                    convLayers.push_back(new ConvCPUImpl<Type>( middle, { {3,3,middle.depth}, middle.depth, 1, PaddingType::SAME }  , new ELU(Type(1.))) );
                 }
 
                 this->block.push_back(convLayers);

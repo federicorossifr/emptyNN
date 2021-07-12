@@ -8,6 +8,7 @@
 
 #ifdef USE_POSIT
 #include <posit.h>
+#include <anyfloat.hpp>
 #endif
 
 namespace emptyNN {
@@ -62,15 +63,22 @@ namespace emptyNN {
         template class CLASS<float>; \
         template class CLASS<P16_1>; \
         template class CLASS<P16_0>; \
-        template class CLASS<P8>; 
+        template class CLASS<Posit8_0>; \
+        template class CLASS<Bfloat16>; \
+        template class CLASS<Bfloat8>; \
+        template class CLASS<FloatEmu>; 
     #else
     #define REGISTER_CLASS(CLASS,TYPE) \
         template class CLASS<float>;
     #endif
 
     #ifdef USE_POSIT
+        using FloatEmu = binary32_emu;
         using Posit16_1 = P16_1;
         using Posit16_0 = P16_0;
-        using Posit8_0 = P8;
+        using Posit8_0 = P8fx;
+        using Bfloat16 = binary16alt_emu;
+        using Bfloat8 = binary8_emu;
+
     #endif
 }
