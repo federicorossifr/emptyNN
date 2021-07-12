@@ -1,4 +1,3 @@
-#pragma once
 #include "emptyNN/layers/core/Conv_cpu_impl.hpp"
 #include "emptyNN/layers/core/DepthWiseConv_cpu_impl.hpp"
 #include "emptyNN/layers/core/Conv_rvv_impl.hpp"
@@ -41,11 +40,12 @@ namespace emptyNN {
 
             template <class Type>
             Layer<Type>* Pad(Shape in, Shape out, Device device);       
+
         }
 
         namespace Activations {
             template <class Type>
-            Activation<Type>* Elu(Type alpha = 1);
+            Activation<Type>* Elu(Type alpha);
         }
 
         #define REGISTER_FACTORY_LAYER(TYPE) \

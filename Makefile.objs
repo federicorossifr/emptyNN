@@ -1,12 +1,19 @@
 LAYER_OBJS := Layer.o Conv.o Dense.o BatchNormalization.o MaxPooling.o LayerBlock.o Flatten.o Pad.o
 ACT_OBJS := Activation.o Elu.o 
 IMPL_OBJS := ConvCpuImpl.o DenseCpuImpl.o BatchNormCpuImpl.o MaxPoolCpuImpl.o ResBlock_cpu_impl.o Concat_cpu_impl.o DWConv_cpu_impl.o
+IO_OBJS := Serializer.o BinarySerializer.o 
+
 MODEL_OBJS := Model.o Sequential.o
 UTIL_OBJS := Types.o Factory.o
 INCL_FLAGS := -I./include/ -I../cppposit_private/include
+LIB_OBJS := ${LAYER_OBJS} ${ACT_OBJS} ${IMPL_OBJS} ${MODEL_OBJS} ${UTIL_OBJS} ${IO_OBJS}
 
-LIB_OBJS := ${LAYER_OBJS} ${ACT_OBJS} ${IMPL_OBJS} ${MODEL_OBJS} ${UTIL_OBJS}
 
+Serializer.o: src/io/Serializer.cc include/emptyNN/io/Serializer.hpp
+	$(CC) -c ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} src/io/Serializer.cc -o Serializer.o
+
+BinarySerializer.o: src/io/BinarySerializer.cc include/emptyNN/io/BinarySerializer.hpp
+	$(CC) -c ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} src/io/BinarySerializer.cc -o BinarySerializer.o	
 
 Activation.o: src/Activation.cc include/emptyNN/Activation.hpp
 	$(CC) -c ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} src/Activation.cc -o Activation.o
@@ -17,7 +24,7 @@ Elu.o: src/activations/Elu.cc include/emptyNN/activations/Elu.hpp include/emptyN
 Layer.o: src/Layer.cc include/emptyNN/Layer.hpp
 	$(CC) -c ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} src/Layer.cc -o Layer.o
 
-Conv.o: src/layers/Conv.cc include/emptyNN/layers/Conv.hpp
+Conv.o: src/layers/Conv.cc include/emptyNN/layers/Conv.hpp include/emptyNN/utils/tensor_utils.hpp
 	$(CC) -c ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} src/layers/Conv.cc -o Conv.o
 
 Dense.o: src/layers/Dense.cc include/emptyNN/layers/Dense.hpp
@@ -86,13 +93,13 @@ Utils: ${UTIL_OBJS}
 libemptynn.so: Layers LayersImpl Models Utils Activations
 	$(CC) -shared ${LIB_OBJS} -o libemptynn.so
 
-seqnet: examples/seqnet.cc Layers LayersImpl Models Utils Activations 
+seqnet.exe: examples/seqnet.cc ${LIB_OBJS}
 	$(CC) ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} ${LIB_OBJS} examples/seqnet.cc -o seqnet.exe
 
-resnet: examples/resnet.cc Layers LayersImpl Models Utils Activations 
+resnet.exe: examples/resnet.cc ${LIB_OBJS}
 	$(CC) ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} ${LIB_OBJS} examples/resnet.cc -o resnet.exe	
 
-examples: seqnet resnet
+examples: seqnet.exe resnet.exe
 
 clean-objs:
 	rm -rf *.o *.so

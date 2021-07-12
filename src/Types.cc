@@ -1,6 +1,11 @@
 #include "emptyNN/Types.hpp"
 namespace emptyNN {
 
+    namespace Random
+    {
+        std::uint32_t globalSeed(1);
+    } // namespace Random
+    
     std::string DeviceToStr_(Device d) {
         switch (d)
             {

@@ -16,6 +16,15 @@ namespace emptyNN {
             delete[] connections;
         }    
 
+        template <class Type>
+        std::ostream& Dense<Type>::operator<<(std::ostream& ofs) {
+            Shape in = this->i_shape;
+            Shape out = this->o_shape;
+            size_t connection_size = in.height * in.width * out.height * out.width * in.depth * out.depth;
+            ofs.write(reinterpret_cast<char*>(connections),connection_size*sizeof(Type));
+            return ofs;
+        }        
+
         REGISTER_CLASS(Dense,float);
 
     }

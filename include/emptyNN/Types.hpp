@@ -12,6 +12,9 @@
 #endif
 
 namespace emptyNN {
+    namespace Random {
+        extern std::uint32_t globalSeed;
+    }
     typedef struct Shape {
         size_t width;
         size_t height;
@@ -81,4 +84,17 @@ namespace emptyNN {
         using Bfloat8 = binary8_emu;
 
     #endif
+
+
+    #define BUFFER_TYPE(T,DEF)\
+    typedef typename std::conditional<sizeof(T) == 4, \
+            uint32_t,\
+            typename std::conditional<sizeof(T) == 2, \
+                uint16_t, \
+                typename std::conditional<sizeof(T) == 1, \
+                    uint8_t, \
+                    uint8_t \
+                >::type\
+            >::type\
+        >::type DEF;
 }

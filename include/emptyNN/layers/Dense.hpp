@@ -10,6 +10,7 @@ namespace emptyNN {
             public:
                 Dense(Shape in, Shape out,Activation<Type>* a);
                 virtual ~Dense();
+                virtual std::ostream& operator<<(std::ostream& out);
         };        
     } // namespace Layers
 } // namespace emptyNN

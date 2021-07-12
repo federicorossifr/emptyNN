@@ -1,3 +1,4 @@
+#pragma once
 #include <emptyNN/Factory.hpp>
 #include <emptyNN/Sequential.hpp>
 using namespace emptyNN;
@@ -62,13 +63,13 @@ namespace emptyNN
         Sequential<Type>* LeNet5() {
             Sequential<Type>* s = new Sequential<Type>("LeNet5");
             s->stackLayers({
-                Convolution<Type>({32,32,3},{{5,5,3},6,1},RELU,CPU),
+                Convolution<Type>({32,32,3},{{5,5,3},6,1},RELU,CPU), //450
                 MaxPool<Type>({28,28,6},{{2,2},2},nullptr,CPU),
-                Convolution<Type>({14,14,6},{{5,5,1},16,1},RELU,CPU),
+                Convolution<Type>({14,14,6},{{5,5,1},16,1},RELU,CPU), // 400
                 MaxPool<Type>({10,10,16},{{2,2},2},nullptr,CPU),         
-                Dense<Type>({5,5,16},{120,1,1},RELU,CPU),
-                Dense<Type>({120,1,1},{84,1,1},RELU,CPU),
-                Dense<Type>({84,1,1},{10,1,1},SMAX,CPU)       
+                Dense<Type>({5,5,16},{120,1,1},RELU,CPU), // 48000
+                Dense<Type>({120,1,1},{84,1,1},RELU,CPU), // 10800
+                Dense<Type>({84,1,1},{10,1,1},SMAX,CPU)   // 840    
             });
             return s;
         }
@@ -76,7 +77,6 @@ namespace emptyNN
         template <class Type>
         Sequential<Type>* ResNet34(size_t num_classes) {
             Sequential<Type>* s = new Sequential<Type>("ResNet34");
-            #define ELU Factory::Activations::Elu<Type>(Type(1.))
             s->stackLayers({
                 Factory::Layers::Convolution<Type>({224,224,3}, {{7,7,3}, 64, 2,PaddingType::SAME}, nullptr, CPU),
                 Factory::Layers::MaxPool<Type>({224,224,64},{{1,1},2},nullptr,CPU),
@@ -102,7 +102,7 @@ namespace emptyNN
                 Factory::Layers::ResBlock<Type>({7,7,512},{7,7,512},{false,2,true},CPU),
                 
                 Factory::Layers::MaxPool<Type>({7,7,512},{{7,7},1},nullptr,CPU),
-                Factory::Layers::Dense({1,1,512},{1,1,num_classes},ELU,CPU)
+                Factory::Layers::Dense({1,1,512},{1,1,num_classes},RELU,CPU)
             });            
             return s;
         }

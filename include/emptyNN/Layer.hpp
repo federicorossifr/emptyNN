@@ -2,6 +2,8 @@
 #include "emptyNN/Types.hpp"
 #include "emptyNN/Activation.hpp"
 namespace emptyNN {
+
+
     template <class Type>
     class Layer {
         protected:
@@ -23,5 +25,7 @@ namespace emptyNN {
             virtual void forward() = 0;
             virtual void backward() = 0;
             virtual void activate();
+
+            virtual std::ostream& operator<<(std::ostream& out) = 0;
     };
 }

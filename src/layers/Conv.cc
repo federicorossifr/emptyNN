@@ -1,4 +1,5 @@
 #include "emptyNN/layers/Conv.hpp"
+#include <emptyNN/utils/tensor_utils.hpp>
 #include <iostream>
 namespace emptyNN {
     namespace Layers {
@@ -20,7 +21,7 @@ namespace emptyNN {
             filter_size*= (cp.isDepthWise)? 1:cp.kernels;
             filter = new Type[filter_size];
 
-            std::fill(filter,filter+filter_size,0x1);
+            emptyNN::Utils::Tensors::fillRandomUniform<Type>(filter,filter_size);
 
             size_t des_o_width = (cp.padding == PaddingType::SAME)? in.width : ceil(float(in.width - cp.filter.width+1)/cp.stride);
             size_t des_o_height = (cp.padding == PaddingType::SAME)? in.height : ceil(float(in.height - cp.filter.height+1)/cp.stride);
@@ -45,6 +46,16 @@ namespace emptyNN {
             this->o_tensor = new Type[out.width*out.height*out.depth];
             this->o_shape = out;
         }        
+
+        template <class Type>
+        std::ostream& Conv<Type>::operator<<(std::ostream& out) {
+           
+           // std::cout << "Conv out: " << f_shape.size() << std::endl;
+           // for(size_t i = 0; i < f_shape.size(); ++i)
+           //     out << buf[i];
+            out.write(reinterpret_cast<char*>(filter),f_shape.size()*sizeof(Type));
+            return out;
+        }
         REGISTER_CLASS(Conv,float)
 
     }

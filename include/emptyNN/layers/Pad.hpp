@@ -10,6 +10,7 @@ namespace emptyNN {
                 virtual void forward();
                 virtual void backward() {};
                 virtual void activate() {};
+                virtual std::ostream& operator<<(std::ostream& out)  {return out;}
         };        
     } // namespace Layers
 } // namespace emptyNN

@@ -10,6 +10,7 @@ namespace emptyNN {
             public:
                 BatchNormalization(Shape in,Type mu,Type sigma,Activation<Type>* a);
                 virtual ~BatchNormalization();
+                virtual std::ostream& operator<<(std::ostream& out)  {return out;}
         };        
     } // namespace Layers
 } // namespace emptyNN
