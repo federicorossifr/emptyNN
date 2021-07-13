@@ -60,7 +60,7 @@ namespace emptyNN {
 
 
             template <class Type>
-            void ConvCPUImpl<Type>::backward() {}            
+            void ConvCPUImpl<Type>::backward(Type* grad) {}            
                 
 
             REGISTER_CLASS(ConvCPUImpl,float)

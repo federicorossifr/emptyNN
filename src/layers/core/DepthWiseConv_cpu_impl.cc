@@ -66,7 +66,7 @@ namespace emptyNN {
      
 
             template <class Type>
-            void DWConvCPUImpl<Type>::backward() {}            
+            void DWConvCPUImpl<Type>::backward(Type* grad) {}            
                 
 
             REGISTER_CLASS(DWConvCPUImpl,float)

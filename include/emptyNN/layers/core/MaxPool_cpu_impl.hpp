@@ -10,7 +10,7 @@ namespace emptyNN {
                     MaxPoolCPUImpl(Shape in,PoolParams params,Activation<Type>* a);
                     ~MaxPoolCPUImpl();
                     virtual void forward();
-                    virtual void backward();
+                    virtual void backward(Type* grad);
 
             };
         }

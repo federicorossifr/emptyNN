@@ -11,7 +11,7 @@ namespace emptyNN {
                     ~DWConvCPUImpl();
                     DWConvCPUImpl(Shape in, ConvParams cp,Activation<Type>* a = nullptr);
                     virtual void forward();
-                    virtual void backward();
+                    virtual void backward(Type* grad);
 
             };
         }

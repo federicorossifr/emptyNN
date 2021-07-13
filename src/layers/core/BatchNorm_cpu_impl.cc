@@ -25,7 +25,7 @@ namespace emptyNN {
 
 
             template <class Type>
-            void BatchNormCPUImpl<Type>::backward() {}            
+            void BatchNormCPUImpl<Type>::backward(Type* grad) {}            
 
             REGISTER_CLASS(BatchNormCPUImpl,float);
        

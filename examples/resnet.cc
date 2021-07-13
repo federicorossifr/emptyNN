@@ -11,7 +11,7 @@ int main() {
     #ifdef TYPE
     using floatx = TYPE;
     #else
-    using floatx = Bfloat8;
+    using floatx = float;
     #endif
     Sequential<floatx>* s = Models::LeNet5<floatx>();
 
