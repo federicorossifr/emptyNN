@@ -20,7 +20,6 @@ namespace emptyNN
                 std::mt19937 mtwister;
                 std::uniform_real_distribution<> dis(min,max);
                 mtwister.seed(Random::globalSeed);                   
-                std::cout << "Using seed: " << Random::globalSeed << std::endl;
                 fillRandom<Type>(tensor,tensor_size,[&dis,&mtwister,&min,&max]() -> Type {
                     return Type(dis(mtwister));
                 });

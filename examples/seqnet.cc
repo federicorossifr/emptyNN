@@ -9,8 +9,10 @@ int main() {
     using floatx = float;
     Random::globalSeed = 2021;
     Sequential<floatx>* seq;
-    seq = Models::LeNet5<floatx>();
+    seq = Models::VGG16<floatx>();
     io::Serializer<floatx> ser("test_fp.bin");
+    seq->summary();
     ser.dumpBinaryWeights(seq);
+    std::cout << "Loaded model" << std::endl;
 }
 
