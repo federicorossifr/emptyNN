@@ -4,6 +4,14 @@
 #include <vector>
 namespace emptyNN
 {
+    namespace io
+    {
+        template <class Type>
+        class Serializer;        
+    } // namespace io
+    
+
+    
     template <class Type>
     class Sequential: public Model {
         std::vector<Layer<Type>*> layers; 
@@ -19,5 +27,7 @@ namespace emptyNN
             Shape getOutputShape();
             void stackLayer(Layer<Type>* layer);
             void stackLayers(std::vector<Layer<Type>*> group);
+
+            friend class io::Serializer<Type>;
     };
 } // namespace emptyNN

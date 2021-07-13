@@ -2,6 +2,13 @@
 #include "emptyNN/Types.hpp"
 #include "emptyNN/Activation.hpp"
 namespace emptyNN {
+
+    namespace io
+    {
+        template <class Type>
+        class Serializer;        
+    } // namespace io
+
     template <class Type>
     class Layer {
         protected:
@@ -23,5 +30,10 @@ namespace emptyNN {
             virtual void forward() = 0;
             virtual void backward() = 0;
             virtual void activate();
+
+            virtual std::ostream& operator<<(std::ostream& out) = 0;
+            virtual std::istream& operator>>(std::istream& ifs) = 0;
+
+            friend class io::Serializer<Type>;
     };
 }

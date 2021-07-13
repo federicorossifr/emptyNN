@@ -19,7 +19,7 @@ namespace emptyNN {
                 size_t fc_rows = in.size(),
                        fc_cols = out.size();
                 for(size_t i = 0; i < fc_cols; ++i) {
-                    Type accum = 0.;
+                    Type accum = Type(0.f);
 
                     for(size_t j = 0; j < fc_rows; ++j) {
                         

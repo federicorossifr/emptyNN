@@ -1,6 +1,5 @@
 #pragma once
 #include <emptyNN/layers/LayerBlock.hpp>
-
 namespace emptyNN {
     namespace Layers {
         namespace Impl

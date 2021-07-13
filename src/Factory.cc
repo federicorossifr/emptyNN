@@ -141,6 +141,9 @@ namespace emptyNN {
             #ifdef USE_POSIT
             REGISTER_FACTORY_LAYER(Posit16_0)
             REGISTER_FACTORY_LAYER(Posit8_0)
+            REGISTER_FACTORY_LAYER(Bfloat16)
+            REGISTER_FACTORY_LAYER(Bfloat8)
+            REGISTER_FACTORY_LAYER(FloatEmu)
             #endif
 
         }
@@ -158,6 +161,9 @@ namespace emptyNN {
             template Activation<Posit16_0>* Elu(Posit16_0 alpha);
             template Activation<Posit16_1>* Elu(Posit16_1 alpha);
             template Activation<Posit8_0>* Elu(Posit8_0 alpha);
+            template Activation<Bfloat16>* Elu(Bfloat16 alpha);
+            template Activation<Bfloat8>* Elu(Bfloat8 alpha);
+            template Activation<FloatEmu>* Elu(FloatEmu alpha);
             #endif
         }        
 
