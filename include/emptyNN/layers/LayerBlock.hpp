@@ -16,6 +16,8 @@ namespace emptyNN {
                 void summary();
                 virtual Type* merge(Type* tensors[]) = 0;
                 virtual std::ostream& operator<<(std::ostream& out) {return out;}
+                virtual std::istream& operator>>(std::istream& ifs) {return ifs;}      
+
         };
     } // namespace Layers
 } // namespace emptyNN

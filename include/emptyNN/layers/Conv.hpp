@@ -15,6 +15,8 @@ namespace emptyNN {
                 virtual ~Conv();
                 Conv(Shape in, ConvParams cp,Activation<Type>* a);
                 virtual std::ostream& operator<<(std::ostream& out);
+                virtual std::istream& operator>>(std::istream& ifs);                
+
 
         };
     }

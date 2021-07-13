@@ -1,6 +1,5 @@
 #include <emptyNN/io/Serializer.hpp>
 
-
 namespace emptyNN
 {
     namespace io
@@ -8,10 +7,24 @@ namespace emptyNN
         template <class Type>
         Serializer<Type>::Serializer(std::string filename): filename(filename) {}
 
-        template <class Base, class T>
-        inline bool instanceof(const T*) {
-            return std::is_base_of<Base, T>::value;
+        
+
+        template <class Type>
+        void Serializer<Type>::dumpBinaryWeights(Sequential<Type>* model) {
+            std::ofstream of(this->filename, std::ios::binary | std::ios::out);
+            for(auto l: model->layers) {
+               *l << of;
+            }
+
         }
+
+        template <class Type>
+        void Serializer<Type>::loadBinaryWeights(Sequential<Type>* model) {
+            std::ifstream ifs(this->filename, std::ios::binary | std::ios::out);
+            for(auto l: model->layers) {
+               //*l >> ifs;
+            }
+        }        
         REGISTER_CLASS(Serializer,float)
     } // namespace io
     

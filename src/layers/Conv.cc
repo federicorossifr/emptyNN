@@ -49,13 +49,15 @@ namespace emptyNN {
 
         template <class Type>
         std::ostream& Conv<Type>::operator<<(std::ostream& out) {
-           
-           // std::cout << "Conv out: " << f_shape.size() << std::endl;
-           // for(size_t i = 0; i < f_shape.size(); ++i)
-           //     out << buf[i];
             out.write(reinterpret_cast<char*>(filter),f_shape.size()*sizeof(Type));
             return out;
         }
+
+        template <class Type>
+        std::istream& Conv<Type>::operator>>(std::istream& ifs) {
+            ifs.read(reinterpret_cast<char*>(filter),f_shape.size()*sizeof(Type));
+            return ifs;
+        }        
         REGISTER_CLASS(Conv,float)
 
     }

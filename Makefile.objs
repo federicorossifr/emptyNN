@@ -1,7 +1,7 @@
 LAYER_OBJS := Layer.o Conv.o Dense.o BatchNormalization.o MaxPooling.o LayerBlock.o Flatten.o Pad.o
 ACT_OBJS := Activation.o Elu.o 
 IMPL_OBJS := ConvCpuImpl.o DenseCpuImpl.o BatchNormCpuImpl.o MaxPoolCpuImpl.o ResBlock_cpu_impl.o Concat_cpu_impl.o DWConv_cpu_impl.o
-IO_OBJS := Serializer.o BinarySerializer.o 
+IO_OBJS := Serializer.o 
 
 MODEL_OBJS := Model.o Sequential.o
 UTIL_OBJS := Types.o Factory.o
@@ -11,9 +11,6 @@ LIB_OBJS := ${LAYER_OBJS} ${ACT_OBJS} ${IMPL_OBJS} ${MODEL_OBJS} ${UTIL_OBJS} ${
 
 Serializer.o: src/io/Serializer.cc include/emptyNN/io/Serializer.hpp
 	$(CC) -c ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} src/io/Serializer.cc -o Serializer.o
-
-BinarySerializer.o: src/io/BinarySerializer.cc include/emptyNN/io/BinarySerializer.hpp
-	$(CC) -c ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} src/io/BinarySerializer.cc -o BinarySerializer.o	
 
 Activation.o: src/Activation.cc include/emptyNN/Activation.hpp
 	$(CC) -c ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} src/Activation.cc -o Activation.o

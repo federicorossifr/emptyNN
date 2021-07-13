@@ -7,7 +7,7 @@ namespace emptyNN
     namespace io
     {
         template <class Type>
-        class BinarySerializer;        
+        class Serializer;        
     } // namespace io
     
 
@@ -28,6 +28,6 @@ namespace emptyNN
             void stackLayer(Layer<Type>* layer);
             void stackLayers(std::vector<Layer<Type>*> group);
 
-            friend class io::BinarySerializer<Type>;
+            friend class io::Serializer<Type>;
     };
 } // namespace emptyNN

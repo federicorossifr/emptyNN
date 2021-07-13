@@ -11,6 +11,8 @@ namespace emptyNN {
                 virtual void backward() {};
                 virtual void activate() {};
                 virtual std::ostream& operator<<(std::ostream& out)  {return out;}
+                virtual std::istream& operator>>(std::istream& ifs)  {return ifs;}           
+
         };        
     } // namespace Layers
 } // namespace emptyNN

@@ -19,9 +19,9 @@ namespace emptyNN
             public:
             Serializer(std::string filename);
             
-            virtual void serialize(Sequential<Type>* model) = 0;
+            virtual void dumpBinaryWeights(Sequential<Type>* model);
 
-            virtual Sequential<Type>* deserialize() = 0;            
+            virtual void loadBinaryWeights(Sequential<Type>* model);            
 
 
 
