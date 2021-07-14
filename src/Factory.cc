@@ -124,6 +124,18 @@ namespace emptyNN {
             }
 
             template <class Type>
+            Layer<Type>* Add(Shape in, Shape out,std::vector<std::vector<Layer<Type>*>> _block, Device device) {
+                switch (device)
+                {
+                    case CPU:
+                        return new emptyNN::Layers::Impl::AddCPUImpl<Type>(in,out,_block);
+                
+                    default:
+                        throw DeviceNotAllowed(device);
+                }                
+            }            
+
+            template <class Type>
             Layer<Type>* Flatten(Shape in, Device device) {
                 switch (device)
                 {

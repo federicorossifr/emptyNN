@@ -1,6 +1,6 @@
 LAYER_OBJS := Layer.o Conv.o Dense.o BatchNormalization.o MaxPooling.o LayerBlock.o Flatten.o Pad.o
 ACT_OBJS := Activation.o Elu.o 
-IMPL_OBJS := ConvCpuImpl.o DenseCpuImpl.o BatchNormCpuImpl.o MaxPoolCpuImpl.o ResBlock_cpu_impl.o Concat_cpu_impl.o DWConv_cpu_impl.o
+IMPL_OBJS := ConvCpuImpl.o DenseCpuImpl.o BatchNormCpuImpl.o MaxPoolCpuImpl.o ResBlock_cpu_impl.o Concat_cpu_impl.o DWConv_cpu_impl.o Add_cpu_impl.o
 IO_OBJS := Serializer.o 
 
 MODEL_OBJS := Model.o Sequential.o
@@ -59,6 +59,9 @@ ResBlock_cpu_impl.o: src/layers/core/ResBlock_cpu_impl.cc include/emptyNN/layers
 
 Concat_cpu_impl.o: src/layers/core/Concat_cpu_impl.cc include/emptyNN/layers/core/Concat_cpu_impl.hpp
 	$(CC) -c ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} src/layers/core/Concat_cpu_impl.cc -o Concat_cpu_impl.o	
+
+Add_cpu_impl.o: src/layers/core/Add_cpu_impl.cc include/emptyNN/layers/core/Add_cpu_impl.hpp
+	$(CC) -c ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} src/layers/core/Add_cpu_impl.cc -o Add_cpu_impl.o	
 
 DWConv_cpu_impl.o: src/layers/core/DepthWiseConv_cpu_impl.cc include/emptyNN/layers/core/DepthWiseConv_cpu_impl.hpp
 	$(CC) -c ${EXTRA_C_FLAGS} $(CFLAGS) ${INCL_FLAGS} src/layers/core/DepthWiseConv_cpu_impl.cc -o DWConv_cpu_impl.o	

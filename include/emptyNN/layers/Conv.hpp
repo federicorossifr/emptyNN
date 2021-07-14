@@ -32,7 +32,11 @@ namespace emptyNN {
                 Conv(Shape in, Shape out, ConvParams cp,Activation<Type>* a);
                 virtual ~Conv();
                 Conv(Shape in, ConvParams cp,Activation<Type>* a);
-                virtual void summary() {Layer<Type>::summary(); std::cout << "Conv weights: " << f_shape.size()*params.kernels + params.kernels << std::endl; }
+                virtual void summary() {
+                    size_t filter_size = params.filter.height*params.filter.width*params.filter.depth;
+                    filter_size*= (params.isDepthWise)? 1:params.kernels;                    
+                    Layer<Type>::summary(); std::cout << "Conv weights: " << filter_size + params.kernels << std::endl; 
+                }
                 virtual std::ostream& operator<<(std::ostream& out);
                 virtual std::istream& operator>>(std::istream& ifs);                
 
