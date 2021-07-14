@@ -25,16 +25,26 @@ namespace emptyNN {
             
         }
 
+
         template <class Type>
         LayerBlock<Type>::LayerBlock(Shape in, Shape out,std::vector<std::vector<Layer<Type>*>> _block): Layer<Type>(in,out) {
+            auto check_stack = [&in](std::vector<Layer<Type>*>& stack) -> bool {
+                Shape a = in;
+                for(auto v: stack) {
+                    if(!(v->getInputShape() == a)) {
+                        std::cout << "Last Layer: " << a.width << " " << a.height << " " << a.depth << std::endl;
+                        std::cout << "New Layer: " << v->getInputShape().width << " " << v->getInputShape().height << " " << v->getInputShape().depth << std::endl;            
+                        return false;
+                    } 
+                    a = v->getOutputShape();
+                }
+                return true;
+            };
+
             for(auto v: _block) {
-                // ToDo: sanity check coherency of input shapes
-                // Output shapes may not always need to be the same 
-                // This check can be handled by subclasses in the merge
-                // method
+                assert(check_stack(v));
                 block.push_back(v);
             }
-
         }
 
         template <class Type>

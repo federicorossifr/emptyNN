@@ -90,7 +90,7 @@ Models: ${MODEL_OBJS}
 
 Utils: ${UTIL_OBJS}	
 
-libemptynn.so: Layers LayersImpl Models Utils Activations
+libemptynn.so: Layers LayersImpl Models Utils Activations ${LIB_OBJS}
 	$(CC) -shared ${LIB_OBJS} -o libemptynn.so
 
 seqnet.exe: examples/seqnet.cc ${LIB_OBJS}

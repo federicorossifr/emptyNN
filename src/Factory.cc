@@ -73,11 +73,11 @@ namespace emptyNN {
             }            
             
             template <class Type>
-            Layer<Type>* BatchNorm(Shape in, Type mu, Type sigma, Activation<Type>* a,Device device) {
+            Layer<Type>* BatchNorm(Shape in, double mu, double sigma, Activation<Type>* a,Device device) {
                 switch (device)
                 {
                     case CPU:
-                        return new emptyNN::Layers::Impl::BatchNormCPUImpl<Type>(in,mu,sigma,a);
+                        return new emptyNN::Layers::Impl::BatchNormCPUImpl<Type>(in,Type(mu),Type(sigma),a);
                 
                     default:
                         throw DeviceNotAllowed(device);
@@ -180,19 +180,19 @@ namespace emptyNN {
         namespace Activations {
 
             template <class Type>
-            Activation<Type>* Elu(Type alpha) {
-                return new emptyNN::Activations::EluFunctor<Type>(alpha);
+            Activation<Type>* Elu(double alpha) {
+                return new emptyNN::Activations::EluFunctor<Type>(Type(alpha));
             };
 
-            template Activation<float>* Elu(float alpha);
+            template Activation<float>* Elu(double alpha);
 
             #ifdef USE_POSIT
-            template Activation<Posit16_0>* Elu(Posit16_0 alpha);
-            template Activation<Posit16_1>* Elu(Posit16_1 alpha);
-            template Activation<Posit8_0>* Elu(Posit8_0 alpha);
-            template Activation<Bfloat16>* Elu(Bfloat16 alpha);
-            template Activation<Bfloat8>* Elu(Bfloat8 alpha);
-            template Activation<FloatEmu>* Elu(FloatEmu alpha);
+            template Activation<Posit16_0>* Elu( double alpha);
+            template Activation<Posit16_1>* Elu( double alpha);
+            template Activation<Posit8_0>* Elu( double alpha);
+            template Activation<Bfloat16>* Elu( double alpha);
+            template Activation<Bfloat8>* Elu( double alpha);
+            template Activation<FloatEmu>* Elu( double alpha);
             #endif
         }        
 

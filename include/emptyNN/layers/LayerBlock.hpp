@@ -18,7 +18,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #pragma once
 #include <emptyNN/Sequential.hpp>
 #include <emptyNN/Layer.hpp>
+#include <emptyNN/Types.hpp>
 #include <vector>
+#include <cassert>
 namespace emptyNN {
     namespace Layers {
         template <class Type>

@@ -42,7 +42,7 @@ namespace emptyNN {
             Layer<Type>* Dense(Shape in,Shape out,Activation<Type>* a,Device device);
 
             template <class Type>
-            Layer<Type>* BatchNorm(Shape in, Type mu, Type sigma, Activation<Type>* a, Device device);
+            Layer<Type>* BatchNorm(Shape in, double mu, double sigma, Activation<Type>* a, Device device);
 
             template <class Type>
             Layer<Type>* MaxPool(Shape in, PoolParams params, Activation<Type>* a, Device device);
@@ -66,14 +66,14 @@ namespace emptyNN {
 
         namespace Activations {
             template <class Type>
-            Activation<Type>* Elu(Type alpha);
+            Activation<Type>* Elu(double alpha);
         }
 
         #define REGISTER_FACTORY_LAYER(TYPE) \
             template Layer<TYPE>* Convolution(Shape in,ConvParams params,Activation<TYPE>* a,Device device); \
             template Layer<TYPE>* DWConvolution(Shape in,ConvParams params,Activation<TYPE>* a,Device device); \
             template Layer<TYPE>* Dense(Shape in,Shape out,Activation<TYPE>* a,Device device); \
-            template Layer<TYPE>* BatchNorm(Shape in,TYPE mu,TYPE sigma,Activation<TYPE>* a,Device device); \
+            template Layer<TYPE>* BatchNorm(Shape in,double mu,double sigma,Activation<TYPE>* a,Device device); \
             template Layer<TYPE>* MaxPool(Shape in,PoolParams params,Activation<TYPE>* a,Device device);  \
             template Layer<TYPE>* ResBlock(Shape in,Shape out,ResBlockParams params, Device device); \
             template Layer<TYPE>* Concat(Shape in, Shape out,std::vector<std::vector<Layer<TYPE>*>> _block,Device device); \
