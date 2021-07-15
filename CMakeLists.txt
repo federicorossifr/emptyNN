@@ -34,9 +34,6 @@ message("CXX FLAGS:${CXX} ${CMAKE_CXX_FLAGS}")
 file(GLOB_RECURSE emptynn_sources "src/**/*.cc")
 file(GLOB_RECURSE emptynn_sources "src/*.cc")
 include_directories("${PROJECT_SOURCE_DIR}/include")
-
-
-
 add_library(emptynn SHARED ${emptynn_sources})
 
 
