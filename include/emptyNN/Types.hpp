@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <string>
 #include <omp.h>
 #include <exception>
-
+#include <iostream>
 #ifdef USE_POSIT
 #include <posit.h>
 #include <anyfloat.hpp>
@@ -81,8 +81,8 @@ namespace emptyNN {
     #ifdef USE_POSIT
     #define REGISTER_CLASS(CLASS,TYPE) \
         template class CLASS<float>; \
-        template class CLASS<P16_1>; \
-        template class CLASS<P16_0>; \
+        template class CLASS<Posit16_1>; \
+        template class CLASS<Posit16_0>; \
         template class CLASS<Posit8_0>; \
         template class CLASS<Bfloat16>; \
         template class CLASS<Bfloat8>; \
@@ -96,7 +96,7 @@ namespace emptyNN {
         using FloatEmu = binary32_emu;
         using Posit16_1 = P16_1;
         using Posit16_0 = P16_0;
-        using Posit8_0 = P8fx;
+        using Posit8_0 = P8;
         using Bfloat16 = binary16alt_emu;
         using Bfloat8 = binary8_emu;
 

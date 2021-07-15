@@ -32,7 +32,7 @@ namespace emptyNN
             using floatx = Type;
             Sequential<Type>* s = new Sequential<Type>("EfficientNetB0");
             #define Squeeze(W,D,SQZ,DEV) \
-                Add<floatx>({W,W,D},{W,W,D},{ \
+                Multiply<floatx>({W,W,D},{W,W,D},{ \
                     {\
                         MaxPool<floatx>({W,W,D},{{W,W},1},nullptr,DEV),\
                         Convolution<floatx>({1,1,D},{{1,1,D},SQZ,1,PaddingType::SAME},nullptr,DEV),\

@@ -17,16 +17,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #pragma once
 #include <emptyNN/layers/LayerBlock.hpp>
-
+#include <functional>
 namespace emptyNN {
     namespace Layers {
         namespace Impl
         {
             template <class Type>
-            class AddCPUImpl: public LayerBlock<Type> {
-
+            class CombineMergeCPUImpl: public LayerBlock<Type> {
+                std::function<Type(Type&,Type&)> combine;
                 public:
-                    AddCPUImpl(Shape in, Shape out,std::vector<std::vector<Layer<Type>*>> _block);      
+                    CombineMergeCPUImpl(Shape in, Shape out,std::vector<std::vector<Layer<Type>*>>,Type initial_value,std::function<Type(Type&,Type&)>);      
                     virtual Type* merge(Type* tensors[]);
                     virtual void activate() {};
                     virtual void backward(Type* grad) {};

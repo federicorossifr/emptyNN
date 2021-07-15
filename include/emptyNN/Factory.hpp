@@ -23,7 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "emptyNN/layers/core/MaxPool_cpu_impl.hpp"
 #include "emptyNN/layers/core/ResBlock_cpu_impl.hpp"
 #include "emptyNN/layers/core/Concat_cpu_impl.hpp"
-#include "emptyNN/layers/core/Add_cpu_impl.hpp"
+#include "emptyNN/layers/core/Combine_cpu_impl.hpp"
 #include "emptyNN/layers/Flatten.hpp"
 #include "emptyNN/layers/Pad.hpp"
 #include "emptyNN/activations/Elu.hpp"
@@ -54,7 +54,10 @@ namespace emptyNN {
             Layer<Type>* Concat(Shape in, Shape out,std::vector<std::vector<Layer<Type>*>> _block,Device device);          
 
             template <class Type>
-            Layer<Type>* Add(Shape in, Shape out,std::vector<std::vector<Layer<Type>*>> _block,Device device);                   
+            Layer<Type>* Add(Shape in, Shape out,std::vector<std::vector<Layer<Type>*>> _block,Device device);   
+
+            template <class Type>
+            Layer<Type>* Multiply(Shape in, Shape out,std::vector<std::vector<Layer<Type>*>> _block, Device device);
 
             template <class Type>
             Layer<Type>* Flatten(Shape in, Device device);                          
@@ -78,6 +81,7 @@ namespace emptyNN {
             template Layer<TYPE>* ResBlock(Shape in,Shape out,ResBlockParams params, Device device); \
             template Layer<TYPE>* Concat(Shape in, Shape out,std::vector<std::vector<Layer<TYPE>*>> _block,Device device); \
             template Layer<TYPE>* Add(Shape in, Shape out,std::vector<std::vector<Layer<TYPE>*>> _block,Device device); \
+            template Layer<TYPE>* Multiply(Shape in, Shape out,std::vector<std::vector<Layer<TYPE>*>> _block,Device device); \
             template Layer<TYPE>* Flatten(Shape in, Device device); \
             template Layer<TYPE>* Pad(Shape in, Shape out, Device device); 
     }

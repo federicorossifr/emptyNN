@@ -128,12 +128,28 @@ namespace emptyNN {
                 switch (device)
                 {
                     case CPU:
-                        return new emptyNN::Layers::Impl::AddCPUImpl<Type>(in,out,_block);
+                        return new emptyNN::Layers::Impl::CombineMergeCPUImpl<Type>(in,out,_block,Type(0.),[](Type& a,Type& b){
+                            return a+b;
+                        });
                 
                     default:
                         throw DeviceNotAllowed(device);
                 }                
-            }            
+            }  
+
+            template <class Type>
+            Layer<Type>* Multiply(Shape in, Shape out,std::vector<std::vector<Layer<Type>*>> _block, Device device) {
+                switch (device)
+                {
+                    case CPU:
+                        return new emptyNN::Layers::Impl::CombineMergeCPUImpl<Type>(in,out,_block,Type(1.),[](Type& a,Type& b){
+                            return a*b;
+                        });
+                
+                    default:
+                        throw DeviceNotAllowed(device);
+                }                
+            }                        
 
             template <class Type>
             Layer<Type>* Flatten(Shape in, Device device) {
@@ -168,6 +184,7 @@ namespace emptyNN {
             REGISTER_FACTORY_LAYER(float)
             
             #ifdef USE_POSIT
+            REGISTER_FACTORY_LAYER(Posit16_1)
             REGISTER_FACTORY_LAYER(Posit16_0)
             REGISTER_FACTORY_LAYER(Posit8_0)
             REGISTER_FACTORY_LAYER(Bfloat16)

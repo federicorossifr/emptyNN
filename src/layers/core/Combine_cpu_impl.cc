@@ -15,7 +15,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include <emptyNN/layers/core/Add_cpu_impl.hpp>
+#include <emptyNN/layers/core/Combine_cpu_impl.hpp>
 #include <emptyNN/activations/Elu.hpp>
 
 namespace emptyNN {
@@ -23,28 +23,30 @@ namespace emptyNN {
         namespace Impl {
 
             template <class Type>
-            AddCPUImpl<Type>::AddCPUImpl(Shape in, Shape out, std::vector<std::vector<Layer<Type>*>> _block): LayerBlock<Type>(in, out, _block) {
+            CombineMergeCPUImpl<Type>::CombineMergeCPUImpl(Shape in, Shape out, 
+                                                            std::vector<std::vector<Layer<Type>*>> _block,
+                                                            Type initial_value,
+                                                            std::function<Type(Type&,Type&)> fun): LayerBlock<Type>(in, out, _block) {
                 // ToDo: sanity checks on output 
                 // Output size should be the same as each output size
-                std::fill(this->o_tensor,this->o_tensor+out.size(),0x0);
+                this->combine = fun;
+                std::fill(this->o_tensor,this->o_tensor+out.size(),initial_value);
             }
 
             template <class Type>
-            Type* AddCPUImpl<Type>::merge(Type* tensors[]) {
+            Type* CombineMergeCPUImpl<Type>::merge(Type* tensors[]) {
                 Type* o_tensor = this->o_tensor;
                 Shape out = this->o_shape;
                 size_t n_tensors = this->block.size();
                 #pragma omp parallel for
                 for(size_t i = 0; i < out.size(); ++i ) {
-                    o_tensor[i] = 0;
-                              
                     for(size_t j = 0; j < n_tensors; ++j)
-                        o_tensor[i]+=tensors[j][i];
+                        o_tensor[i]=combine(o_tensor[i],tensors[j][i]);
                 }
                 return o_tensor;
             }   
 
-            REGISTER_CLASS(AddCPUImpl,float);
+            REGISTER_CLASS(CombineMergeCPUImpl,float);
 
         } // namespace Impl
     } // namespace Layers
