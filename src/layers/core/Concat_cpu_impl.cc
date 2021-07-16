@@ -28,14 +28,14 @@ namespace emptyNN {
                 // ToDo: sanity checks on output 
                 // Output should be sum of all the getOutputShape().size()
                 // from layers
-                // Maybe make a constructor withot "out" parameter
+                // Maybe make a constructor without "out" parameter
                 // and infer directly the output
             }
 
             template <class Type>
             Type* ConcatCPUImpl<Type>::merge(Type* tensors[]) {
                 // ResNets have only one block filled with layers, the other branch is just a shortcut
-                // so we take the tansor from in_tensor
+                // so we take the tensor from in_tensor
                 Type* o_tensor = this->o_tensor;
                 Shape in = this->i_shape;
                 Shape out = this->o_shape;

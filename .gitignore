@@ -3,3 +3,5 @@
 *.bin
 build
 build/*
+/cmake-build-default/
+/cmake-build-anyfloat/
