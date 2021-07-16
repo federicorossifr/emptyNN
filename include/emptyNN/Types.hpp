@@ -37,7 +37,7 @@ namespace emptyNN {
         size_t height;
         size_t depth;
 
-        size_t size() {return width*height*depth;};
+        size_t size() const {return width*height*depth;};
     } Shape;
     bool operator==(Shape a,Shape b);
 
@@ -71,10 +71,10 @@ namespace emptyNN {
 
     class DeviceNotAllowed: public std::exception {
         Device d;
-        virtual const char* what() const throw();
+        const char* what() const throw() override;
 
         public:
-            DeviceNotAllowed(Device d);
+            explicit DeviceNotAllowed(Device d);
 
     };    
 
@@ -86,7 +86,7 @@ namespace emptyNN {
         template class CLASS<Posit8_0>; \
         template class CLASS<Bfloat16>; \
         template class CLASS<Bfloat8>; \
-        template class CLASS<FloatEmu>; 
+        template class CLASS<FloatEmu>;
     #else
     #define REGISTER_CLASS(CLASS,TYPE) \
         template class CLASS<float>;
@@ -103,15 +103,4 @@ namespace emptyNN {
     #endif
 
 
-    #define BUFFER_TYPE(T,DEF)\
-    typedef typename std::conditional<sizeof(T) == 4, \
-            uint32_t,\
-            typename std::conditional<sizeof(T) == 2, \
-                uint16_t, \
-                typename std::conditional<sizeof(T) == 1, \
-                    uint8_t, \
-                    uint8_t \
-                >::type\
-            >::type\
-        >::type DEF;
 }

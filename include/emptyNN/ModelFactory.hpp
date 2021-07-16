@@ -23,21 +23,20 @@ using namespace Factory::Layers;
 using namespace Factory::Activations;
 #define RELU Factory::Activations::Elu<Type>(Type(1.))
 #define SMAX Factory::Activations::Elu<Type>(Type(1.))
-namespace emptyNN
-{
+namespace emptyNN {
     namespace Models
     {
         template <class Type>
         Sequential<Type>* EfficientNetB0() {
             using floatx = Type;
-            Sequential<Type>* s = new Sequential<Type>("EfficientNetB0");
+            auto* s = new Sequential<Type>("EfficientNetB0");
             #define Squeeze(W,D,SQZ,DEV) \
                 Multiply<floatx>({W,W,D},{W,W,D},{ \
                     {\
                         MaxPool<floatx>({W,W,D},{{W,W},1},nullptr,DEV),\
                         Convolution<floatx>({1,1,D},{{1,1,D},SQZ,1,PaddingType::SAME},nullptr,DEV),\
                         Convolution<floatx>({1,1,SQZ},{{1,1,SQZ},D,1,PaddingType::SAME},nullptr,DEV),\
-                        Pad<floatx>({1,1,D},{W-1,W-1},DEV),\
+                        Pad<floatx>({1,1,D},{(W)-1,(W)-1},DEV),\
                     },{}\
                 },DEV)
 
@@ -273,7 +272,7 @@ namespace emptyNN
 
         template <class Type>
         Sequential<Type>* MobileNet() {
-            Sequential<Type>* s = new Sequential<Type>("Mobilenet");
+            auto* s = new Sequential<Type>("Mobilenet");
             s->stackLayers({
                 Convolution<Type>({224,224,3},{{3,3,3},32,2, PaddingType::NONE},nullptr,CPU),
                 Pad<Type>({111,111,32},{1,1,0},CPU),
@@ -322,7 +321,7 @@ namespace emptyNN
 
         template <class Type>
         Sequential<Type>* LeNet5() {
-            Sequential<Type>* s = new Sequential<Type>("LeNet5");
+            auto* s = new Sequential<Type>("LeNet5");
             s->stackLayers({
                 Convolution<Type>({32,32,3},{{5,5,3},6,1},RELU,CPU), //450
                 MaxPool<Type>({28,28,6},{{2,2},2},nullptr,CPU),
@@ -337,7 +336,7 @@ namespace emptyNN
 
         template <class Type>
         Sequential<Type>* ResNet34(size_t num_classes) {
-            Sequential<Type>* s = new Sequential<Type>("ResNet34");
+            auto* s = new Sequential<Type>("ResNet34");
             s->stackLayers({
                 Factory::Layers::Convolution<Type>({224,224,3}, {{7,7,3}, 64, 2,PaddingType::SAME}, nullptr, CPU),
                 Factory::Layers::MaxPool<Type>({224,224,64},{{1,1},2},nullptr,CPU),
@@ -370,7 +369,7 @@ namespace emptyNN
 
         template <class Type>
         Sequential<Type>* VGG16(size_t num_classes=1000, bool include_top=true, Shape input_shape={224,224,3}) {
-            Sequential<Type>* s = new Sequential<Type>("VGG16");
+            auto* s = new Sequential<Type>("VGG16");
             Layer<Type>* sc;
             Shape tmp;
             s->stackLayers({
@@ -416,7 +415,7 @@ namespace emptyNN
 
         template <class Type>
         Sequential<Type>* SSD300() {
-            Sequential<Type>* s = new Sequential<Type>("SSD300");            
+            auto* s = new Sequential<Type>("SSD300");
             s->stackLayers({
                 //conv_1
                 Convolution<float>({300,300,3}, {{3,3,3}, 64, 1,PaddingType::SAME}, RELU, CPU),
@@ -506,5 +505,4 @@ namespace emptyNN
         }
 
     } // namespace Models
-    
 } // namespace emptyNN

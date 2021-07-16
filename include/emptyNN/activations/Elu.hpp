@@ -28,7 +28,7 @@ namespace emptyNN {
                 EluFunctor(Type alpha=1.);
                 virtual void operator()(Type* in_tensor, Shape in_shape);
                 Type grad(Type el); 
-                virtual ~EluFunctor() {};
+                virtual ~EluFunctor() = default;
 
         };
     }
