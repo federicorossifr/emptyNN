@@ -15,6 +15,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include <algorithm>
 #include "emptyNN/activations/Elu.hpp"
 namespace emptyNN {
     namespace Activations {
@@ -22,12 +23,11 @@ namespace emptyNN {
         EluFunctor<Type>::EluFunctor(Type alpha): alpha(alpha){};
         
         template <class Type>
-        void EluFunctor<Type>::operator()(Type* in_tensor, Shape in_shape) { 
-            #pragma omp parallel for simd
-            for(size_t i = 0; i < in_shape.size(); ++i) {
-                Type& el = in_tensor[i];
-                el = (el >= Type(0.f))? el : alpha*(std::exp(el)-Type(1.f)); 
-            }
+        void EluFunctor<Type>::operator()(Type* in_tensor, Shape in_shape) {
+            Type _alpha(this->alpha);
+            std::transform(in_tensor,in_tensor+in_shape.size(),in_tensor,[&_alpha](Type el) -> Type {
+                return (el >= Type(0.f))? el : _alpha*(Type)(std::exp(double(el))-1.);
+            });
         }
 
         template <class Type>

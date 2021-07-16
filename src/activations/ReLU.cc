@@ -15,22 +15,24 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#pragma once
-#include "emptyNN/Activation.hpp"
-
+#include <algorithm>
+#include "emptyNN/activations/ReLU.hpp"
 namespace emptyNN {
     namespace Activations {
-        template<class Type>
-        class TanhFunctor : public Activation<Type> {
-        public:
-            TanhFunctor();
+        template <class Type>
+        ReLuFunctor<Type>::ReLuFunctor()= default;
 
-            virtual void operator()(Type *in_tensor, Shape in_shape);
+        template <class Type>
+        void ReLuFunctor<Type>::operator()(Type* in_tensor, Shape in_shape) {
+            std::transform(in_tensor,in_tensor+in_shape.size(),in_tensor,[](Type el) -> Type {
+                return (el >= Type(0.f))? el : Type(1.);
+            });
+        }
 
-            Type grad(Type el);
+        template <class Type>
+        Type ReLuFunctor<Type>::grad(Type el) { return el; };
 
-            virtual ~TanhFunctor() = default;
 
-        };
-    } // namespace Activations
-} // namespace emptyNN
+        REGISTER_CLASS(ReLuFunctor,float);
+    }
+}

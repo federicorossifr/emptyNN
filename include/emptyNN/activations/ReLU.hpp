@@ -15,14 +15,19 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#pragma once
 #include "emptyNN/Activation.hpp"
 
 namespace emptyNN {
     namespace Activations {
         template <class Type>
-        class ReLU: public Activation<Type> {
-            public:
-                void operator()(Type* tensor);
-                void grad()(Type* tensor);
-        }
+        class ReLuFunctor: public Activation<Type> {
+        public:
+            ReLuFunctor();
+            virtual void operator()(Type* in_tensor, Shape in_shape);
+            Type grad(Type el);
+            virtual ~ReLuFunctor() = default;
+
+        };
+    }
 }

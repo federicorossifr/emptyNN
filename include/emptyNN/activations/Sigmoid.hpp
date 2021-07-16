@@ -20,9 +20,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace emptyNN {
     namespace Activations {
         template <class Type>
-        class Sigmoid: public Activation<Type> {
-            public:
-                void operator()(Type* tensor);
-                void grad()(Type* tensor);
-        }
+        class SigmoidFunctor: public Activation<Type> {
+        public:
+            SigmoidFunctor();
+            virtual void operator()(Type* in_tensor, Shape in_shape);
+            Type grad(Type el);
+            virtual ~SigmoidFunctor() = default;
+
+        };
+    }
 }

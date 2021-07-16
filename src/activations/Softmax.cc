@@ -15,21 +15,26 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#pragma once
-#include "emptyNN/Activation.hpp"
-#include <algorithm>
-#include <numeric>
-
+#include "emptyNN/activations/Softmax.hpp"
 namespace emptyNN {
     namespace Activations {
         template <class Type>
-        class SoftmaxFunctor: public Activation<Type> {
-        public:
-            SoftmaxFunctor();
-            virtual void operator()(Type* in_tensor, Shape in_shape);
-            Type grad(Type el);
-            virtual ~SoftmaxFunctor() = default;
+        SoftmaxFunctor<Type>::SoftmaxFunctor() = default;
 
-        };
+        template <class Type>
+        void SoftmaxFunctor<Type>::operator()(Type* in_tensor, Shape in_shape) {
+            Type expProbSum = Type(0.);
+            std::transform(in_tensor,in_tensor+in_shape.size(),in_tensor,[&expProbSum](Type el) -> Type {
+                expProbSum+=el;
+                return (Type)std::exp(double(el));
+            });
+            std::transform(in_tensor,in_tensor+in_shape.size(),in_tensor,[&expProbSum](Type el) -> Type { return el/expProbSum;});
+        }
+
+        template <class Type>
+        Type SoftmaxFunctor<Type>::grad(Type el) { return el; };
+
+
+        REGISTER_CLASS(SoftmaxFunctor,float);
     }
 }
