@@ -22,11 +22,11 @@ namespace emptyNN {
         namespace Layers {
             
             template <class Type>
-            Layer<Type>* Convolution(Shape in,ConvParams params,Activation<Type>* a,Device device) {
+            Layer<Type>* Convolution(Shape in,ConvParams params,Activation<Type>* a,Device device, bool withBias) {
                 switch (device)
                 {
                     case CPU:
-                        return new emptyNN::Layers::Impl::ConvCPUImpl<Type>(in,params,a);
+                        return new emptyNN::Layers::Impl::ConvCPUImpl<Type>(in,params,a,withBias);
                     case CPU_RVV:
                         #ifdef USE_RVV
                             return new emptyNN::Layers::Impl::ConvRVVImpl<Type>(in,params,a);
@@ -60,11 +60,11 @@ namespace emptyNN {
             }                        
 
             template <class Type>
-            Layer<Type>* Dense(Shape in,Shape out,Activation<Type>* a,Device device) {
+            Layer<Type>* Dense(Shape in,Shape out,Activation<Type>* a,Device device,bool withBias) {
                 switch (device)
                 {
                     case CPU:
-                        return new emptyNN::Layers::Impl::DenseCPUImpl<Type>(in,out,a);
+                        return new emptyNN::Layers::Impl::DenseCPUImpl<Type>(in,out,a,withBias);
                 
                     default:
                         throw DeviceNotAllowed(device);

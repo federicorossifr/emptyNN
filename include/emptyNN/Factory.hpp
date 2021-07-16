@@ -33,13 +33,13 @@ namespace emptyNN {
         namespace Layers {
             
             template <class Type>
-            Layer<Type>* Convolution(Shape in,ConvParams params,Activation<Type>* a,Device device);
+            Layer<Type>* Convolution(Shape in,ConvParams params,Activation<Type>* a,Device device, bool withBias = true);
 
             template <class Type>
             Layer<Type>* DWConvolution(Shape in,ConvParams params,Activation<Type>* a,Device device);            
 
             template <class Type>
-            Layer<Type>* Dense(Shape in,Shape out,Activation<Type>* a,Device device);
+            Layer<Type>* Dense(Shape in,Shape out,Activation<Type>* a,Device device, bool withBias = true);
 
             template <class Type>
             Layer<Type>* BatchNorm(Shape in, double mu, double sigma, Activation<Type>* a, Device device);
@@ -73,9 +73,9 @@ namespace emptyNN {
         }
 
         #define REGISTER_FACTORY_LAYER(TYPE) \
-            template Layer<TYPE>* Convolution(Shape in,ConvParams params,Activation<TYPE>* a,Device device); \
+            template Layer<TYPE>* Convolution(Shape in,ConvParams params,Activation<TYPE>* a,Device device,bool withBias); \
             template Layer<TYPE>* DWConvolution(Shape in,ConvParams params,Activation<TYPE>* a,Device device); \
-            template Layer<TYPE>* Dense(Shape in,Shape out,Activation<TYPE>* a,Device device); \
+            template Layer<TYPE>* Dense(Shape in,Shape out,Activation<TYPE>* a,Device device,bool withBias); \
             template Layer<TYPE>* BatchNorm(Shape in,double mu,double sigma,Activation<TYPE>* a,Device device); \
             template Layer<TYPE>* MaxPool(Shape in,PoolParams params,Activation<TYPE>* a,Device device);  \
             template Layer<TYPE>* ResBlock(Shape in,Shape out,ResBlockParams params, Device device); \

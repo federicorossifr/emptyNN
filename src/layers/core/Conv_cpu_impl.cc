@@ -21,10 +21,10 @@ namespace emptyNN {
     namespace Layers {
         namespace Impl {
             template <class Type>
-            ConvCPUImpl<Type>::ConvCPUImpl(Shape in, Shape out, ConvParams cp,Activation<Type>* a): Conv<Type>(in,out,cp,a){}
+            ConvCPUImpl<Type>::ConvCPUImpl(Shape in, Shape out, ConvParams cp,Activation<Type>* a, bool hasBias): Conv<Type>(in,out,cp,a,hasBias){}
 
             template <class Type>
-            ConvCPUImpl<Type>::ConvCPUImpl(Shape in, ConvParams cp,Activation<Type>* a): Conv<Type>(in,cp,a){}
+            ConvCPUImpl<Type>::ConvCPUImpl(Shape in, ConvParams cp,Activation<Type>* a, bool hasBias): Conv<Type>(in,cp,a,hasBias){}
 
             template <class Type>
             ConvCPUImpl<Type>::~ConvCPUImpl() {}

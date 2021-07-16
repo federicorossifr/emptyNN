@@ -28,10 +28,11 @@ namespace emptyNN {
                 Shape f_shape;
                 ConvParams params;
                 Shape padding;
+                const bool hasBias;
             public:
-                Conv(Shape in, Shape out, ConvParams cp,Activation<Type>* a);
+                Conv(Shape in, Shape out, ConvParams cp,Activation<Type>* a, bool withBias = true);
                 virtual ~Conv();
-                Conv(Shape in, ConvParams cp,Activation<Type>* a);
+                Conv(Shape in, ConvParams cp,Activation<Type>* a, bool withBias = true);
                 virtual void summary() {
                     size_t filter_size = params.filter.height*params.filter.width*params.filter.depth;
                     filter_size*= (params.isDepthWise)? 1:params.kernels;                    

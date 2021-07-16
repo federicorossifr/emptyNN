@@ -24,7 +24,7 @@ namespace emptyNN {
             template <class Type>
             class DenseCPUImpl: public Dense<Type> {
                 public:
-                    DenseCPUImpl(Shape in, Shape out,Activation<Type>* a);
+                    DenseCPUImpl(Shape in, Shape out,Activation<Type>* a, bool withBias = true);
                     ~DenseCPUImpl();
                     virtual void forward();
                     virtual void backward(Type* grad);

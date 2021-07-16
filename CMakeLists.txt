@@ -52,9 +52,21 @@ add_dependencies(examples seqnet.exe)
 
 
 if(USE_ANYFLOAT)
-    add_executable(resnet_p160.exe "examples/resnet.cc")
-    target_link_libraries(resnet_p160.exe PUBLIC emptynn)
-    target_compile_definitions(resnet_p160.exe PUBLIC TYPE=Posit16_0)
-    add_dependencies(examples resnet_p160.exe)
+    set(TYPES float Posit16_0 Posit16_1 Bfloat16 Bfloat8 FloatEmu)
+    foreach(TYPE IN LISTS TYPES)
+        message(STATUS ${TYPE})
+
+        add_executable(resnet_${TYPE}.exe "examples/resnet.cc")
+        target_link_libraries(resnet_${TYPE}.exe PUBLIC emptynn)
+        target_compile_definitions(resnet_${TYPE}.exe PUBLIC TYPE=${TYPE})
+        add_dependencies(examples resnet_${TYPE}.exe)
+
+        add_executable(seqnet_${TYPE}.exe "examples/seqnet.cc")
+        target_link_libraries(seqnet_${TYPE}.exe PUBLIC emptynn)
+        target_compile_definitions(seqnet_${TYPE}.exe PUBLIC TYPE=${TYPE})
+        add_dependencies(examples seqnet_${TYPE}.exe)        
+
+    endforeach()
+
 endif(USE_ANYFLOAT)
 

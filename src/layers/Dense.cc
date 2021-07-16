@@ -22,16 +22,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace emptyNN {
     namespace Layers {
         template <class Type>
-        Dense<Type>::Dense(Shape in, Shape out,Activation<Type>* a): Layer<Type>(in,out,a) {
+        Dense<Type>::Dense(Shape in, Shape out,Activation<Type>* a, bool withBias): Layer<Type>(in, out, a),hasBias(withBias) {
             // assert(in.depth == 1 && out.depth == 1);
             // In-vector   1 x (in.height * in.width) 
             // Out-vector  (out.height * out.width) x 1
             // Connection matrix (in.height * in.width) x (out.height * out.width)
             size_t conn_size = in.size() * out.size();
             connections = new Type[conn_size];
-            bias = new Type[out.size()];
             emptyNN::Utils::Tensors::fillRandomUniform<Type>(connections,conn_size);
-            emptyNN::Utils::Tensors::fillRandomUniform<Type>(bias,out.size());
+
+            if(hasBias) {
+                bias = new Type[out.size()];
+                emptyNN::Utils::Tensors::fillRandomUniform<Type>(bias,out.size());
+            }
 
         }
 

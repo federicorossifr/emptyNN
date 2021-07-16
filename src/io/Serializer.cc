@@ -37,9 +37,9 @@ namespace emptyNN
 
         template <class Type>
         void Serializer<Type>::loadBinaryWeights(Sequential<Type>* model) {
-            std::ifstream ifs(this->filename, std::ios::binary | std::ios::out);
+            std::ifstream ifs(this->filename, std::ios::binary | std::ios::in);
             for(auto l: model->layers) {
-               //*l >> ifs;
+               *l >> ifs;
             }
         }        
         REGISTER_CLASS(Serializer,float)
