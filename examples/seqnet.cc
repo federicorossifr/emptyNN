@@ -34,7 +34,8 @@ int main() {
     std::fill(in_tensor,in_tensor+seq.getInputShape().size(),0x01);
     seq.summary();
     std::cout << "Loaded model" << std::endl;
-    seq.fit(in_tensor);
+    floatx* out = seq.predict(in_tensor);
+    seq.fit(in_tensor,out);
 
 }
 

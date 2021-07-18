@@ -40,7 +40,7 @@ namespace emptyNN
             void summary();
 
             Type* predict(Type* in_tensor);
-            void  fit(Type* in_tensor/* ToDo Label */);
+            void  fit(Type* in_tensor, Type* truth);
             Shape getInputShape();
             Shape getOutputShape();
             void stackLayer(Layer<Type>* layer);

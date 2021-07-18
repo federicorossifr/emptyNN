@@ -59,9 +59,14 @@ namespace emptyNN
     }
 
     template <class Type>
-    void Sequential<Type>::fit(Type* in_tensor) {
+    void Sequential<Type>::fit(Type* in_tensor, Type* truth) {
         Type* prediction = this->predict(in_tensor);
-        Type* gradHandle;
+        size_t out_size = layers.back()->getOutputShape().size();
+        std::transform(prediction,prediction+out_size,truth,prediction,std::minus<float>());
+        Type loss = std::accumulate(prediction,prediction+out_size,Type(0.),[](Type& a, Type& b) {
+            return a + (Type)std::pow((double)b,2);
+        });
+        std::cout << "Loss: " << std::sqrt(loss) << std::endl;
         for(auto it = layers.rbegin(); it != layers.rend(); ++it) {
             (*it)->backward(prediction);
         }
