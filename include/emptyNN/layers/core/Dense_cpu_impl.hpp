@@ -27,7 +27,7 @@ namespace emptyNN {
                     DenseCPUImpl(Shape in, Shape out,Activation<Type>* a, bool withBias = true);
                     ~DenseCPUImpl();
                     virtual void forward();
-                    virtual void backward(Type* grad);
+                    virtual Type* backward(Type* grad);
 
             };
         }

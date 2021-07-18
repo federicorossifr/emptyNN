@@ -75,7 +75,7 @@ namespace emptyNN {
 
 
             template <class Type>
-            void ConvCPUImpl<Type>::backward(Type* grad) {
+            Type* ConvCPUImpl<Type>::backward(Type* grad) {
                 Shape out = this->o_shape;
                 Shape in  = this->i_shape;
                 Shape fi  = this->f_shape;
@@ -164,9 +164,7 @@ namespace emptyNN {
                     }
                 }
 
-
-
-
+                return dxp;
             }
                 
 

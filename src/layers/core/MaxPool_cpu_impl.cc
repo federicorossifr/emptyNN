@@ -64,7 +64,7 @@ namespace emptyNN {
 
 
             template <class Type>
-            void MaxPoolCPUImpl<Type>::backward(Type* grad) {}            
+            Type* MaxPoolCPUImpl<Type>::backward(Type* grad) {return grad;}
 
             REGISTER_CLASS(MaxPoolCPUImpl,float);
        

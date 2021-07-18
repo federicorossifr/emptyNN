@@ -29,7 +29,7 @@ namespace emptyNN {
                     ConcatCPUImpl(Shape in, Shape out,std::vector<std::vector<Layer<Type>*>> _block);      
                     virtual Type* merge(Type* tensors[]);
                     virtual void activate() {};
-                    virtual void backward(Type* grad) {};
+                    virtual Type* backward(Type* grad) {return grad;};
             };
 
         } // namespace Impl    

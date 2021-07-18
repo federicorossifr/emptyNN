@@ -66,9 +66,11 @@ namespace emptyNN
         Type loss = std::accumulate(prediction,prediction+out_size,Type(0.),[](Type& a, Type& b) {
             return a + (Type)std::pow((double)b,2);
         });
+
+        Type* gradHandle = prediction;
         std::cout << "Loss: " << std::sqrt(loss) << std::endl;
         for(auto it = layers.rbegin(); it != layers.rend(); ++it) {
-            (*it)->backward(prediction);
+            gradHandle = (*it)->backward(gradHandle);
         }
     }
 

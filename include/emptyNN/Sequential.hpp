@@ -48,4 +48,4 @@ namespace emptyNN
 
             friend class io::Serializer<Type>;
     };
-} // namespace emptyNN
+} // namespace emptyNNs

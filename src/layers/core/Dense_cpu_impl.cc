@@ -50,7 +50,7 @@ namespace emptyNN {
 
  
             template <class Type>
-            void DenseCPUImpl<Type>::backward(Type* dy) {
+            Type* DenseCPUImpl<Type>::backward(Type* dy) {
                 // Grad should have the same elements as the layer output
                 // dW is the outer product between grad and the layer input
                 // If the Dense layer has 
@@ -83,7 +83,7 @@ namespace emptyNN {
                     }
                 }
 
-                //return dx;
+                return dx;
 
             }            
 

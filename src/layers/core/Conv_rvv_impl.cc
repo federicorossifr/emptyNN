@@ -73,7 +73,7 @@ namespace emptyNN {
             }
 
             template <class Type>
-            void ConvRVVImpl<Type>::backward(Type* grad) {}            
+            Type* ConvRVVImpl<Type>::backward(Type* grad) {return grad;}
                 
 
             REGISTER_CLASS(ConvRVVImpl,float)

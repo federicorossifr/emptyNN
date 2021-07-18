@@ -28,7 +28,8 @@ int main() {
     Random::globalSeed = 2021;
     Sequential<floatx> seq("Effnet");
     seq.stackLayers({
-        Convolution<floatx>({224,224,3},{{3,3,3},6,PaddingType::NONE}, nullptr,CPU)
+        Convolution<floatx>({224,224,3},{{3,3,3},6,2,PaddingType::NONE}, nullptr,CPU),
+        Convolution<floatx>({111,111,6},{{3,3,6},6,2,PaddingType::NONE}, nullptr,CPU)
     });
     floatx* in_tensor = new floatx[seq.getInputShape().size()];
     std::fill(in_tensor,in_tensor+seq.getInputShape().size(),0x01);

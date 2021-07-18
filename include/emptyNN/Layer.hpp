@@ -45,7 +45,7 @@ namespace emptyNN {
             
             Type* operator()();
             virtual void forward() = 0;
-            virtual void backward(Type* grad) = 0;
+            virtual Type* backward(Type* grad) = 0;
             virtual void activate();
 
             virtual std::ostream& operator<<(std::ostream& out) = 0;

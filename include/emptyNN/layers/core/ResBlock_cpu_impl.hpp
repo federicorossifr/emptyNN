@@ -31,7 +31,7 @@ namespace emptyNN {
                     ResidualBlockCPUImpl(Shape in, Shape out,ResBlockParams params);      
                     virtual Type* merge(Type* tensors[]);
                     virtual void activate() {};
-                    virtual void backward(Type* grad) {};
+                    virtual Type* backward(Type* grad) {return grad;};
             };
 
         } // namespace Impl    
