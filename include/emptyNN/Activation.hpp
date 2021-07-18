@@ -18,6 +18,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #pragma once
 #include "emptyNN/Types.hpp"
 #include <cmath>
+#include <algorithm>
+#include <numeric>
 namespace emptyNN {
     template <class Type>
     class Activation {

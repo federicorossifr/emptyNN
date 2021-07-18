@@ -21,13 +21,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace emptyNN {
     namespace Layers {
         namespace Impl {
-            template <class Type>
-            DWConvCPUImpl<Type>::DWConvCPUImpl(Shape in, Shape out, ConvParams cp,Activation<Type>* a): Conv<Type>(in,out,cp,a) {
-                // Sanity checks, 
-                // Number of image channels, filter channels and output channels
-                // must all be the same
-                assert(in.depth == cp.filter.depth && cp.filter.depth == cp.kernels);
-            }
 
             template <class Type>
             DWConvCPUImpl<Type>::DWConvCPUImpl(Shape in, ConvParams cp,Activation<Type>* a): Conv<Type>(in,cp,a) {

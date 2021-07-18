@@ -24,7 +24,6 @@ namespace emptyNN {
             template <class Type>
             class DWConvCPUImpl: public Conv<Type> {
                 public:
-                    DWConvCPUImpl(Shape in, Shape out, ConvParams cp,Activation<Type>* a = nullptr);
                     ~DWConvCPUImpl();
                     DWConvCPUImpl(Shape in, ConvParams cp,Activation<Type>* a = nullptr);
                     virtual void forward();

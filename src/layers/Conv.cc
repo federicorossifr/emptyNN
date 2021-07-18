@@ -21,12 +21,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace emptyNN {
     namespace Layers {
 
-
-        template <class Type>
-        Conv<Type>::Conv(Shape in, Shape out, ConvParams cp,Activation<Type>* a,bool withBias): Layer<Type>(in,out,a),f_shape(cp.filter),params(cp),hasBias(withBias) {
-            filter = new Type[cp.filter.height*cp.filter.width*cp.filter.depth*cp.kernels];
-        }
-
         template <class Type>
         Conv<Type>::~Conv() {
             delete[] filter;

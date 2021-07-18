@@ -56,7 +56,16 @@ namespace emptyNN
             handle = (*l)();
         }
         return out_tensor;
-    }    
+    }
+
+    template <class Type>
+    void Sequential<Type>::fit(Type* in_tensor) {
+        Type* prediction = this->predict(in_tensor);
+        Type* gradHandle;
+        for(auto it = layers.end(); it != layers.begin(); --it) {
+            (*it)->backward(prediction);
+        }
+    }
 
     template <class Type>
     Shape Sequential<Type>::getInputShape() {

@@ -39,7 +39,8 @@ namespace emptyNN
             virtual void deserialize(std::ifstream& in);      
             void summary();
 
-            Type* predict(Type* in_tensor);      
+            Type* predict(Type* in_tensor);
+            void  fit(Type* in_tensor/* ToDo Label */);
             Shape getInputShape();
             Shape getOutputShape();
             void stackLayer(Layer<Type>* layer);

@@ -30,7 +30,6 @@ namespace emptyNN {
                 Shape padding;
                 const bool hasBias;
             public:
-                Conv(Shape in, Shape out, ConvParams cp,Activation<Type>* a, bool withBias = true);
                 virtual ~Conv();
                 Conv(Shape in, ConvParams cp,Activation<Type>* a, bool withBias = true);
                 virtual void summary() {

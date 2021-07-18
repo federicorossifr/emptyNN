@@ -20,8 +20,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace emptyNN {
     namespace Layers {
         namespace Impl {
-            template <class Type>
-            ConvRVVImpl<Type>::ConvRVVImpl(Shape in, Shape out, ConvParams cp,Activation<Type>* a): Conv<Type>(in,out,cp,a){}
 
             template <class Type>
             ConvRVVImpl<Type>::ConvRVVImpl(Shape in, ConvParams cp,Activation<Type>* a): Conv<Type>(in,cp,a){}

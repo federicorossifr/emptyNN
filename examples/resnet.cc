@@ -41,7 +41,7 @@ int main() {
     floatx* out_tensor;
     for(size_t i = 0; i < runs; ++i) {
         chronoIt([&in_tensor,&s]() {
-          s->predict(in_tensor);  
+          s->predict(in_tensor);
         }, [&duration_ns](double elapsed) {
             std::cout << elapsed/1e9 << std::endl;
             duration_ns+=elapsed;
@@ -51,4 +51,5 @@ int main() {
     std::cout << "\nAverage FPS: " << runs/(duration_ns/1e9) << std::endl;
     delete[] in_tensor;
     delete[] out_tensor;
+    return 0;
 }

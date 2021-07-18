@@ -20,8 +20,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace emptyNN {
     namespace Layers {
         namespace Impl {
-            template <class Type>
-            ConvCPUImpl<Type>::ConvCPUImpl(Shape in, Shape out, ConvParams cp,Activation<Type>* a, bool hasBias): Conv<Type>(in,out,cp,a,hasBias){}
 
             template <class Type>
             ConvCPUImpl<Type>::ConvCPUImpl(Shape in, ConvParams cp,Activation<Type>* a, bool hasBias): Conv<Type>(in,cp,a,hasBias){}
@@ -34,7 +32,6 @@ namespace emptyNN {
                 Shape out = this->o_shape;
                 Shape in = this->i_shape;
                 Shape fil = this->f_shape;
-                Shape padding = this->padding;
                 Type* filter = this->filter;
                 Type* i_tensor = this->i_tensor;
                 Type* o_tensor = this->o_tensor;
@@ -76,8 +73,101 @@ namespace emptyNN {
 
 
 
+
             template <class Type>
-            void ConvCPUImpl<Type>::backward(Type* grad) {}            
+            void ConvCPUImpl<Type>::backward(Type* grad) {
+                Shape out = this->o_shape;
+                Shape in  = this->i_shape;
+                Shape fi  = this->f_shape;
+                Type* xp = this->i_tensor;
+                Type* f  = this->filter;
+                size_t kernels = this->params.kernels;
+                size_t stride = this->params.stride;
+
+                // Reserve space for the weight gradient
+                Type* dW = new Type[fi.size()*kernels];
+                std::fill(dW,dW+fi.size()*kernels,Type(0.));
+
+                //Reserve space for the backpropagation gradient
+                Type* dxp = new Type[in.size()];
+                std::fill(dxp,dxp+in.size(),Type(0.));
+
+                // Compute dW
+                for(size_t kernel{}; kernel < kernels; ++kernel) {
+                    // Pin the current gradient kernel pointer
+                    Type* o_pin = &grad[kernel*(out.height*out.width)];
+
+                    // Pin the current weight kernel pointer
+                    Type* dw_pin = &dW[kernel*(fi.height*fi.width*fi.depth)];
+
+                    // Iterate on all gradient elements from next layer
+                    for(size_t i{}; i < out.height; ++i) {
+                        for (size_t j{}; j < out.width; ++j) {
+
+                            // Pin the gradient value to be multiplied with the filter window
+                            Type _o = o_pin[i*out.width + j];
+
+                            // Iterate on all weight elements to be computed
+                            for(size_t k{}; k < fi.height; ++k) {
+                                for(size_t l{}; l < fi.height; ++l) {
+                                    for(size_t d{}; d < fi.depth; ++d) {
+
+                                        // Pin the channel for current weight kernel
+                                        Type* ddw_pin = &dw_pin[d*(fi.height*fi.width)];
+
+                                        // Pin channel for current input
+                                        Type* i_pin = &xp[d*(in.height*in.width)];
+
+                                        Type _a = i_pin[ (i*stride+k)*in.width + l+j*stride ];
+                                        ddw_pin[k*fi.width + l] += _a*_o;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Compute dx
+                // Iterate on all elements of out gradient
+                for(size_t kernel{}; kernel < kernels; ++kernel) {
+                    // Pin the current gradient kernel pointer
+                    Type* o_pin = &grad[kernel*(out.height*out.width)];
+
+                    // Pin the current weight kernel pointer
+                    Type* f_pin = &f[kernel*(fi.height*fi.width*fi.depth)];
+
+                    // Iterate on all gradient elements from next layer
+                    for(size_t i{}; i < out.height; ++i) {
+                        for (size_t j{}; j < out.width; ++j) {
+
+                            // Pin the gradient value to be multiplied with the filter window
+                            Type _o = o_pin[i*out.width + j];
+
+                            // Iterate on all weight elements to be computed
+                            for(size_t k{}; k < fi.height; ++k) {
+                                for(size_t l{}; l < fi.height; ++l) {
+                                    for(size_t d{}; d < fi.depth; ++d) {
+
+                                        // Pin the channel for current weight kernel
+                                        Type* df_pin = &f_pin[d*(fi.height*fi.width)];
+
+                                        // Pin channel for current back gradient
+                                        Type* dxp_pin = &dxp[d*(in.height*in.width)];
+
+                                        Type& _a = dxp_pin[ (i*stride+k)*in.width + l+j*stride ];
+                                        Type& _f = df_pin[k*fi.width + l];
+                                        _a = _f*_o;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+
+
+            }
                 
 
             REGISTER_CLASS(ConvCPUImpl,float)
