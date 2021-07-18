@@ -62,7 +62,7 @@ namespace emptyNN
     void Sequential<Type>::fit(Type* in_tensor) {
         Type* prediction = this->predict(in_tensor);
         Type* gradHandle;
-        for(auto it = layers.end(); it != layers.begin(); --it) {
+        for(auto it = layers.rbegin(); it != layers.rend(); ++it) {
             (*it)->backward(prediction);
         }
     }

@@ -9,7 +9,7 @@ set(ARCH_FLAGS "-march=native -Ofast")
 option(USE_ANYFLOAT "Enable support for cppPosit posit and anyfloat emulation" OFF)
 option(USE_OPENMP   "Enable multithread support for DNN kernels"               ON)
 option(USE_RVV      "Enable RISC-V Vector support"                             OFF)
-
+option(DEBUG        "Debug build"                                              OFF)
 if(USE_RVV)
     message("Using RVV-Compiler optimizations")
     set(ARCH_FLAGS "-mepi -O3 -DUSE_RVV")
@@ -29,6 +29,14 @@ endif(USE_ANYFLOAT)
 
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${ARCH_FLAGS}")
+
+
+if(DEBUG)
+    message("Debug build")
+    set(CMAKE_CXX_FLAGS "-g")
+endif(DEBUG)
+
+
 message("CXX FLAGS:${CXX} ${CMAKE_CXX_FLAGS}")
 
 
