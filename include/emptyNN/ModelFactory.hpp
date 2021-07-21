@@ -454,7 +454,7 @@ namespace emptyNN {
                         Convolution<floatx>({19,19,512}, {{3,3,512}, 1024, 1,PaddingType::SAME}, RELU, CPU),
                         
                         //conv_7
-                        Convolution<floatx>({19,19,512}, {{1,1,1024}, 1024, 1,PaddingType::SAME}, RELU, CPU),
+                        Convolution<floatx>({19,19,1024}, {{1,1,1024}, 1024, 1,PaddingType::SAME}, RELU, CPU),
                         Concat<floatx>({19,19,1024},{73900,1,1},{ // Out: 73900
                             {   // Out: 54150
                                 Convolution<floatx>({19,19,1024}, {{3,3,1024}, 6*(21+4), 1,PaddingType::SAME}, RELU, CPU),Flatten<floatx>({19,19,6*(21+4)},CPU)
