@@ -62,7 +62,7 @@ namespace emptyNN
     void Sequential<Type>::fit(Type* in_tensor, Type* truth) {
         Type* prediction = this->predict(in_tensor);
         size_t out_size = layers.back()->getOutputShape().size();
-        std::transform(prediction,prediction+out_size,truth,prediction,std::minus<float>());
+        std::transform(truth,truth+out_size,prediction,prediction,std::minus<float>());
         Type loss = std::accumulate(prediction,prediction+out_size,Type(0.),[](Type& a, Type& b) {
             return a + (Type)std::pow((double)b,2);
         });

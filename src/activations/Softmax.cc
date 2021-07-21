@@ -32,7 +32,7 @@ namespace emptyNN {
         }
 
         template <class Type>
-        Type SoftmaxFunctor<Type>::grad(Type el) { return el; };
+        Type * SoftmaxFunctor<Type>::grad(Type *grad, Shape in_shape) { return grad; };
 
 
         REGISTER_CLASS(SoftmaxFunctor,float);

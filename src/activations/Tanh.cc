@@ -27,7 +27,7 @@ namespace emptyNN {
         }
 
         template <class Type>
-        Type TanhFunctor<Type>::grad(Type el) { return el; };
+        Type * TanhFunctor<Type>::grad(Type *grad, Shape in_shape) { return grad; };
 
 
         REGISTER_CLASS(TanhFunctor,float);

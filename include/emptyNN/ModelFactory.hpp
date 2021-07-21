@@ -415,81 +415,82 @@ namespace emptyNN {
 
         template <class Type>
         Sequential<Type>* SSD300() {
+            using floatx = Type;
             auto* s = new Sequential<Type>("SSD300");
             s->stackLayers({
                 //conv_1
-                Convolution<float>({300,300,3}, {{3,3,3}, 64, 1,PaddingType::SAME}, RELU, CPU),
-                Convolution<float>({300,300,64}, {{3,3,64}, 64, 1,PaddingType::SAME}, RELU, CPU),
-                MaxPool<float>({300,300,64},{{2,2},2},nullptr,CPU),
+                Convolution<floatx>({300,300,3}, {{3,3,3}, 64, 1,PaddingType::SAME}, RELU, CPU),
+                Convolution<floatx>({300,300,64}, {{3,3,64}, 64, 1,PaddingType::SAME}, RELU, CPU),
+                MaxPool<floatx>({300,300,64},{{2,2},2},nullptr,CPU),
 
                 //conv_2
-                Convolution<float>({150,150,64}, {{3,3,64}, 128, 1,PaddingType::SAME}, RELU, CPU),
-                Convolution<float>({150,150,128}, {{3,3,128}, 128, 1,PaddingType::SAME}, RELU, CPU),
-                MaxPool<float>({150,150,128},{{1,1},2},nullptr,CPU),
+                Convolution<floatx>({150,150,64}, {{3,3,64}, 128, 1,PaddingType::SAME}, RELU, CPU),
+                Convolution<floatx>({150,150,128}, {{3,3,128}, 128, 1,PaddingType::SAME}, RELU, CPU),
+                MaxPool<floatx>({150,150,128},{{1,1},2},nullptr,CPU),
 
                 //conv_3
-                Convolution<float>({75,75,128}, {{3,3,128}, 256, 1,PaddingType::SAME}, RELU, CPU),
-                Convolution<float>({75,75,256}, {{3,3,256}, 256, 1,PaddingType::SAME}, RELU, CPU),                
-                Convolution<float>({75,75,256}, {{3,3,256}, 256, 1,PaddingType::SAME}, RELU, CPU),                
-                MaxPool<float>({75,75,256},{{1,1},2},nullptr,CPU),
+                Convolution<floatx>({75,75,128}, {{3,3,128}, 256, 1,PaddingType::SAME}, RELU, CPU),
+                Convolution<floatx>({75,75,256}, {{3,3,256}, 256, 1,PaddingType::SAME}, RELU, CPU),
+                Convolution<floatx>({75,75,256}, {{3,3,256}, 256, 1,PaddingType::SAME}, RELU, CPU),
+                MaxPool<floatx>({75,75,256},{{1,1},2},nullptr,CPU),
 
                 //conv_4
-                Convolution<float>({38,38,256}, {{3,3,256}, 512, 1,PaddingType::SAME}, RELU, CPU),
-                Convolution<float>({38,38,512}, {{3,3,512}, 512, 1,PaddingType::SAME}, RELU, CPU),                
-                Convolution<float>({38,38,512}, {{3,3,512}, 512, 1,PaddingType::SAME}, RELU, CPU),    
-                Concat<float>({38,38,512},{218300,1,1},{
+                Convolution<floatx>({38,38,256}, {{3,3,256}, 512, 1,PaddingType::SAME}, RELU, CPU),
+                Convolution<floatx>({38,38,512}, {{3,3,512}, 512, 1,PaddingType::SAME}, RELU, CPU),
+                Convolution<floatx>({38,38,512}, {{3,3,512}, 512, 1,PaddingType::SAME}, RELU, CPU),
+                Concat<floatx>({38,38,512},{218300,1,1},{
                     {   // Out: 144000
-                        Convolution<float>({38,38,512}, {{3,3,512}, 4*(21+4), 1,PaddingType::SAME}, RELU, CPU),Flatten<float>({38,38,4*(21+4)},CPU)
+                        Convolution<floatx>({38,38,512}, {{3,3,512}, 4*(21+4), 1,PaddingType::SAME}, RELU, CPU),Flatten<floatx>({38,38,4*(21+4)},CPU)
                     },
                     {
-                        MaxPool<float>({38,38,512},{{1,1},2},nullptr,CPU),
+                        MaxPool<floatx>({38,38,512},{{1,1},2},nullptr,CPU),
 
                         //conv_5
-                        Convolution<float>({19,19,512}, {{3,3,512}, 512, 1,PaddingType::SAME}, RELU, CPU),
-                        Convolution<float>({19,19,512}, {{3,3,512}, 512, 1,PaddingType::SAME}, RELU, CPU),                
-                        Convolution<float>({19,19,512}, {{3,3,512}, 512, 1,PaddingType::SAME}, RELU, CPU), 
+                        Convolution<floatx>({19,19,512}, {{3,3,512}, 512, 1,PaddingType::SAME}, RELU, CPU),
+                        Convolution<floatx>({19,19,512}, {{3,3,512}, 512, 1,PaddingType::SAME}, RELU, CPU),
+                        Convolution<floatx>({19,19,512}, {{3,3,512}, 512, 1,PaddingType::SAME}, RELU, CPU),
 
                         //conv_6      
-                        Convolution<float>({19,19,512}, {{3,3,512}, 1024, 1,PaddingType::SAME}, RELU, CPU),
+                        Convolution<floatx>({19,19,512}, {{3,3,512}, 1024, 1,PaddingType::SAME}, RELU, CPU),
                         
                         //conv_7
-                        Convolution<float>({19,19,512}, {{1,1,1024}, 1024, 1,PaddingType::SAME}, RELU, CPU),
-                        Concat<float>({19,19,1024},{73900,1,1},{ // Out: 73900
+                        Convolution<floatx>({19,19,512}, {{1,1,1024}, 1024, 1,PaddingType::SAME}, RELU, CPU),
+                        Concat<floatx>({19,19,1024},{73900,1,1},{ // Out: 73900
                             {   // Out: 54150
-                                Convolution<float>({19,19,1024}, {{3,3,1024}, 6*(21+4), 1,PaddingType::SAME}, RELU, CPU),Flatten<float>({19,19,6*(21+4)},CPU)
+                                Convolution<floatx>({19,19,1024}, {{3,3,1024}, 6*(21+4), 1,PaddingType::SAME}, RELU, CPU),Flatten<floatx>({19,19,6*(21+4)},CPU)
                             },
                             {
                                 // conv_8_2
-                                Convolution<float>({19,19,1024}, {{1,1,1024}, 256, 1,PaddingType::SAME}, RELU, CPU),
-                                MaxPool<float>({19,19,256},{{1,1},2},nullptr,CPU),
-                                Convolution<float>({10,10,256}, {{1,1,256}, 512, 1,PaddingType::SAME}, RELU, CPU),
-                                Concat<float>({10,10,512},{19750,1,1},{ // Out: 19750
+                                Convolution<floatx>({19,19,1024}, {{1,1,1024}, 256, 1,PaddingType::SAME}, RELU, CPU),
+                                MaxPool<floatx>({19,19,256},{{1,1},2},nullptr,CPU),
+                                Convolution<floatx>({10,10,256}, {{1,1,256}, 512, 1,PaddingType::SAME}, RELU, CPU),
+                                Concat<floatx>({10,10,512},{19750,1,1},{ // Out: 19750
                                     {  // Out: 15000
-                                    Convolution<float>({10,10,512}, {{3,3,512}, 6*(21+4), 1,PaddingType::SAME}, RELU, CPU),Flatten<float>({10,10,6*(21+4)},CPU) 
+                                    Convolution<floatx>({10,10,512}, {{3,3,512}, 6*(21+4), 1,PaddingType::SAME}, RELU, CPU),Flatten<floatx>({10,10,6*(21+4)},CPU)
                                     },
                                     {
                                         // conv_9_2
-                                        Convolution<float>({10,10,512}, {{1,1,1024}, 128, 1,PaddingType::SAME}, RELU, CPU),
-                                        MaxPool<float>({10,10,128},{{1,1},2},nullptr,CPU),
-                                        Convolution<float>({5,5,128}, {{1,1,128}, 256, 1,PaddingType::SAME}, RELU, CPU),
-                                        Concat<float>({5,5,256},{4750,1,1},{ // Out: 4750
+                                        Convolution<floatx>({10,10,512}, {{1,1,1024}, 128, 1,PaddingType::SAME}, RELU, CPU),
+                                        MaxPool<floatx>({10,10,128},{{1,1},2},nullptr,CPU),
+                                        Convolution<floatx>({5,5,128}, {{1,1,128}, 256, 1,PaddingType::SAME}, RELU, CPU),
+                                        Concat<floatx>({5,5,256},{4750,1,1},{ // Out: 4750
                                             {   // Out: 3750
-                                                Convolution<float>({5,5,256}, {{3,3,256}, 6*(21+4), 1,PaddingType::SAME}, RELU, CPU),Flatten<float>({5,5,6*(21+4)},CPU) 
+                                                Convolution<floatx>({5,5,256}, {{3,3,256}, 6*(21+4), 1,PaddingType::SAME}, RELU, CPU),Flatten<floatx>({5,5,6*(21+4)},CPU)
                                             },
                                             { 
-                                                Convolution<float>({5,5,256}, {{1,1,256}, 128, 1,PaddingType::SAME}, RELU, CPU),
-                                                MaxPool<float>({5,5,128},{{1,1},2},nullptr,CPU),
-                                                Convolution<float>({3,3,128}, {{1,1,128}, 256, 1,PaddingType::SAME}, RELU, CPU),
-                                                Concat<float>({3,3,256},{1000,1,1},{ // Out 1000
+                                                Convolution<floatx>({5,5,256}, {{1,1,256}, 128, 1,PaddingType::SAME}, RELU, CPU),
+                                                MaxPool<floatx>({5,5,128},{{1,1},2},nullptr,CPU),
+                                                Convolution<floatx>({3,3,128}, {{1,1,128}, 256, 1,PaddingType::SAME}, RELU, CPU),
+                                                Concat<floatx>({3,3,256},{1000,1,1},{ // Out 1000
                                                     {   // Out: 900
-                                                        Convolution<float>({3,3,256}, {{3,3,256}, 4*(21+4), 1,PaddingType::SAME}, RELU, CPU),Flatten<float>({3,3,4*(21+4)},CPU) 
+                                                        Convolution<floatx>({3,3,256}, {{3,3,256}, 4*(21+4), 1,PaddingType::SAME}, RELU, CPU),Flatten<floatx>({3,3,4*(21+4)},CPU)
                                                     },
                                                     {
-                                                        Convolution<float>({3,3,256}, {{1,1,256}, 128, 1,PaddingType::SAME}, RELU, CPU),
-                                                        MaxPool<float>({3,3,128},{{2,2},2},nullptr,CPU),
-                                                        Convolution<float>({1,1,128}, {{1,1,128}, 256, 1,PaddingType::SAME}, RELU, CPU),
-                                                        Convolution<float>({1,1,256}, {{3,3,256}, 4*(21+4), 1,PaddingType::SAME}, RELU, CPU),
-                                                        Flatten<float>({1,1,4*(21+4)},CPU) // Out: 100                        
+                                                        Convolution<floatx>({3,3,256}, {{1,1,256}, 128, 1,PaddingType::SAME}, RELU, CPU),
+                                                        MaxPool<floatx>({3,3,128},{{2,2},2},nullptr,CPU),
+                                                        Convolution<floatx>({1,1,128}, {{1,1,128}, 256, 1,PaddingType::SAME}, RELU, CPU),
+                                                        Convolution<floatx>({1,1,256}, {{3,3,256}, 4*(21+4), 1,PaddingType::SAME}, RELU, CPU),
+                                                        Flatten<floatx>({1,1,4*(21+4)},CPU) // Out: 100
                                                     }
                                                 },CPU)
                                             }

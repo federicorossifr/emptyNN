@@ -30,7 +30,7 @@ int main() {
     #else
     using floatx = float;
     #endif
-    Sequential<floatx>* s = Models::EfficientNetB0<floatx>();
+    Sequential<floatx>* s = Models::SSD300<floatx>();
 
     floatx* in_tensor = new floatx[s->getInputShape().size()];
     std::fill(in_tensor,in_tensor+s->getInputShape().size(),0x01);
@@ -43,7 +43,7 @@ int main() {
         chronoIt([&in_tensor,&s]() {
           s->predict(in_tensor);
         }, [&duration_ns](double elapsed) {
-            std::cout << elapsed/1e9 << std::endl;
+            std::cout << elapsed/1e9 << " (" << 1e9/elapsed << " fps)" << std::endl;
             duration_ns+=elapsed;
         });
     }

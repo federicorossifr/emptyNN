@@ -29,7 +29,12 @@ namespace emptyNN {
         }
 
         template <class Type>
-        Type ReLuFunctor<Type>::grad(Type el) { return el; };
+        Type * ReLuFunctor<Type>::grad(Type *grad, Shape in_shape) {
+            std::transform(grad,grad+in_shape.size(),grad,[](Type x) {
+               if(x > Type(0.)) return x;
+               return Type(0.);
+            });
+        };
 
 
         REGISTER_CLASS(ReLuFunctor,float);

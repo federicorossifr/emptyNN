@@ -25,7 +25,7 @@ namespace emptyNN {
         public:
             ReLuFunctor();
             virtual void operator()(Type* in_tensor, Shape in_shape);
-            Type grad(Type el);
+            Type *grad(Type *grad, Shape in_shape);
             virtual ~ReLuFunctor() = default;
 
         };
