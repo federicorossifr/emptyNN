@@ -42,7 +42,7 @@ int main() {
         chronoIt([&in_tensor,&s]() {
           s->predict(in_tensor);
         }, [&duration_ns](double elapsed) {
-            //std::cout << elapsed/1e9 << " (" << 1e9/elapsed << " fps)" << std::endl;
+            std::cout << elapsed/1e9 << " (" << 1e9/elapsed << " fps)" << std::endl;
             duration_ns+=elapsed;
         });
     }

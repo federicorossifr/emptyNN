@@ -44,7 +44,7 @@ namespace emptyNN {
     }
 
     template <class Type>
-    Tensor<Type> Layer<Type>::operator()() {
+    Tensor<Type>& Layer<Type>::operator()() {
        forward();
        activate();
        return o_tensor;

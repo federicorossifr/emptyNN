@@ -43,7 +43,7 @@ namespace emptyNN {
             Shape getInputShape();
             virtual void summary();
 
-            virtual Tensor<Type> operator()() final;
+            virtual Tensor<Type>& operator()() final;
             virtual void forward() = 0;
             virtual Tensor<Type> backward(Tensor<Type>& grad) = 0;
             virtual void activate();
