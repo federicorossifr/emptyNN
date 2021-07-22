@@ -49,12 +49,12 @@ namespace emptyNN {
 
         template <class Type>
         void LayerBlock<Type>::forward() {
-            Type* i_tensor = this->i_tensor;
-            Type* o_tensor = this->o_tensor;
-            Type** gathered_tensors = new Type*[block.size()];
+            Tensor<Type>& i_tensor = this->i_tensor;
+            Tensor<Type>& o_tensor = this->o_tensor;
+            Tensor<Type>* gathered_tensors = new Tensor<Type>[block.size()];
 
             for(size_t i = 0; i < block.size(); ++i) {
-                Type* handle = i_tensor;
+                Tensor<Type>& handle = i_tensor;
                 for(Layer<Type>* l: block[i]) {
                     l->fillInTensor(handle);
                     handle = (*l)();

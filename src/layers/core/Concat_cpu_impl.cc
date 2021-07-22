@@ -33,21 +33,21 @@ namespace emptyNN {
             }
 
             template <class Type>
-            Type* ConcatCPUImpl<Type>::merge(Type* tensors[]) {
-                // ResNets have only one block filled with layers, the other branch is just a shortcut
-                // so we take the tensor from in_tensor
-                Type* o_tensor = this->o_tensor;
-                Shape in = this->i_shape;
-                Shape out = this->o_shape;
+            Tensor<Type> ConcatCPUImpl<Type>::merge(Tensor<Type> tensors[]) {
+
+                Tensor<Type> o_tensor = this->o_tensor;
+                auto o_it = o_tensor.begin();
+
                 auto blocks = this->block;
                 size_t n_tensors = this->block.size();
+
                 #pragma omp parallel for
                 for(size_t i = 0; i < n_tensors; ++i ) { // In-depth is <= out depth
                     Shape out_shape_i = blocks[i].back()->getOutputShape();
                     size_t area_i = out_shape_i.size();
-                    Type* tensor_i = tensors[i];
-                    std::copy(tensor_i,tensor_i+area_i,o_tensor);
-                    o_tensor+=area_i;
+                    Tensor<Type> tensor_i = tensors[i];
+                    std::copy(tensor_i.begin(),tensor_i.end(),o_it);
+                    o_it+=area_i;
                 }
                 
                 return o_tensor;

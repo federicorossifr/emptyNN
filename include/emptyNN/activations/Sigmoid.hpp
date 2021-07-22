@@ -24,8 +24,8 @@ namespace emptyNN {
         class SigmoidFunctor: public Activation<Type> {
         public:
             SigmoidFunctor();
-            virtual void operator()(Type* in_tensor, Shape in_shape);
-            Type *grad(Type *grad, Shape in_shape);
+            virtual void operator()(Tensor<Type>& in_tensor);
+            Tensor<Type> grad(Tensor<Type>& grad);
             virtual ~SigmoidFunctor() = default;
 
         };

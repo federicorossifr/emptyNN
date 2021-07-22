@@ -27,7 +27,7 @@ namespace emptyNN {
                 in.depth
             };
             this->o_shape = out;
-            this->o_tensor = new Type[out.width*out.height*out.depth];
+            this->o_tensor = Tensor<Type>(out.width*out.height*out.depth);
 
         }
 

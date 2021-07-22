@@ -31,8 +31,8 @@ namespace emptyNN {
                 Shape out = this->o_shape;
                 Shape in = this->i_shape;
                 PoolParams params = this->params;
-                Type* i_tensor = this->i_tensor;
-                Type* o_tensor = this->o_tensor;
+                Tensor<Type>& i_tensor = this->i_tensor;
+                Tensor<Type>& o_tensor = this->o_tensor;
                 
                 #pragma omp parallel for
                 for(size_t depth = 0; depth < in.depth; ++depth) {
@@ -64,7 +64,7 @@ namespace emptyNN {
 
 
             template <class Type>
-            Type* MaxPoolCPUImpl<Type>::backward(Type* grad) {return grad;}
+            Tensor<Type> MaxPoolCPUImpl<Type>::backward(Tensor<Type>& grad) {return grad;}
 
             REGISTER_CLASS(MaxPoolCPUImpl,float);
        

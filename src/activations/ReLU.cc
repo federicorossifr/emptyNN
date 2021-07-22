@@ -22,18 +22,19 @@ namespace emptyNN {
         ReLuFunctor<Type>::ReLuFunctor()= default;
 
         template <class Type>
-        void ReLuFunctor<Type>::operator()(Type* in_tensor, Shape in_shape) {
-            std::transform(in_tensor,in_tensor+in_shape.size(),in_tensor,[](Type el) -> Type {
+        void ReLuFunctor<Type>::operator()(Tensor<Type>& in_tensor) {
+            std::transform(in_tensor.begin(),in_tensor.end(),in_tensor.begin(),[](Type& el) -> Type {
                 return (el >= Type(0.f))? el : Type(1.);
             });
         }
 
         template <class Type>
-        Type * ReLuFunctor<Type>::grad(Type *grad, Shape in_shape) {
-            std::transform(grad,grad+in_shape.size(),grad,[](Type x) {
+        Tensor<Type> ReLuFunctor<Type>::grad(Tensor<Type>& grad) {
+            std::transform(grad.begin(),grad.end(),grad.begin(),[](Type& x) {
                if(x > Type(0.)) return x;
                return Type(0.);
             });
+            return grad;
         };
 
 

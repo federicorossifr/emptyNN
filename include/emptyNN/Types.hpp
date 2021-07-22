@@ -22,16 +22,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <string>
 #include <omp.h>
 #include <exception>
+#include <vector>
 #include <iostream>
 #ifdef USE_POSIT
 #include <posit.h>
 #include <anyfloat.hpp>
 #endif
-
 namespace emptyNN {
     namespace Random {
         extern std::uint32_t globalSeed;
     }
+
+    template <class Type>
+    using Tensor = std::vector<Type>;
+
     typedef struct Shape {
         size_t width;
         size_t height;

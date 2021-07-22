@@ -22,16 +22,16 @@ namespace emptyNN {
         SigmoidFunctor<Type>::SigmoidFunctor(){};
 
         template <class Type>
-        void SigmoidFunctor<Type>::operator()(Type* in_tensor, Shape in_shape) {
-            std::transform(in_tensor,in_tensor+in_shape.size(),in_tensor,[](Type el) -> Type {
+        void SigmoidFunctor<Type>::operator()(Tensor<Type>& in_tensor) {
+            std::transform(in_tensor.begin(),in_tensor.end(),in_tensor.begin(),[](Type& el) -> Type {
                 return Type(1.)/(Type(1.)+(Type)std::exp((double)-el));
             });
         }
 
         template <class Type>
-        Type * SigmoidFunctor<Type>::grad(Type *grad, Shape in_shape) {
+        Tensor<Type> SigmoidFunctor<Type>::grad(Tensor<Type>& grad) {
             auto sigmoid = [](Type x) -> Type {return Type(1.)/(Type(1.)+(Type)std::exp((double)-x));};
-            std::transform(grad,grad+in_shape.size(),grad,[&sigmoid](Type x) {
+            std::transform(grad.begin(),grad.end(),grad.begin(),[&sigmoid](Type& x) {
                 return x* sigmoid(x) * ( Type(1.) - sigmoid(x) );
             });
             return grad;

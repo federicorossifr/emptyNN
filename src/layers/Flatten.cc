@@ -29,16 +29,16 @@ namespace emptyNN {
                 1
             };
             this->o_shape = out;
-            this->o_tensor = new Type[out.size()];
+            this->o_tensor = Tensor<Type>(out.size());
         }
 
         template <class Type>
         void Flatten<Type>::forward() {
             // Flattening is just a copy from input tensor to output tensor
-            Type* in = this->i_tensor;
-            Type* out = this->o_tensor;
+            Tensor<Type>& in = this->i_tensor;
+            Tensor<Type>&  out = this->o_tensor;
             Shape i_shape = this->i_shape;
-            std::copy(in,in+i_shape.size(),out);
+            std::copy(in.begin(),in.end(),out.begin());
         }
 
         REGISTER_CLASS(Flatten,float);

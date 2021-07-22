@@ -43,12 +43,12 @@ namespace emptyNN {
             }
 
             template <class Type>
-            Type* ResidualBlockCPUImpl<Type>::merge(Type* tensors[]) {
+            Tensor<Type> ResidualBlockCPUImpl<Type>::merge(Tensor<Type> tensors[]) {
                 // ResNets have only one block filled with layers, the other branch is just a shortcut
                 // so we take the tansor from in_tensor
-                Type* shortcut = this->i_tensor;
-                Type* conv_tensor = tensors[0];
-                Type* o_tensor = this->o_tensor;
+                Tensor<Type>& shortcut = this->i_tensor;
+                Tensor<Type>& conv_tensor = tensors[0];
+                Tensor<Type>& o_tensor = this->o_tensor;
                 Shape in = this->i_shape;
                 Shape out = this->o_shape;
 

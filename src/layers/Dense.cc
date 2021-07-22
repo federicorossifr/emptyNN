@@ -28,20 +28,18 @@ namespace emptyNN {
             // Out-vector  (out.height * out.width) x 1
             // Connection matrix (in.height * in.width) x (out.height * out.width)
             size_t conn_size = in.size() * out.size();
-            connections = new Type[conn_size];
+            connections = Tensor<Type>(conn_size);
             emptyNN::Utils::Tensors::fillRandomUniform<Type>(connections,conn_size);
 
             if(hasBias) {
-                bias = new Type[out.size()];
+                bias = Tensor<Type>(out.size());
                 emptyNN::Utils::Tensors::fillRandomUniform<Type>(bias,out.size());
             }
 
         }
 
         template <class Type>
-        Dense<Type>::~Dense() {
-            delete[] connections;
-            delete[] bias;
+        Dense<Type>::~Dense() {;
         }    
 
         template <class Type>
@@ -49,8 +47,8 @@ namespace emptyNN {
             Shape in = this->i_shape;
             Shape out = this->o_shape;
             size_t connection_size = in.size() * out.size();
-            ofs.write(reinterpret_cast<char*>(connections),connection_size*sizeof(Type))
-               .write(reinterpret_cast<char*>(bias),out.size()*sizeof(Type));
+            ofs.write(reinterpret_cast<char*>(connections.data()),connection_size*sizeof(Type))
+               .write(reinterpret_cast<char*>(bias.data()),out.size()*sizeof(Type));
             return ofs;
         }        
 
@@ -59,8 +57,8 @@ namespace emptyNN {
             Shape in = this->i_shape;
             Shape out = this->o_shape;
             size_t connection_size = in.size() * out.size();
-            ifs.read(reinterpret_cast<char*>(connections),connection_size*sizeof(Type))
-                .read(reinterpret_cast<char*>(bias),out.size()*sizeof(Type));
+            ifs.read(reinterpret_cast<char*>(connections.data()),connection_size*sizeof(Type))
+                .read(reinterpret_cast<char*>(bias.data()),out.size()*sizeof(Type));
             return ifs;
         }              
 

@@ -22,17 +22,17 @@ namespace emptyNN {
         SoftmaxFunctor<Type>::SoftmaxFunctor() = default;
 
         template <class Type>
-        void SoftmaxFunctor<Type>::operator()(Type* in_tensor, Shape in_shape) {
+        void SoftmaxFunctor<Type>::operator()(Tensor<Type>& in_tensor) {
             Type expProbSum = Type(0.);
-            std::transform(in_tensor,in_tensor+in_shape.size(),in_tensor,[&expProbSum](Type el) -> Type {
+            std::transform(in_tensor.begin(),in_tensor.end(),in_tensor.begin(),[&expProbSum](Type& el) -> Type {
                 expProbSum+=el;
                 return (Type)std::exp(double(el));
             });
-            std::transform(in_tensor,in_tensor+in_shape.size(),in_tensor,[&expProbSum](Type el) -> Type { return el/expProbSum;});
+            std::transform(in_tensor.begin(),in_tensor.end(),in_tensor.begin(),[&expProbSum](Type& el) -> Type { return el/expProbSum;});
         }
 
         template <class Type>
-        Type * SoftmaxFunctor<Type>::grad(Type *grad, Shape in_shape) { return grad; };
+        Tensor<Type> SoftmaxFunctor<Type>::grad(Tensor<Type>& grad) { return grad; };
 
 
         REGISTER_CLASS(SoftmaxFunctor,float);

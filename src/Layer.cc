@@ -22,31 +22,29 @@ namespace emptyNN {
 
     template <class Type>
     Layer<Type>::Layer(Shape in,Shape out,Activation<Type>* a): i_shape(in),o_shape(out),activation(a) {
-        i_tensor = new Type[in.width*in.height*in.depth];
-        o_tensor = new Type[out.width*out.height*out.depth];
+        i_tensor = Tensor<Type>(in.width*in.height*in.depth);
+        o_tensor = Tensor<Type>(out.width*out.height*out.depth);
     }
 
     template <class Type>
     Layer<Type>::~Layer() {
-        delete[] i_tensor;
-        delete[] o_tensor;
         if(activation != nullptr)
             delete activation;
     }
 
     template <class Type>
     Layer<Type>::Layer(Shape in,Activation<Type>* a): i_shape(in),activation(a) {
-        i_tensor = new Type[in.width*in.height*in.depth];
+        i_tensor = Tensor<Type>(in.width*in.height*in.depth);
     
     }
 
     template <class Type>
-    void Layer<Type>::fillInTensor(Type* in) {
-        std::copy(in,in+i_shape.size(),i_tensor);
+    void Layer<Type>::fillInTensor(Tensor<Type>& in) {
+        std::copy(in.begin(),in.end(),i_tensor.begin());
     }
 
     template <class Type>
-    Type* Layer<Type>::operator()() {
+    Tensor<Type> Layer<Type>::operator()() {
        forward();
        activate();
        return o_tensor;
@@ -72,11 +70,10 @@ namespace emptyNN {
     template <class Type>
     void Layer<Type>::activate() {
         Activation<Type>* a = this->activation;
-        Shape out = this->o_shape;
-        Type* o_tensor = this->o_tensor;
+        Tensor<Type>& o_tensor = this->o_tensor;
         if( a == nullptr) return;
 
-        (*a)(o_tensor,out);
+        (*a)(o_tensor);
     }           
     /* Type specific implementations */
     REGISTER_CLASS(Layer,float)

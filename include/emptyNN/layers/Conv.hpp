@@ -23,8 +23,8 @@ namespace emptyNN {
         template <class Type>
         class Conv: public Layer<Type> {
             protected:
-                Type* filter;
-                Type* bias;
+                Tensor<Type> filter;
+                Tensor<Type> bias;
                 Shape f_shape;
                 ConvParams params;
                 Shape padding;

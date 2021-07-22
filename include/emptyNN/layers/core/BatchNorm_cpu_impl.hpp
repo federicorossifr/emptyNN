@@ -27,7 +27,7 @@ namespace emptyNN {
                     BatchNormCPUImpl(Shape in, Type mu, Type sigma, Activation<Type>* a);
                     ~BatchNormCPUImpl();
                     virtual void forward();
-                    virtual Type* backward(Type* grad);
+                    virtual Tensor<Type> backward(Tensor<Type>& grad);
 
             };
         }

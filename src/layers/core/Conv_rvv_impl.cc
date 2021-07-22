@@ -33,14 +33,14 @@ namespace emptyNN {
                 Shape in = this->i_shape;
                 Shape fil = this->f_shape;
                 Shape padding = this->padding;
-                Type* filter = this->filter;
-                Type* i_tensor = this->i_tensor;
-                Type* o_tensor = this->o_tensor;
+                Tensor<Type>& filter = this->filter;
+                Tensor<Type>& i_tensor = this->i_tensor;
+                Tensor<Type>& o_tensor = this->o_tensor;
                 size_t stride = this->params.stride;
                 size_t kernels = this->params.kernels;
                 #pragma omp parallel for                
                 for(size_t kernel = 0; kernel < kernels; ++kernel) {
-                    Type* o_pin = &o_tensor[kernel*(out.height*out.width)];
+                    Tensor<Type> o_pin = Tensor<Type>(kernel*(out.height*out.width));
 
                     for(size_t i = 0; i < out.height; ++i) {
                         for(size_t j = 0; j < out.width; ++j) {
@@ -68,12 +68,11 @@ namespace emptyNN {
 
                         }
                     }
-                    //delete [] i_padded;                    
                 }
             }
 
             template <class Type>
-            Type* ConvRVVImpl<Type>::backward(Type* grad) {return grad;}
+            Tensor<Type> ConvRVVImpl<Type>::backward(Tensor<Type>& grad) {return grad;}
                 
 
             REGISTER_CLASS(ConvRVVImpl,float)

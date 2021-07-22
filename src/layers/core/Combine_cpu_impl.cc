@@ -30,12 +30,12 @@ namespace emptyNN {
                 // ToDo: sanity checks on output 
                 // Output size should be the same as each output size
                 this->combine = fun;
-                std::fill(this->o_tensor,this->o_tensor+out.size(),initial_value);
+                std::fill(this->o_tensor.begin(),this->o_tensor.end(),initial_value);
             }
 
             template <class Type>
-            Type* CombineMergeCPUImpl<Type>::merge(Type* tensors[]) {
-                Type* o_tensor = this->o_tensor;
+            Tensor<Type> CombineMergeCPUImpl<Type>::merge(Tensor<Type> tensors[]) {
+                Tensor<Type>& o_tensor = this->o_tensor;
                 Shape out = this->o_shape;
                 size_t n_tensors = this->block.size();
                 #pragma omp parallel for

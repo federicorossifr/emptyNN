@@ -23,8 +23,8 @@ namespace emptyNN {
         template <class Type>
         class Dense: public Layer<Type> {
             protected:
-                Type* connections;
-                Type* bias;
+                Tensor<Type> connections;
+                Tensor<Type> bias;
                 const bool hasBias;
             public:
                 Dense(Shape in, Shape out,Activation<Type>* a, bool withBias = true);

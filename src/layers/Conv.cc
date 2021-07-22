@@ -23,19 +23,19 @@ namespace emptyNN {
 
         template <class Type>
         Conv<Type>::~Conv() {
-            delete[] filter;
+
         }
 
         template <class Type>
         Conv<Type>::Conv(Shape in, ConvParams cp,Activation<Type>* a, bool withBias): Layer<Type>(in,a),f_shape(cp.filter),params(cp),hasBias(withBias) {
             size_t filter_size = cp.filter.height*cp.filter.width*cp.filter.depth;
             filter_size*= (cp.isDepthWise)? 1:cp.kernels;
-            filter = new Type[filter_size];
+            filter = Tensor<Type>(filter_size);
 
 
             emptyNN::Utils::Tensors::fillRandomUniform<Type>(filter,filter_size);
             if (hasBias) {
-                bias = new Type[cp.kernels];
+                bias = Tensor<Type>(cp.kernels);
                 emptyNN::Utils::Tensors::fillRandomUniform<Type>(bias,cp.kernels);
             }
 
@@ -50,17 +50,16 @@ namespace emptyNN {
 
             if (cp.padding == PaddingType::SAME) {
                 this->padding = req_padding;
-                delete[] this->i_tensor;
 
                 // Expand the input tensor buffer to the padded dimension
-                this->i_tensor = new Type[ ( in.width + req_padding.width )*( in.height + req_padding.height )*in.depth ];
+                this->i_tensor.resize( ( in.width + req_padding.width )*( in.height + req_padding.height )*in.depth );
             }
             else this->padding = {0,0,0};
             Shape out = {des_o_width,
                          des_o_height,
                          cp.kernels};
 
-            this->o_tensor = new Type[out.width*out.height*out.depth];
+            this->o_tensor = Tensor<Type>(out.width*out.height*out.depth);
             this->o_shape = out;
         }        
 
@@ -68,9 +67,9 @@ namespace emptyNN {
         std::ostream& Conv<Type>::operator<<(std::ostream& out) {
             size_t filter_size = params.filter.height*params.filter.width*params.filter.depth;
             filter_size*= (params.isDepthWise)? 1:params.kernels;
-            out.write(reinterpret_cast<char*>(filter),filter_size*sizeof(Type));
+            out.write(reinterpret_cast<char*>(filter.data()),filter_size*sizeof(Type));
             if (hasBias)
-                out.write(reinterpret_cast<char*>(bias),params.kernels*sizeof(Type));
+                out.write(reinterpret_cast<char*>(bias.data()),params.kernels*sizeof(Type));
             return out;
         }
 
@@ -78,9 +77,9 @@ namespace emptyNN {
         std::istream& Conv<Type>::operator>>(std::istream& ifs) {
             size_t filter_size = params.filter.height*params.filter.width*params.filter.depth;
             filter_size*= (params.isDepthWise)? 1:params.kernels;            
-            ifs.read(reinterpret_cast<char*>(filter),filter_size*sizeof(Type));
+            ifs.read(reinterpret_cast<char*>(filter.data()),filter_size*sizeof(Type));
             if (hasBias)
-                ifs.read(reinterpret_cast<char*>(bias),params.kernels*sizeof(Type));
+                ifs.read(reinterpret_cast<char*>(bias.data()),params.kernels*sizeof(Type));
             return ifs;
         }        
         REGISTER_CLASS(Conv,float)

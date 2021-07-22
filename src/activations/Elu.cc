@@ -22,15 +22,15 @@ namespace emptyNN {
         EluFunctor<Type>::EluFunctor(Type alpha): alpha(alpha){};
         
         template <class Type>
-        void EluFunctor<Type>::operator()(Type* in_tensor, Shape in_shape) {
-            std::transform(in_tensor,in_tensor+in_shape.size(),in_tensor,[=](Type el) -> Type {
-                return (el >= Type(0.f))? el : this->alpha*(Type)(std::exp(double(el))-1.);
+        void EluFunctor<Type>::operator()(Tensor<Type>& in_tensor) {
+            std::transform(in_tensor.begin(),in_tensor.end(),in_tensor.begin(),[=](Type& el) -> Type {
+                return (el >= Type(0.f))? el : this->alpha*Type((std::exp(double(el))-1.));
             });
         }
 
         template <class Type>
-        Type * EluFunctor<Type>::grad(Type *grad, Shape in_shape) {
-            std::transform(grad,grad+in_shape.size(),grad,[=](Type x) {
+        Tensor<Type> EluFunctor<Type>::grad(Tensor<Type>& grad) {
+            std::transform(grad.begin(),grad.end(),grad.begin(),[=](Type& x) {
                if(x > Type(0.)) return x;
                return x * this->alpha * (Type)std::exp(double(x));
             });

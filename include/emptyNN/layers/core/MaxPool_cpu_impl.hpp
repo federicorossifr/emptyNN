@@ -27,7 +27,7 @@ namespace emptyNN {
                     MaxPoolCPUImpl(Shape in,PoolParams params,Activation<Type>* a);
                     ~MaxPoolCPUImpl();
                     virtual void forward();
-                    virtual Type* backward(Type* grad);
+                    virtual Tensor<Type> backward(Tensor<Type>& grad);
 
             };
         }

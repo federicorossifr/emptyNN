@@ -30,9 +30,9 @@ namespace emptyNN {
             void DenseCPUImpl<Type>::forward() {
                 Shape out = this->o_shape;
                 Shape in = this->i_shape;
-                Type* i_tensor = this->i_tensor;
-                Type* o_tensor = this->o_tensor;
-                Type* fc       = this->connections;
+                Tensor<Type>& i_tensor = this->i_tensor;
+                Tensor<Type>& o_tensor = this->o_tensor;
+                Tensor<Type>& fc       = this->connections;
                 size_t in_rows = in.size(),
                        out_rows = out.size();
                 for(size_t i = 0; i < out_rows; ++i) {
@@ -50,7 +50,7 @@ namespace emptyNN {
 
  
             template <class Type>
-            Type* DenseCPUImpl<Type>::backward(Type* dy) {
+            Tensor<Type> DenseCPUImpl<Type>::backward(Tensor<Type>& dy) {
                 // Grad should have the same elements as the layer output
                 // dW is the outer product between grad and the layer input
                 // If the Dense layer has 
@@ -61,12 +61,12 @@ namespace emptyNN {
                 // So the outer product between (Y,1) and (X,1)^ 
                 Shape out = this->o_shape;
                 Shape in =  this->i_shape;
-                Type* x = this->i_tensor;
-                Type* W = this->connections;
+                Tensor<Type>& x = this->i_tensor;
+                Tensor<Type>& W = this->connections;
                 size_t dy_rows = out.size();
                 size_t x_rows = in.size();
                 // Weight derivative 
-                Type* dw = new Type[out.size()*in.size()];
+                Tensor<Type> dw = Tensor<Type>(out.size()*in.size());
 
                 for(size_t i = 0; i < dy_rows; ++i) {
                     for(size_t j = 0; j < x_rows; ++j) {
@@ -74,7 +74,7 @@ namespace emptyNN {
                     }
                 }
 
-                Type* dx = new Type[in.size()];
+                Tensor<Type> dx = Tensor<Type>(in.size());
 
                 for(size_t i = 0; i < x_rows; ++i) {
                     

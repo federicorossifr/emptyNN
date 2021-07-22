@@ -37,9 +37,9 @@ namespace emptyNN {
                 Shape in = this->i_shape;
                 Shape fil = this->f_shape;
                 Shape padding = this->padding;
-                Type* filter = this->filter;
-                Type* i_tensor = this->i_tensor;
-                Type* o_tensor = this->o_tensor;
+                Tensor<Type>& filter = this->filter;
+                Tensor<Type>& i_tensor = this->i_tensor;
+                Tensor<Type>& o_tensor = this->o_tensor;
                 size_t stride = this->params.stride;
                 size_t kernels = this->params.kernels;
                 #pragma omp parallel for                
@@ -76,7 +76,7 @@ namespace emptyNN {
      
 
             template <class Type>
-            Type* DWConvCPUImpl<Type>::backward(Type* grad) {return grad;}
+            Tensor<Type> DWConvCPUImpl<Type>::backward(Tensor<Type>& grad) {return grad;}
                 
 
             REGISTER_CLASS(DWConvCPUImpl,float)

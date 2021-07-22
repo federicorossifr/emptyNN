@@ -29,9 +29,9 @@ namespace emptyNN {
                 ResBlockParams params;
                 public:
                     ResidualBlockCPUImpl(Shape in, Shape out,ResBlockParams params);      
-                    virtual Type* merge(Type* tensors[]);
+                    virtual Tensor<Type> merge(Tensor<Type> tensors[]);
                     virtual void activate() {};
-                    virtual Type* backward(Type* grad) {return grad;};
+                    virtual Tensor<Type> backward(Tensor<Type>& grad) {return grad;};
             };
 
         } // namespace Impl    

@@ -30,19 +30,19 @@ namespace emptyNN {
             void BatchNormCPUImpl<Type>::forward() {
                 Type mu = this->mu;
                 Type sigma = this->sigma;
-                Type* i_tensor = this->i_tensor;
-                Type* o_tensor = this->o_tensor;
+                Tensor<Type>& i_tensor = this->i_tensor;
+                Tensor<Type>& o_tensor = this->o_tensor;
                 size_t in_size = this->i_shape.size();
 
                 #pragma omp parallel for simd
                 for(int i = 0; i < in_size; ++i)
-                    o_tensor[i] = (i_tensor[i]-mu)/sigma;
+                    o_tensor[i] = (Type(i_tensor[i])-Type(mu))/Type(sigma);
             }
 
 
 
             template <class Type>
-            Type* BatchNormCPUImpl<Type>::backward(Type* grad) {return grad;}
+            Tensor<Type> BatchNormCPUImpl<Type>::backward(Tensor<Type>& grad) {return grad;}
 
             REGISTER_CLASS(BatchNormCPUImpl,float);
        

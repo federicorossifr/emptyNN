@@ -32,9 +32,9 @@ namespace emptyNN {
                 Shape out = this->o_shape;
                 Shape in = this->i_shape;
                 Shape fil = this->f_shape;
-                Type* filter = this->filter;
-                Type* i_tensor = this->i_tensor;
-                Type* o_tensor = this->o_tensor;
+                Tensor<Type> filter = this->filter;
+                Tensor<Type> i_tensor = this->i_tensor;
+                Tensor<Type> o_tensor = this->o_tensor;
                 size_t stride = this->params.stride;
                 size_t kernels = this->params.kernels;
                 #pragma omp parallel for                
@@ -75,22 +75,22 @@ namespace emptyNN {
 
 
             template <class Type>
-            Type* ConvCPUImpl<Type>::backward(Type* grad) {
+            Tensor<Type> ConvCPUImpl<Type>::backward(Tensor<Type>& grad) {
                 Shape out = this->o_shape;
                 Shape in  = this->i_shape;
                 Shape fi  = this->f_shape;
-                Type* xp = this->i_tensor;
-                Type* f  = this->filter;
+                Tensor<Type>& xp = this->i_tensor;
+                Tensor<Type>& f  = this->filter;
                 size_t kernels = this->params.kernels;
                 size_t stride = this->params.stride;
 
                 // Reserve space for the weight gradient
-                Type* dW = new Type[fi.size()*kernels];
-                std::fill(dW,dW+fi.size()*kernels,Type(0.));
+                Tensor<Type> dW = Tensor<Type>(fi.size()*kernels);
+                std::fill(dW.begin(),dW.end(),Type(0.));
 
                 //Reserve space for the backpropagation gradient
-                Type* dxp = new Type[in.size()];
-                std::fill(dxp,dxp+in.size(),Type(0.));
+                Tensor<Type> dxp = Tensor<Type>(in.size());
+                std::fill(dxp.begin(),dxp.end(),Type(0.));
 
                 // Compute dW
                 for(size_t kernel{}; kernel < kernels; ++kernel) {

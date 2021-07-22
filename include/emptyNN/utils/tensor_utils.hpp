@@ -28,12 +28,12 @@ namespace emptyNN
         {
 
             template <class Type>
-            void fillRandom(Type* tensor,size_t tensor_size,std::function<Type()> gen) {
-                std::generate(tensor,tensor+tensor_size,gen); //d
+            void fillRandom(Tensor<Type> tensor,size_t tensor_size,std::function<Type()> gen) {
+                std::generate(tensor.begin(),tensor.end(),gen); //d
             }
 
             template <class Type>
-            void fillRandomUniform(Type* tensor,size_t tensor_size,double min=-1.,double max=1.) {
+            void fillRandomUniform(Tensor<Type> tensor,size_t tensor_size,double min=-1.,double max=1.) {
                 std::mt19937 mtwister;
                 std::uniform_real_distribution<> dis(min,max);
                 mtwister.seed(Random::globalSeed);                   

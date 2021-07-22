@@ -47,10 +47,10 @@ namespace emptyNN
             stackLayer(l);
     }    
 
-    template <class Type>    
-    Type* Sequential<Type>::predict(Type* in_tensor) {
-        Type* handle = in_tensor, 
-            *out_tensor = new Type[layers.back()->getOutputShape().size()];
+    template <class Type>
+    Tensor<Type> Sequential<Type>::predict(Tensor<Type> in_tensor) {
+        Tensor<Type>& handle = in_tensor,
+            out_tensor = Tensor<Type>(layers.back()->getOutputShape().size());
         for(Layer<Type>* l: layers) {
             l->fillInTensor(handle);
             handle = (*l)();
@@ -59,15 +59,15 @@ namespace emptyNN
     }
 
     template <class Type>
-    void Sequential<Type>::fit(Type* in_tensor, Type* truth) {
-        Type* prediction = this->predict(in_tensor);
+    void Sequential<Type>::fit(Tensor<Type> in_tensor, Tensor<Type> truth) {
+        Tensor<Type> prediction = this->predict(in_tensor);
         size_t out_size = layers.back()->getOutputShape().size();
-        std::transform(truth,truth+out_size,prediction,prediction,std::minus<float>());
-        Type loss = std::accumulate(prediction,prediction+out_size,Type(0.),[](Type& a, Type& b) {
+        std::transform(truth.begin(),truth.end(),prediction.begin(),prediction.begin(),std::minus<float>());
+        Type loss = std::accumulate(truth.begin(),truth.end(),Type(0.),[](Type a, Type b) {
             return a + (Type)std::pow((double)b,2);
         });
 
-        Type* gradHandle = prediction;
+        Tensor<Type> gradHandle = prediction;
         std::cout << "Loss: " << std::sqrt(loss) << std::endl;
         for(auto it = layers.rbegin(); it != layers.rend(); ++it) {
             gradHandle = (*it)->backward(gradHandle);

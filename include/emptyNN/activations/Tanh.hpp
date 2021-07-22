@@ -25,9 +25,9 @@ namespace emptyNN {
         public:
             TanhFunctor();
 
-            virtual void operator()(Type *in_tensor, Shape in_shape);
+            virtual void operator()(Tensor<Type>& in_tensor);
 
-            Type *grad(Type *grad, Shape in_shape);
+            Tensor<Type> grad(Tensor<Type>& grad);
 
             virtual ~TanhFunctor() = default;
 

@@ -22,12 +22,14 @@ namespace emptyNN {
         TanhFunctor<Type>::TanhFunctor() = default;
 
         template <class Type>
-        void TanhFunctor<Type>::operator()(Type* in_tensor, Shape in_shape) {
-            std::transform(in_tensor,in_tensor+in_shape.size(),in_tensor,[](Type el) -> Type { return (Type)std::tanh(double(el));});
+        void TanhFunctor<Type>::operator()(Tensor<Type>& in_tensor) {
+            std::transform(in_tensor.begin(),in_tensor.end(),in_tensor.begin(),[](Type& el) -> Type {
+                return Type(std::tanh(double(el)));
+            });
         }
 
         template <class Type>
-        Type * TanhFunctor<Type>::grad(Type *grad, Shape in_shape) { return grad; };
+        Tensor<Type> TanhFunctor<Type>::grad(Tensor<Type>& grad) { return grad; };
 
 
         REGISTER_CLASS(TanhFunctor,float);

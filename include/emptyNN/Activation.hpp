@@ -24,8 +24,8 @@ namespace emptyNN {
     template <class Type>
     class Activation {
         public:
-            virtual void operator()(Type* in_tensor, Shape in_shape) = 0;
-            virtual Type *grad(Type *el, Shape in_shape) = 0;
+            virtual void operator()(Tensor<Type>& in_tensor) = 0;
+            virtual Tensor<Type> grad(Tensor<Type>& el) = 0;
             virtual ~Activation() {};
     };
 }
