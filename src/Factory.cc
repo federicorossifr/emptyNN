@@ -22,11 +22,11 @@ namespace emptyNN {
         namespace Layers {
             
             template <class Type>
-            Layer<Type>* Convolution(Shape in,ConvParams params,Activation<Type>* a,Device device, bool withBias) {
+            std::unique_ptr<Layer<Type>> Convolution(Shape in,ConvParams params,Activation<Type>* a,Device device, bool withBias) {
                 switch (device)
                 {
                     case CPU:
-                        return new emptyNN::Layers::Impl::ConvCPUImpl<Type>(in,params,a,withBias);
+                        return std::make_unique<emptyNN::Layers::Impl::ConvCPUImpl<Type>>(in,params,a,withBias);
                     case CPU_RVV:
                         #ifdef USE_RVV
                             return new emptyNN::Layers::Impl::ConvRVVImpl<Type>(in,params,a);
@@ -41,11 +41,11 @@ namespace emptyNN {
             }     
 
             template <class Type>
-            Layer<Type>* DWConvolution(Shape in,ConvParams params,Activation<Type>* a,Device device) {
+            std::unique_ptr<Layer<Type>> DWConvolution(Shape in,ConvParams params,Activation<Type>* a,Device device) {
                 switch (device)
                 {
                     case CPU:
-                        return new emptyNN::Layers::Impl::DWConvCPUImpl<Type>(in,params,a);
+                        return std::make_unique<emptyNN::Layers::Impl::DWConvCPUImpl<Type>>(in,params,a);
                     case CPU_RVV:
                         #ifdef USE_RVV
 
@@ -60,11 +60,11 @@ namespace emptyNN {
             }                        
 
             template <class Type>
-            Layer<Type>* Dense(Shape in,Shape out,Activation<Type>* a,Device device,bool withBias) {
+            std::unique_ptr<Layer<Type>> Dense(Shape in,Shape out,Activation<Type>* a,Device device,bool withBias) {
                 switch (device)
                 {
                     case CPU:
-                        return new emptyNN::Layers::Impl::DenseCPUImpl<Type>(in,out,a,withBias);
+                        return std::make_unique<emptyNN::Layers::Impl::DenseCPUImpl<Type>>(in,out,a,withBias);
                 
                     default:
                         throw DeviceNotAllowed(device);
@@ -73,11 +73,11 @@ namespace emptyNN {
             }            
             
             template <class Type>
-            Layer<Type>* BatchNorm(Shape in, double mu, double sigma, Activation<Type>* a,Device device) {
+            std::unique_ptr<Layer<Type>> BatchNorm(Shape in, double mu, double sigma, Activation<Type>* a,Device device) {
                 switch (device)
                 {
                     case CPU:
-                        return new emptyNN::Layers::Impl::BatchNormCPUImpl<Type>(in,Type(mu),Type(sigma),a);
+                        return std::make_unique<emptyNN::Layers::Impl::BatchNormCPUImpl<Type>>(in,Type(mu),Type(sigma),a);
                 
                     default:
                         throw DeviceNotAllowed(device);
@@ -86,11 +86,11 @@ namespace emptyNN {
             }  
 
             template <class Type>
-            Layer<Type>* MaxPool(Shape in, PoolParams params, Activation<Type>* a,Device device) {
+            std::unique_ptr<Layer<Type>> MaxPool(Shape in, PoolParams params, Activation<Type>* a,Device device) {
                 switch (device)
                 {
                     case CPU:
-                        return new emptyNN::Layers::Impl::MaxPoolCPUImpl<Type>(in,params,a);
+                        return std::make_unique<emptyNN::Layers::Impl::MaxPoolCPUImpl<Type>>(in,params,a);
                 
                     default:
                         throw DeviceNotAllowed(device);
@@ -99,11 +99,11 @@ namespace emptyNN {
             }                    
 
             template <class Type>
-            Layer<Type>* ResBlock(Shape in,Shape out,ResBlockParams params, Device device) {
+            std::unique_ptr<Layer<Type>> ResBlock(Shape in,Shape out,ResBlockParams params, Device device) {
                 switch (device)
                 {
                     case CPU:
-                        return new emptyNN::Layers::Impl::ResidualBlockCPUImpl<Type>(in,out,params);
+                        return std::make_unique<emptyNN::Layers::Impl::ResidualBlockCPUImpl<Type>>(in,out,params);
                 
                     default:
                         throw DeviceNotAllowed(device);
@@ -112,11 +112,11 @@ namespace emptyNN {
             }   
 
             template <class Type>
-            Layer<Type>* Concat(Shape in, Shape out,std::vector<std::vector<Layer<Type>*>> _block, Device device) {
+            std::unique_ptr<Layer<Type>> Concat(Shape in, Shape out,std::vector<std::vector<Layer<Type>*>> _block, Device device) {
                 switch (device)
                 {
                     case CPU:
-                        return new emptyNN::Layers::Impl::ConcatCPUImpl<Type>(in,out,_block);
+                        return std::make_unique<emptyNN::Layers::Impl::ConcatCPUImpl<Type>>(in,out,_block);
                 
                     default:
                         throw DeviceNotAllowed(device);
@@ -124,11 +124,11 @@ namespace emptyNN {
             }
 
             template <class Type>
-            Layer<Type>* Add(Shape in, Shape out,std::vector<std::vector<Layer<Type>*>> _block, Device device) {
+            std::unique_ptr<Layer<Type>> Add(Shape in, Shape out,std::vector<std::vector<Layer<Type>*>> _block, Device device) {
                 switch (device)
                 {
                     case CPU:
-                        return new emptyNN::Layers::Impl::CombineMergeCPUImpl<Type>(in,out,_block,Type(0.),[](Type& a,Type& b){
+                        return std::make_unique<emptyNN::Layers::Impl::CombineMergeCPUImpl<Type>>(in,out,_block,Type(0.),[](Type& a,Type& b){
                             return a+b;
                         });
                 
@@ -138,11 +138,11 @@ namespace emptyNN {
             }  
 
             template <class Type>
-            Layer<Type>* Multiply(Shape in, Shape out,std::vector<std::vector<Layer<Type>*>> _block, Device device) {
+            std::unique_ptr<Layer<Type>> Multiply(Shape in, Shape out,std::vector<std::vector<Layer<Type>*>> _block, Device device) {
                 switch (device)
                 {
                     case CPU:
-                        return new emptyNN::Layers::Impl::CombineMergeCPUImpl<Type>(in,out,_block,Type(1.),[](Type& a,Type& b){
+                        return std::make_unique<emptyNN::Layers::Impl::CombineMergeCPUImpl<Type>>(in,out,_block,Type(1.),[](Type& a,Type& b){
                             return a*b;
                         });
                 
@@ -152,14 +152,14 @@ namespace emptyNN {
             }                        
 
             template <class Type>
-            Layer<Type>* Flatten(Shape in, Device device) {
+            std::unique_ptr<Layer<Type>> Flatten(Shape in, Device device) {
                 switch (device)
                 {
                     case CPU:
                     case GPU:
                     case CPU_RVV:
                     case CPU_SVE:
-                        return new emptyNN::Layers::Flatten<Type>(in);
+                        return std::make_unique<emptyNN::Layers::Flatten<Type>>(in);
                 
                     default:
                         throw DeviceNotAllowed(device);
@@ -167,14 +167,14 @@ namespace emptyNN {
             }
 
             template <class Type>
-            Layer<Type>* Pad(Shape in, Shape out, Device device) {
+            std::unique_ptr<Layer<Type>> Pad(Shape in, Shape out, Device device) {
                 switch (device)
                 {
                     case CPU:
                     case GPU:
                     case CPU_RVV:
                     case CPU_SVE:
-                        return new emptyNN::Layers::Pad<Type>(in,out);
+                        return std::make_unique<emptyNN::Layers::Pad<Type>>(in,out);
                 
                     default:
                         throw DeviceNotAllowed(device);
@@ -197,19 +197,19 @@ namespace emptyNN {
         namespace Activations {
 
             template <class Type>
-            Activation<Type>* Elu(double alpha) {
-                return new emptyNN::Activations::EluFunctor<Type>(Type(alpha));
+            std::unique_ptr<Activation<Type>> Elu(double alpha) {
+                return std::make_unique<emptyNN::Activations::EluFunctor<Type>>(Type(alpha));
             };
 
-            template Activation<float>* Elu(double alpha);
+            template std::unique_ptr<Activation<float>> Elu(double alpha);
 
             #ifdef USE_POSIT
-            template Activation<Posit16_0>* Elu( double alpha);
-            template Activation<Posit16_1>* Elu( double alpha);
-            template Activation<Posit8_0>* Elu( double alpha);
-            template Activation<Bfloat16>* Elu( double alpha);
-            template Activation<Bfloat8>* Elu( double alpha);
-            template Activation<FloatEmu>* Elu( double alpha);
+            template std::unique_ptr<Activation<Posit16_0>> Elu( double alpha);
+            template std::unique_ptr<Activation<Posit16_1>> Elu( double alpha);
+            template std::unique_ptr<Activation<Posit8_0>> Elu( double alpha);
+            template std::unique_ptr<Activation<Bfloat16>> Elu( double alpha);
+            template std::unique_ptr<Activation<Bfloat8>> Elu( double alpha);
+            template std::unique_ptr<Activation<FloatEmu>> Elu( double alpha);
             #endif
         }        
 

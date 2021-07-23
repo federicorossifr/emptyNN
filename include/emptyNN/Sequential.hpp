@@ -19,6 +19,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <emptyNN/Model.hpp>
 #include <emptyNN/Layer.hpp>
 #include <vector>
+#include <memory>
+
 namespace emptyNN
 {
     namespace io
@@ -31,7 +33,7 @@ namespace emptyNN
     
     template <class Type>
     class Sequential: public Model {
-        std::vector<Layer<Type>*> layers; 
+        std::vector< std::unique_ptr<Layer<Type>> > layers;
         public:
             Sequential(std::string&& name);
             ~Sequential();
@@ -43,8 +45,8 @@ namespace emptyNN
             void  fit(Tensor<Type> in_tensor, Tensor<Type> truth);
             Shape getInputShape();
             Shape getOutputShape();
-            void stackLayer(Layer<Type>* layer);
-            void stackLayers(std::vector<Layer<Type>*> group);
+            void stackLayer(std::unique_ptr<Layer<Type>>& layer);
+            void stackLayers(std::vector<std::unique_ptr<Layer<Type>>> group);
 
             friend class io::Serializer<Type>;
     };

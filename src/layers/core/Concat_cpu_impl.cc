@@ -33,7 +33,7 @@ namespace emptyNN {
             }
 
             template <class Type>
-            Tensor<Type> ConcatCPUImpl<Type>::merge(Tensor<Type> tensors[]) {
+            Tensor<Type>& ConcatCPUImpl<Type>::merge(Tensor<Type> tensors[]) {
 
                 Tensor<Type> o_tensor = this->o_tensor;
                 auto o_it = o_tensor.begin();
@@ -50,7 +50,7 @@ namespace emptyNN {
                     o_it+=area_i;
                 }
                 
-                return o_tensor;
+                return this->o_tensor;
             }   
 
             REGISTER_CLASS(ConcatCPUImpl,float);

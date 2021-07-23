@@ -33,7 +33,7 @@ namespace emptyNN {
                 virtual void forward();
                 virtual ~LayerBlock();
                 void summary();
-                virtual Tensor<Type> merge(Tensor<Type> tensors[]) = 0;
+                virtual Tensor<Type>& merge(Tensor<Type> tensors[]) = 0;
                 virtual std::ostream& operator<<(std::ostream& out) {return out;}
                 virtual std::istream& operator>>(std::istream& ifs) {return ifs;}      
 

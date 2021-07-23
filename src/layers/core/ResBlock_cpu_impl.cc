@@ -43,7 +43,7 @@ namespace emptyNN {
             }
 
             template <class Type>
-            Tensor<Type> ResidualBlockCPUImpl<Type>::merge(Tensor<Type> tensors[]) {
+            Tensor<Type>& ResidualBlockCPUImpl<Type>::merge(Tensor<Type> tensors[]) {
                 // ResNets have only one block filled with layers, the other branch is just a shortcut
                 // so we take the tansor from in_tensor
                 Tensor<Type>& shortcut = this->i_tensor;
@@ -69,7 +69,7 @@ namespace emptyNN {
 
                 }
                 
-                return o_tensor;
+                return this->o_tensor;
             }   
 
             REGISTER_CLASS(ResidualBlockCPUImpl,float);

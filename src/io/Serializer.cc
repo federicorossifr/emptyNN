@@ -29,7 +29,7 @@ namespace emptyNN
         template <class Type>
         void Serializer<Type>::dumpBinaryWeights(Sequential<Type>* model) {
             std::ofstream of(this->filename, std::ios::binary | std::ios::out);
-            for(auto l: model->layers) {
+            for(auto& l: model->layers) {
                *l << of;
             }
 
@@ -38,7 +38,7 @@ namespace emptyNN
         template <class Type>
         void Serializer<Type>::loadBinaryWeights(Sequential<Type>* model) {
             std::ifstream ifs(this->filename, std::ios::binary | std::ios::in);
-            for(auto l: model->layers) {
+            for(auto& l: model->layers) {
                *l >> ifs;
             }
         }        

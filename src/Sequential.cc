@@ -24,12 +24,11 @@ namespace emptyNN
 
     template <class Type>
     Sequential<Type>::~Sequential() {
-        for(Layer<Type>* l: layers)
-            delete(l);
+
     }
 
     template <class Type>    
-    void Sequential<Type>::stackLayer(Layer<Type>* layer) {
+    void Sequential<Type>::stackLayer(std::unique_ptr<Layer<Type>>& layer) {
         
         if(layers.size() > 0) {
             if( ! (layers.back()->getOutputShape() == layer->getInputShape()) ) {
@@ -38,12 +37,12 @@ namespace emptyNN
                 assert(layers.back()->getOutputShape() == layer->getInputShape());
             }
         }
-        layers.push_back(layer);
+        layers.push_back(std::move(layer));
     }
 
     template <class Type>    
-    void Sequential<Type>::stackLayers(std::vector<Layer<Type>*> group) {
-        for(Layer<Type>* l: group)
+    void Sequential<Type>::stackLayers(std::vector<std::unique_ptr<Layer<Type>>> group) {
+        for(auto& l: group)
             stackLayer(l);
     }    
 
@@ -51,7 +50,7 @@ namespace emptyNN
     Tensor<Type> Sequential<Type>::predict(Tensor<Type> in_tensor) {
         Tensor<Type>& handle = in_tensor,
             out_tensor = Tensor<Type>(layers.back()->getOutputShape().size());
-        for(Layer<Type>* l: layers) {
+        for(auto& l: layers) {
             l->fillInTensor(handle);
             handle = (*l)();
         }
@@ -92,7 +91,7 @@ namespace emptyNN
 
     template <class Type>
     void Sequential<Type>::summary() {
-        for(Layer<Type>* l:layers) {
+        for(auto& l:layers) {
             l->summary();
         }
     }

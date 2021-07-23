@@ -27,7 +27,7 @@ namespace emptyNN {
                 std::function<Type(Type&,Type&)> combine;
                 public:
                     CombineMergeCPUImpl(Shape in, Shape out,std::vector<std::vector<Layer<Type>*>>,Type initial_value,std::function<Type(Type&,Type&)>);      
-                    virtual Tensor<Type> merge(Tensor<Type> tensors[]);
+                    virtual Tensor<Type>& merge(Tensor<Type> tensors[]);
                     virtual void activate() {};
                     virtual Tensor<Type> backward(Tensor<Type>& grad) {return grad;};
             };

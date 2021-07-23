@@ -34,7 +34,7 @@ namespace emptyNN {
             }
 
             template <class Type>
-            Tensor<Type> CombineMergeCPUImpl<Type>::merge(Tensor<Type> tensors[]) {
+            Tensor<Type>& CombineMergeCPUImpl<Type>::merge(Tensor<Type> tensors[]) {
                 Tensor<Type>& o_tensor = this->o_tensor;
                 Shape out = this->o_shape;
                 size_t n_tensors = this->block.size();
@@ -43,7 +43,7 @@ namespace emptyNN {
                     for(size_t j = 0; j < n_tensors; ++j)
                         o_tensor[i]=combine(o_tensor[i],tensors[j][i]);
                 }
-                return o_tensor;
+                return this->o_tensor;
             }   
 
             REGISTER_CLASS(CombineMergeCPUImpl,float);

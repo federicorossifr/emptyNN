@@ -30,7 +30,7 @@ int main() {
     #else
     using floatx = float;
     #endif
-    Sequential<floatx>* s = Models::ResNet34<floatx>(1000);
+    Sequential<floatx>* s = Models::MobileNet<floatx>();
 
     auto in_tensor = Tensor<floatx>(s->getInputShape().size());
     std::fill(in_tensor.begin(),in_tensor.end(),0x01);
