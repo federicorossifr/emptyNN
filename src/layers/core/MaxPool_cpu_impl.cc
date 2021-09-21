@@ -21,7 +21,7 @@ namespace emptyNN {
     namespace Layers {
         namespace Impl {
             template <class Type>
-            MaxPoolCPUImpl<Type>::MaxPoolCPUImpl(Shape in,PoolParams params,Activation<Type>* a): MaxPooling<Type>(in,params,a){}
+            MaxPoolCPUImpl<Type>::MaxPoolCPUImpl(Shape in,PoolParams params,std::unique_ptr<Activation<Type>> a): MaxPooling<Type>(in,params,std::move(a)){}
 
             template <class Type>
             MaxPoolCPUImpl<Type>::~MaxPoolCPUImpl() {}

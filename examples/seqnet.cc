@@ -31,11 +31,11 @@ int main() {
         Convolution<floatx>({224,224,3},{{3,3,3},6,2,PaddingType::NONE}, nullptr,CPU),
         Convolution<floatx>({111,111,6},{{3,3,6},6,2,PaddingType::NONE}, nullptr,CPU)
     });
-    floatx* in_tensor = new floatx[seq.getInputShape().size()];
-    std::fill(in_tensor,in_tensor+seq.getInputShape().size(),0x01);
+    auto in_tensor = Tensor<floatx>(seq.getInputShape().size());
+    std::fill(in_tensor.begin(),in_tensor.end(),0x01);
     seq.summary();
     std::cout << "Loaded model" << std::endl;
-    floatx* out = seq.predict(in_tensor);
+    auto out = seq.predict(in_tensor);
     seq.fit(in_tensor,out);
 
 }

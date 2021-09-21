@@ -21,7 +21,7 @@ namespace emptyNN {
     namespace Layers {
         namespace Impl {
             template <class Type>
-            DenseCPUImpl<Type>::DenseCPUImpl(Shape in, Shape out,Activation<Type>* a, bool withBias): Dense<Type>(in,out,a,withBias){}
+            DenseCPUImpl<Type>::DenseCPUImpl(Shape in, Shape out,std::unique_ptr<Activation<Type>> a, bool withBias): Dense<Type>(in,out,std::move(a),withBias){}
 
             template <class Type>
             DenseCPUImpl<Type>::~DenseCPUImpl() {}

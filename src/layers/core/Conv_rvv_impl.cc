@@ -22,7 +22,7 @@ namespace emptyNN {
         namespace Impl {
 
             template <class Type>
-            ConvRVVImpl<Type>::ConvRVVImpl(Shape in, ConvParams cp,Activation<Type>* a): Conv<Type>(in,cp,a){}
+            ConvRVVImpl<Type>::ConvRVVImpl(Shape in, ConvParams cp,std::unique_ptr<Activation<Type>> a): Conv<Type>(in,cp,std::move(a)){}
 
             template <class Type>
             ConvRVVImpl<Type>::~ConvRVVImpl() {}

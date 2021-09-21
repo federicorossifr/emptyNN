@@ -18,25 +18,33 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <emptyNN/layers/core/ResBlock_cpu_impl.hpp>
 #include <emptyNN/layers/core/Conv_cpu_impl.hpp>
 #include <emptyNN/activations/Elu.hpp>
-
+#include <memory>
 namespace emptyNN {
     namespace Layers {
         namespace Impl {
 
             template <class Type>
             ResidualBlockCPUImpl<Type>::ResidualBlockCPUImpl(Shape in,Shape out,ResBlockParams params): LayerBlock<Type>(in,out),params(params) {
-                std::vector<Layer<Type>*> convLayers;
-                using ELU = emptyNN::Activations::EluFunctor<Type>;
+                std::vector<std::unique_ptr<Layer<Type>>> convLayers;
+                #define ELU std::make_unique<emptyNN::Activations::EluFunctor<Type>>,
                 Shape middle;
-                if(params.halve)
-                    convLayers.push_back(new ConvCPUImpl<Type>( in, { {3,3,in.depth}, 2*in.depth, 2, PaddingType::ZERO }  , new ELU(Type(1.))) );
-                else 
-                    convLayers.push_back(new ConvCPUImpl<Type>( in, { {3,3,in.depth}, in.depth, 1, PaddingType::SAME }  , new ELU(Type(1.))) );
+                if(params.halve) {
+                    auto a = std::make_unique<emptyNN::Activations::EluFunctor<Type>>(Type(1.));
+                    std::unique_ptr<Layer<Type>> l = std::make_unique<emptyNN::Layers::Impl::ConvCPUImpl<Type>>( /*in, { {3,3,in.depth}, 2*in.depth, 2, PaddingType::ZERO }  , std::move(a)*/) ;
+                    convLayers.push_back(std::move(l));
+                }
+                else {
+                    auto a = std::make_unique<emptyNN::Activations::EluFunctor<Type>>(Type(1.));
+                    std::unique_ptr<Layer<Type>> l = std::make_unique<emptyNN::Layers::Impl::ConvCPUImpl<Type>>( in, { {3,3,in.depth}, in.depth, 1, PaddingType::SAME } , std::move(a)) ;
+                    convLayers.push_back(std::move(l));
+                }
                 
                 middle = convLayers.back()->getOutputShape();
 
                 for(size_t i = 1; i < params.block_size; ++i) {
-                    convLayers.push_back(new ConvCPUImpl<Type>( middle, { {3,3,middle.depth}, middle.depth, 1, PaddingType::SAME }  , new ELU(Type(1.))) );
+                    auto a = std::make_unique<emptyNN::Activations::EluFunctor<Type>>(Type(1.));
+                    std::unique_ptr<Layer<Type>> l = std::make_unique<emptyNN::Layers::Impl::ConvCPUImpl<Type>>( middle, { {3,3,middle.depth}, middle.depth, 1, PaddingType::SAME } , std::move(a)) ;
+                    convLayers.push_back(std::move(l));
                 }
 
                 this->block.push_back(convLayers);

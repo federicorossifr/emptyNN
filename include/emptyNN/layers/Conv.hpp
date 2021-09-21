@@ -31,7 +31,7 @@ namespace emptyNN {
                 const bool hasBias;
             public:
                 virtual ~Conv();
-                Conv(Shape in, ConvParams cp,Activation<Type>* a, bool withBias = true);
+                Conv(Shape in, ConvParams cp,std::unique_ptr<Activation<Type>> a, bool withBias = true);
                 virtual void summary() {
                     size_t filter_size = params.filter.height*params.filter.width*params.filter.depth;
                     filter_size*= (params.isDepthWise)? 1:params.kernels;                    

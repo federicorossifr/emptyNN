@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace emptyNN {
     namespace Layers {
         template <class Type>
-        Dense<Type>::Dense(Shape in, Shape out,Activation<Type>* a, bool withBias): Layer<Type>(in, out, a),hasBias(withBias) {
+        Dense<Type>::Dense(Shape in, Shape out,std::unique_ptr<Activation<Type>> a, bool withBias): Layer<Type>(in, out, std::move(a)),hasBias(withBias) {
             // assert(in.depth == 1 && out.depth == 1);
             // In-vector   1 x (in.height * in.width) 
             // Out-vector  (out.height * out.width) x 1

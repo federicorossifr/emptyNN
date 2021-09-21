@@ -24,7 +24,7 @@ namespace emptyNN {
             template <class Type>
             class MaxPoolCPUImpl: public MaxPooling<Type> {
                 public:
-                    MaxPoolCPUImpl(Shape in,PoolParams params,Activation<Type>* a);
+                    MaxPoolCPUImpl(Shape in,PoolParams params,std::unique_ptr<Activation<Type>> a);
                     ~MaxPoolCPUImpl();
                     virtual void forward();
                     virtual Tensor<Type> backward(Tensor<Type>& grad);

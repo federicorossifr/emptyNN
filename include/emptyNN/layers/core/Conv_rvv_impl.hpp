@@ -25,7 +25,7 @@ namespace emptyNN {
             class ConvRVVImpl: public Conv<Type> {
                 public:
                     ~ConvRVVImpl();
-                    ConvRVVImpl(Shape in, ConvParams cp,Activation<Type>* a = nullptr);
+                    ConvRVVImpl(Shape in, ConvParams cp,std::unique_ptr<Activation<Type>> a = nullptr);
                     virtual void forward();
                     virtual Tensor<Type> backward(Tensor<Type>& grad);
 

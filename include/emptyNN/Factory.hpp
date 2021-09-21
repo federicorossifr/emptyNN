@@ -28,25 +28,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "emptyNN/layers/Pad.hpp"
 #include "emptyNN/activations/Elu.hpp"
 #include <memory>
-#include <memory>
 namespace emptyNN {
     namespace Factory {
         namespace Layers {
             
             template <class Type>
-            std::unique_ptr<Layer<Type>> Convolution(Shape in,ConvParams params,Activation<Type>* a,Device device, bool withBias = true);
+            std::unique_ptr<Layer<Type>> Convolution(Shape in,ConvParams params,std::unique_ptr<Activation<Type>> a,Device device, bool withBias = true);
 
             template <class Type>
-            std::unique_ptr<Layer<Type>> DWConvolution(Shape in,ConvParams params,Activation<Type>* a,Device device);
+            std::unique_ptr<Layer<Type>> DWConvolution(Shape in,ConvParams params,std::unique_ptr<Activation<Type>> a,Device device);
 
             template <class Type>
-            std::unique_ptr<Layer<Type>> Dense(Shape in,Shape out,Activation<Type>* a,Device device, bool withBias = true);
+            std::unique_ptr<Layer<Type>> Dense(Shape in,Shape out,std::unique_ptr<Activation<Type>> a,Device device, bool withBias = true);
 
             template <class Type>
-            std::unique_ptr<Layer<Type>> BatchNorm(Shape in, double mu, double sigma, Activation<Type>* a, Device device);
+            std::unique_ptr<Layer<Type>> BatchNorm(Shape in, double mu, double sigma, std::unique_ptr<Activation<Type>> a, Device device);
 
             template <class Type>
-            std::unique_ptr<Layer<Type>> MaxPool(Shape in, PoolParams params, Activation<Type>* a, Device device);
+            std::unique_ptr<Layer<Type>> MaxPool(Shape in, PoolParams params, std::unique_ptr<Activation<Type>> a, Device device);
 
             template <class Type>
             std::unique_ptr<Layer<Type>> ResBlock(Shape in,Shape out,ResBlockParams params, Device device);
@@ -74,11 +73,11 @@ namespace emptyNN {
         }
 
         #define REGISTER_FACTORY_LAYER(TYPE) \
-            template std::unique_ptr<Layer<TYPE>> Convolution(Shape in,ConvParams params,Activation<TYPE>* a,Device device,bool withBias); \
-            template std::unique_ptr<Layer<TYPE>> DWConvolution(Shape in,ConvParams params,Activation<TYPE>* a,Device device); \
-            template std::unique_ptr<Layer<TYPE>> Dense(Shape in,Shape out,Activation<TYPE>* a,Device device,bool withBias); \
-            template std::unique_ptr<Layer<TYPE>> BatchNorm(Shape in,double mu,double sigma,Activation<TYPE>* a,Device device); \
-            template std::unique_ptr<Layer<TYPE>> MaxPool(Shape in,PoolParams params,Activation<TYPE>* a,Device device);  \
+            template std::unique_ptr<Layer<TYPE>> Convolution(Shape in,ConvParams params,std::unique_ptr<Activation<TYPE>> a,Device device,bool withBias); \
+            template std::unique_ptr<Layer<TYPE>> DWConvolution(Shape in,ConvParams params,std::unique_ptr<Activation<TYPE>> a,Device device); \
+            template std::unique_ptr<Layer<TYPE>> Dense(Shape in,Shape out,std::unique_ptr<Activation<TYPE>> a,Device device,bool withBias); \
+            template std::unique_ptr<Layer<TYPE>> BatchNorm(Shape in,double mu,double sigma,std::unique_ptr<Activation<TYPE>> a,Device device); \
+            template std::unique_ptr<Layer<TYPE>> MaxPool(Shape in,PoolParams params,std::unique_ptr<Activation<TYPE>> a,Device device);  \
             template std::unique_ptr<Layer<TYPE>> ResBlock(Shape in,Shape out,ResBlockParams params, Device device); \
             template std::unique_ptr<Layer<TYPE>> Concat(Shape in, Shape out,std::vector<std::vector<Layer<TYPE>*>> _block,Device device); \
             template std::unique_ptr<Layer<TYPE>> Add(Shape in, Shape out,std::vector<std::vector<Layer<TYPE>*>> _block,Device device); \

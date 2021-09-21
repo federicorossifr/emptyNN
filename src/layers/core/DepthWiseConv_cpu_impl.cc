@@ -23,7 +23,7 @@ namespace emptyNN {
         namespace Impl {
 
             template <class Type>
-            DWConvCPUImpl<Type>::DWConvCPUImpl(Shape in, ConvParams cp,Activation<Type>* a): Conv<Type>(in,cp,a) {
+            DWConvCPUImpl<Type>::DWConvCPUImpl(Shape in, ConvParams cp,std::unique_ptr<Activation<Type>> a): Conv<Type>(in,cp,std::move(a)) {
                 assert(in.depth == cp.filter.depth && cp.filter.depth == cp.kernels);
                 assert(cp.isDepthWise == true);
             }

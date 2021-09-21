@@ -24,7 +24,7 @@ namespace emptyNN {
             template <class Type>
             class BatchNormCPUImpl: public BatchNormalization<Type> {
                 public:
-                    BatchNormCPUImpl(Shape in, Type mu, Type sigma, Activation<Type>* a);
+                    BatchNormCPUImpl(Shape in, Type mu, Type sigma, std::unique_ptr<Activation<Type>> a);
                     ~BatchNormCPUImpl();
                     virtual void forward();
                     virtual Tensor<Type> backward(Tensor<Type>& grad);

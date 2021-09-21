@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace emptyNN {
     namespace Layers {
         template <class Type>
-        MaxPooling<Type>::MaxPooling(Shape in, PoolParams params,Activation<Type>* a): Layer<Type>(in,a),params(params) {
+        MaxPooling<Type>::MaxPooling(Shape in, PoolParams params,std::unique_ptr<Activation<Type>> a): Layer<Type>(in,std::move(a)),params(params) {
             Shape out = {
                 (size_t)ceil( double( double(in.width-params.factor.width+1)/params.stride ) ),
                 (size_t)ceil( double( double(in.height-params.factor.height+1)/params.stride ) ),

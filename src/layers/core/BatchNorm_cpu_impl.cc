@@ -21,7 +21,7 @@ namespace emptyNN {
     namespace Layers {
         namespace Impl {
             template <class Type>
-            BatchNormCPUImpl<Type>::BatchNormCPUImpl(Shape in, Type mu, Type sigma, Activation<Type>* a): BatchNormalization<Type>(in,mu,sigma,a){}
+            BatchNormCPUImpl<Type>::BatchNormCPUImpl(Shape in, Type mu, Type sigma, std::unique_ptr<Activation<Type>> a): BatchNormalization<Type>(in,mu,sigma,std::move(a)){}
 
             template <class Type>
             BatchNormCPUImpl<Type>::~BatchNormCPUImpl() {}

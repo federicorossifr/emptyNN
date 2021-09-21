@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #pragma once
 #include "emptyNN/Types.hpp"
 #include "emptyNN/Activation.hpp"
+#include <memory>
 namespace emptyNN {
 
     namespace io
@@ -33,10 +34,10 @@ namespace emptyNN {
             Shape i_shape;
             Tensor<Type> o_tensor;
             Shape o_shape;
-            Activation<Type>* activation;
+            std::unique_ptr<Activation<Type>> activation;
         public:
-            Layer(Shape in, Shape out,Activation<Type>* a = nullptr);
-            Layer(Shape in,Activation<Type>* a = nullptr);
+            Layer(Shape in, Shape out,std::unique_ptr<Activation<Type>> a = nullptr);
+            Layer(Shape in,std::unique_ptr<Activation<Type>> a = nullptr);
             virtual ~Layer();
             void fillInTensor(Tensor<Type>& i);
             Shape getOutputShape();

@@ -27,7 +27,7 @@ namespace emptyNN {
         }
 
         template <class Type>
-        Conv<Type>::Conv(Shape in, ConvParams cp,Activation<Type>* a, bool withBias): Layer<Type>(in,a),f_shape(cp.filter),params(cp),hasBias(withBias) {
+        Conv<Type>::Conv(Shape in, ConvParams cp,std::unique_ptr<Activation<Type>> a, bool withBias): Layer<Type>(in,std::move(a)),f_shape(cp.filter),params(cp),hasBias(withBias) {
             size_t filter_size = cp.filter.height*cp.filter.width*cp.filter.depth;
             filter_size*= (cp.isDepthWise)? 1:cp.kernels;
             filter = Tensor<Type>(filter_size);

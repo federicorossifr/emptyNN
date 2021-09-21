@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace emptyNN {
     namespace Layers {
         template <class Type>
-        BatchNormalization<Type>::BatchNormalization(Shape in, Type mu,Type sigma,Activation<Type>* a): Layer<Type>(in,in,a),sigma(sigma),mu(mu) {}
+        BatchNormalization<Type>::BatchNormalization(Shape in, Type mu,Type sigma,std::unique_ptr<Activation<Type>> a): Layer<Type>(in,in,std::move(a)),sigma(sigma),mu(mu) {}
 
         template <class Type>
         BatchNormalization<Type>::~BatchNormalization() {}    

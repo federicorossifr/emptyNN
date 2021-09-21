@@ -27,7 +27,7 @@ namespace emptyNN {
                 Tensor<Type> bias;
                 const bool hasBias;
             public:
-                Dense(Shape in, Shape out,Activation<Type>* a, bool withBias = true);
+                Dense(Shape in, Shape out,std::unique_ptr<Activation<Type>> a, bool withBias = true);
                 virtual ~Dense();
                 virtual void summary() {
                     Layer<Type>::summary(); 

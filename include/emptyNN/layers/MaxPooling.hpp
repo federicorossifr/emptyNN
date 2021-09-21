@@ -26,7 +26,7 @@ namespace emptyNN {
                 PoolParams params;
             public:
             virtual ~MaxPooling();
-                MaxPooling(Shape in, PoolParams cp,Activation<Type>* a);
+                MaxPooling(Shape in, PoolParams cp,std::unique_ptr<Activation<Type>> a);
                 virtual std::ostream& operator<<(std::ostream& out)  {return out;}
                 virtual std::istream& operator>>(std::istream& ifs)  {return ifs;}                
 

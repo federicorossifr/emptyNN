@@ -25,7 +25,7 @@ namespace emptyNN {
             protected:
                 Type sigma,mu;
             public:
-                BatchNormalization(Shape in,Type mu,Type sigma,Activation<Type>* a);
+                BatchNormalization(Shape in,Type mu,Type sigma,std::unique_ptr<Activation<Type>> a);
                 virtual ~BatchNormalization();
                 virtual std::ostream& operator<<(std::ostream& ofs)  {return ofs;}
                 virtual std::istream& operator>>(std::istream& ifs)  {return ifs;}                  
