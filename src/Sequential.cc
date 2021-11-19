@@ -28,7 +28,7 @@ namespace emptyNN
     }
 
     template <class Type>    
-    void Sequential<Type>::stackLayer(std::unique_ptr<Layer<Type>>& layer) {
+    void Sequential<Type>::stackLayer(std::unique_ptr<Layer<Type>>&& layer) {
         
         if(layers.size() > 0) {
             if( ! (layers.back()->getOutputShape() == layer->getInputShape()) ) {
@@ -41,9 +41,9 @@ namespace emptyNN
     }
 
     template <class Type>    
-    void Sequential<Type>::stackLayers(std::vector<std::unique_ptr<Layer<Type>>> group) {
+    void Sequential<Type>::stackLayers(std::vector<std::unique_ptr<Layer<Type>>>&& group) {
         for(auto& l: group)
-            stackLayer(l);
+            stackLayer(std::move(l));
     }    
 
     template <class Type>

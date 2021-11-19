@@ -112,11 +112,11 @@ namespace emptyNN {
             }   
 
             template <class Type>
-            std::unique_ptr<Layer<Type>> Concat(Shape in, Shape out,std::vector<std::vector<Layer<Type>*>> _block, Device device) {
+            std::unique_ptr<Layer<Type>> Concat(Shape in, Shape out,std::vector<std::vector<std::unique_ptr<Layer<Type>>>>&& _block, Device device) {
                 switch (device)
                 {
                     case CPU:
-                        return std::make_unique<emptyNN::Layers::Impl::ConcatCPUImpl<Type>>(in,out,_block);
+                        return std::make_unique<emptyNN::Layers::Impl::ConcatCPUImpl<Type>>(in,out,std::move(_block));
                 
                     default:
                         throw DeviceNotAllowed(device);
@@ -124,11 +124,11 @@ namespace emptyNN {
             }
 
             template <class Type>
-            std::unique_ptr<Layer<Type>> Add(Shape in, Shape out,std::vector<std::vector<Layer<Type>*>> _block, Device device) {
+            std::unique_ptr<Layer<Type>> Add(Shape in, Shape out,std::vector<std::vector<std::unique_ptr<Layer<Type>>>>&& _block, Device device) {
                 switch (device)
                 {
                     case CPU:
-                        return std::make_unique<emptyNN::Layers::Impl::CombineMergeCPUImpl<Type>>(in,out,_block,Type(0.),[](Type& a,Type& b){
+                        return std::make_unique<emptyNN::Layers::Impl::CombineMergeCPUImpl<Type>>(in,out,std::move(_block),Type(0.),[](Type& a,Type& b){
                             return a+b;
                         });
                 
@@ -138,11 +138,11 @@ namespace emptyNN {
             }  
 
             template <class Type>
-            std::unique_ptr<Layer<Type>> Multiply(Shape in, Shape out,std::vector<std::vector<Layer<Type>*>> _block, Device device) {
+            std::unique_ptr<Layer<Type>> Multiply(Shape in, Shape out,std::vector<std::vector<std::unique_ptr<Layer<Type>>>>&& _block, Device device) {
                 switch (device)
                 {
                     case CPU:
-                        return std::make_unique<emptyNN::Layers::Impl::CombineMergeCPUImpl<Type>>(in,out,_block,Type(1.),[](Type& a,Type& b){
+                        return std::make_unique<emptyNN::Layers::Impl::CombineMergeCPUImpl<Type>>(in,out,std::move(_block),Type(1.),[](Type& a,Type& b){
                             return a*b;
                         });
                 

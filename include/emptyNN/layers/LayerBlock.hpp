@@ -26,10 +26,10 @@ namespace emptyNN {
         template <class Type>
         class LayerBlock: public Layer<Type> {
             protected:
-                std::vector<std::vector<Layer<Type>*>> block;
+                std::vector<std::vector<std::unique_ptr<Layer<Type>>>> block;
             public:
                 LayerBlock(Shape in, Shape out);   
-                LayerBlock(Shape in, Shape out,std::vector<std::vector<Layer<Type>*>> block);   
+                LayerBlock(Shape in, Shape out,std::vector<std::vector<std::unique_ptr<Layer<Type>>>>&& block);
                 virtual void forward();
                 virtual ~LayerBlock();
                 void summary();

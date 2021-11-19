@@ -38,6 +38,7 @@ namespace emptyNN {
         public:
             Layer(Shape in, Shape out,std::unique_ptr<Activation<Type>> a = nullptr);
             Layer(Shape in,std::unique_ptr<Activation<Type>> a = nullptr);
+            Layer(Layer&&) = default;
             virtual ~Layer();
             void fillInTensor(Tensor<Type>& i);
             Shape getOutputShape();

@@ -27,10 +27,11 @@ int main() {
     using floatx = float;
     Random::globalSeed = 2021;
     Sequential<floatx> seq("Effnet");
-    seq.stackLayers({
-        Convolution<floatx>({224,224,3},{{3,3,3},6,2,PaddingType::NONE}, nullptr,CPU),
-        Convolution<floatx>({111,111,6},{{3,3,6},6,2,PaddingType::NONE}, nullptr,CPU)
-    });
+
+    std::vector<std::unique_ptr<Layer<floatx>>> layers;
+    layers.push_back(std::move(Convolution<floatx>({224,224,3},{{3,3,3},6,2,PaddingType::NONE}, nullptr,CPU)));
+
+    seq.stackLayers(std::move(layers));
     auto in_tensor = Tensor<floatx>(seq.getInputShape().size());
     std::fill(in_tensor.begin(),in_tensor.end(),0x01);
     seq.summary();

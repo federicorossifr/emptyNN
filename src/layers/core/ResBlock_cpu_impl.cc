@@ -30,12 +30,12 @@ namespace emptyNN {
                 Shape middle;
                 if(params.halve) {
                     auto a = std::make_unique<emptyNN::Activations::EluFunctor<Type>>(Type(1.));
-                    std::unique_ptr<Layer<Type>> l = std::make_unique<emptyNN::Layers::Impl::ConvCPUImpl<Type>>( /*in, { {3,3,in.depth}, 2*in.depth, 2, PaddingType::ZERO }  , std::move(a)*/) ;
+                    std::unique_ptr<Layer<Type>> l(new emptyNN::Layers::Impl::ConvCPUImpl<Type>( in, { {3,3,in.depth}, 2*in.depth, 2, PaddingType::ZERO }  , std::move(a))) ;
                     convLayers.push_back(std::move(l));
                 }
                 else {
                     auto a = std::make_unique<emptyNN::Activations::EluFunctor<Type>>(Type(1.));
-                    std::unique_ptr<Layer<Type>> l = std::make_unique<emptyNN::Layers::Impl::ConvCPUImpl<Type>>( in, { {3,3,in.depth}, in.depth, 1, PaddingType::SAME } , std::move(a)) ;
+                    std::unique_ptr<Layer<Type>> l(new emptyNN::Layers::Impl::ConvCPUImpl<Type>( in, { {3,3,in.depth}, in.depth, 1, PaddingType::SAME } , std::move(a)));
                     convLayers.push_back(std::move(l));
                 }
                 
@@ -43,11 +43,11 @@ namespace emptyNN {
 
                 for(size_t i = 1; i < params.block_size; ++i) {
                     auto a = std::make_unique<emptyNN::Activations::EluFunctor<Type>>(Type(1.));
-                    std::unique_ptr<Layer<Type>> l = std::make_unique<emptyNN::Layers::Impl::ConvCPUImpl<Type>>( middle, { {3,3,middle.depth}, middle.depth, 1, PaddingType::SAME } , std::move(a)) ;
+                    std::unique_ptr<Layer<Type>> l (new emptyNN::Layers::Impl::ConvCPUImpl<Type>( middle, { {3,3,middle.depth}, middle.depth, 1, PaddingType::SAME } , std::move(a)));
                     convLayers.push_back(std::move(l));
                 }
 
-                this->block.push_back(convLayers);
+                this->block.push_back(std::move(convLayers));
             }
 
             template <class Type>

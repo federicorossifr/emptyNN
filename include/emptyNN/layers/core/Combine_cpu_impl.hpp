@@ -26,7 +26,7 @@ namespace emptyNN {
             class CombineMergeCPUImpl: public LayerBlock<Type> {
                 std::function<Type(Type&,Type&)> combine;
                 public:
-                    CombineMergeCPUImpl(Shape in, Shape out,std::vector<std::vector<Layer<Type>*>>,Type initial_value,std::function<Type(Type&,Type&)>);      
+                    CombineMergeCPUImpl(Shape in, Shape out,std::vector<std::vector<std::unique_ptr<Layer<Type>>>>&&,Type initial_value,std::function<Type(Type&,Type&)>);
                     virtual Tensor<Type>& merge(Tensor<Type> tensors[]);
                     virtual void activate() {};
                     virtual Tensor<Type> backward(Tensor<Type>& grad) {return grad;};

@@ -51,13 +51,13 @@ namespace emptyNN {
             std::unique_ptr<Layer<Type>> ResBlock(Shape in,Shape out,ResBlockParams params, Device device);
 
             template <class Type>
-            std::unique_ptr<Layer<Type>> Concat(Shape in, Shape out,std::vector<std::vector<Layer<Type>*>> _block,Device device);
+            std::unique_ptr<Layer<Type>> Concat(Shape in, Shape out,std::vector<std::vector<std::unique_ptr<Layer<Type>>>>&& _block,Device device);
 
             template <class Type>
-            std::unique_ptr<Layer<Type>> Add(Shape in, Shape out,std::vector<std::vector<Layer<Type>*>> _block,Device device);
+            std::unique_ptr<Layer<Type>> Add(Shape in, Shape out,std::vector<std::vector<std::unique_ptr<Layer<Type>>>>&& _block,Device device);
 
             template <class Type>
-            std::unique_ptr<Layer<Type>> Multiply(Shape in, Shape out,std::vector<std::vector<Layer<Type>*>> _block, Device device);
+            std::unique_ptr<Layer<Type>> Multiply(Shape in, Shape out,std::vector<std::vector<std::unique_ptr<Layer<Type>>>>&& _block, Device device);
 
             template <class Type>
             std::unique_ptr<Layer<Type>> Flatten(Shape in, Device device);
@@ -79,9 +79,9 @@ namespace emptyNN {
             template std::unique_ptr<Layer<TYPE>> BatchNorm(Shape in,double mu,double sigma,std::unique_ptr<Activation<TYPE>> a,Device device); \
             template std::unique_ptr<Layer<TYPE>> MaxPool(Shape in,PoolParams params,std::unique_ptr<Activation<TYPE>> a,Device device);  \
             template std::unique_ptr<Layer<TYPE>> ResBlock(Shape in,Shape out,ResBlockParams params, Device device); \
-            template std::unique_ptr<Layer<TYPE>> Concat(Shape in, Shape out,std::vector<std::vector<Layer<TYPE>*>> _block,Device device); \
-            template std::unique_ptr<Layer<TYPE>> Add(Shape in, Shape out,std::vector<std::vector<Layer<TYPE>*>> _block,Device device); \
-            template std::unique_ptr<Layer<TYPE>> Multiply(Shape in, Shape out,std::vector<std::vector<Layer<TYPE>*>> _block,Device device); \
+            template std::unique_ptr<Layer<TYPE>> Concat(Shape in, Shape out,std::vector<std::vector<std::unique_ptr<Layer<TYPE>>>>&& _block,Device device); \
+            template std::unique_ptr<Layer<TYPE>> Add(Shape in, Shape out,std::vector<std::vector<std::unique_ptr<Layer<TYPE>>>>&& _block,Device device); \
+            template std::unique_ptr<Layer<TYPE>> Multiply(Shape in, Shape out,std::vector<std::vector<std::unique_ptr<Layer<TYPE>>>>&& _block,Device device); \
             template std::unique_ptr<Layer<TYPE>> Flatten(Shape in, Device device); \
             template std::unique_ptr<Layer<TYPE>> Pad(Shape in, Shape out, Device device);
     }

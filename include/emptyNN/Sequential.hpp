@@ -45,8 +45,8 @@ namespace emptyNN
             void  fit(Tensor<Type> in_tensor, Tensor<Type> truth);
             Shape getInputShape();
             Shape getOutputShape();
-            void stackLayer(std::unique_ptr<Layer<Type>>& layer);
-            void stackLayers(std::vector<std::unique_ptr<Layer<Type>>> group);
+            void stackLayer(std::unique_ptr<Layer<Type>>&& layer);
+            void stackLayers(std::vector<std::unique_ptr<Layer<Type>>>&& group);
 
             friend class io::Serializer<Type>;
     };

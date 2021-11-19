@@ -26,7 +26,7 @@ namespace emptyNN {
             class ConcatCPUImpl: public LayerBlock<Type> {
 
                 public:
-                    ConcatCPUImpl(Shape in, Shape out,std::vector<std::vector<Layer<Type>*>> _block);      
+                    ConcatCPUImpl(Shape in, Shape out,std::vector<std::vector<std::unique_ptr<Layer<Type>>>>&& _block);
                     virtual Tensor<Type>& merge(Tensor<Type> tensors[]);
                     virtual void activate() {};
                     virtual Tensor<Type> backward(Tensor<Type>& grad) {return grad;};

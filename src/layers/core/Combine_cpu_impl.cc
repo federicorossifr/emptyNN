@@ -24,9 +24,9 @@ namespace emptyNN {
 
             template <class Type>
             CombineMergeCPUImpl<Type>::CombineMergeCPUImpl(Shape in, Shape out, 
-                                                            std::vector<std::vector<Layer<Type>*>> _block,
+                                                            std::vector<std::vector<std::unique_ptr<Layer<Type>>>>&& _block,
                                                             Type initial_value,
-                                                            std::function<Type(Type&,Type&)> fun): LayerBlock<Type>(in, out, _block) {
+                                                            std::function<Type(Type&,Type&)> fun): LayerBlock<Type>(in, out, std::move(_block)) {
                 // ToDo: sanity checks on output 
                 // Output size should be the same as each output size
                 this->combine = fun;

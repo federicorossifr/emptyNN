@@ -293,7 +293,7 @@ namespace emptyNN {
                 DWConvolution<Type>({28,28,256},{{3,3,256},256,2, PaddingType::NONE,true},nullptr,CPU),
                 Pad<Type>({13,13,256},{1,1,0},CPU),
 
-                Convolution<Type>({14,14,256},{{1,1,256},512,1, PaddingType::SAME},nullptr,CPU), 
+                Convolution<Type>({14,14,256},{{1,1,256},512,1, PaddingType::SAME},nullptr,CPU),
 
                 DWConvolution<Type>({14,14,512},{{3,3,512},512,1, PaddingType::SAME,true},nullptr,CPU),
                 Convolution<Type>({14,14,512},{{1,1,512},512,1, PaddingType::SAME},nullptr,CPU),
@@ -315,7 +315,7 @@ namespace emptyNN {
                 MaxPool<Type>({7,7,1024},{{7,7},1},nullptr,CPU),
                 Dense<Type>({1,1,1024},{1000,1,1},RELU,CPU)
 
-            });    
+            });
             return s;        
         }
 

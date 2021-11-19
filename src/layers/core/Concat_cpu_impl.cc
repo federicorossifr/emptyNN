@@ -24,7 +24,7 @@ namespace emptyNN {
         namespace Impl {
 
             template <class Type>
-            ConcatCPUImpl<Type>::ConcatCPUImpl(Shape in, Shape out, std::vector<std::vector<Layer<Type>*>> _block): LayerBlock<Type>(in, out, _block) {
+            ConcatCPUImpl<Type>::ConcatCPUImpl(Shape in, Shape out, std::vector<std::vector<std::unique_ptr<Layer<Type>>>>&& _block): LayerBlock<Type>(in, out, std::move(_block)) {
                 // ToDo: sanity checks on output 
                 // Output should be sum of all the getOutputShape().size()
                 // from layers
@@ -38,7 +38,7 @@ namespace emptyNN {
                 Tensor<Type> o_tensor = this->o_tensor;
                 auto o_it = o_tensor.begin();
 
-                auto blocks = this->block;
+                auto& blocks = this->block;
                 size_t n_tensors = this->block.size();
 
                 #pragma omp parallel for

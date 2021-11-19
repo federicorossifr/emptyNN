@@ -27,10 +27,10 @@ namespace emptyNN {
 
 
         template <class Type>
-        LayerBlock<Type>::LayerBlock(Shape in, Shape out,std::vector<std::vector<Layer<Type>*>> _block): Layer<Type>(in,out) {
-            auto check_stack = [&in](std::vector<Layer<Type>*>& stack) -> bool {
+        LayerBlock<Type>::LayerBlock(Shape in, Shape out,std::vector<std::vector<std::unique_ptr<Layer<Type>>>>&& _block): Layer<Type>(in,out) {
+            auto check_stack = [&in](std::vector<std::unique_ptr<Layer<Type>>>& stack) -> bool {
                 Shape a = in;
-                for(auto v: stack) {
+                for(auto& v: stack) {
                     if(!(v->getInputShape() == a)) {
                         std::cout << "Last Layer: " << a.width << " " << a.height << " " << a.depth << std::endl;
                         std::cout << "New Layer: " << v->getInputShape().width << " " << v->getInputShape().height << " " << v->getInputShape().depth << std::endl;            
@@ -41,9 +41,9 @@ namespace emptyNN {
                 return true;
             };
 
-            for(auto v: _block) {
+            for(auto& v: _block) {
                 assert(check_stack(v));
-                block.push_back(v);
+                block.push_back(std::move(v));
             }
         }
 
@@ -51,11 +51,11 @@ namespace emptyNN {
         void LayerBlock<Type>::forward() {
             Tensor<Type>& i_tensor = this->i_tensor;
             Tensor<Type>& o_tensor = this->o_tensor;
-            Tensor<Type>* gathered_tensors = new Tensor<Type>[block.size()];
+            auto* gathered_tensors = new Tensor<Type>[block.size()];
 
             for(size_t i = 0; i < block.size(); ++i) {
                 Tensor<Type>& handle = i_tensor;
-                for(Layer<Type>* l: block[i]) {
+                for(auto& l: block[i]) {
                     l->fillInTensor(handle);
                     handle = (*l)();
                 }
@@ -68,11 +68,6 @@ namespace emptyNN {
 
         template <class Type>
         LayerBlock<Type>::~LayerBlock() {
-            for(size_t i = 0; i < block.size(); ++i) {
-                for(Layer<Type>* l: block[i]) {
-                    delete(l);
-                }
-            }
         }
 
         template <class Type>
@@ -81,7 +76,7 @@ namespace emptyNN {
             << " Out: (" << this->getOutputShape().width << ", " << this->getOutputShape().height << "," << this->getOutputShape().depth << ")" <<std::endl;            
             std::cout << "vvv" << std::endl;
            for(size_t i = 0; i < block.size(); ++i) {
-                for(Layer<Type>* l: block[i]) {
+                for(auto& l: block[i]) {
                     l->summary();
                 }
                 std::cout << "--\n";
