@@ -36,9 +36,8 @@ namespace emptyNN {
             Shape o_shape;
             std::unique_ptr<Activation<Type>> activation;
         public:
-            Layer(Shape in, Shape out,std::unique_ptr<Activation<Type>> a = nullptr);
-            Layer(Shape in,std::unique_ptr<Activation<Type>> a = nullptr);
-            Layer(Layer&&) = default;
+            Layer(Shape in, Shape out,std::unique_ptr<Activation<Type>>&& a = nullptr);
+            Layer(Shape in,std::unique_ptr<Activation<Type>>&& a = nullptr);
             virtual ~Layer();
             void fillInTensor(Tensor<Type>& i);
             Shape getOutputShape();
@@ -55,4 +54,11 @@ namespace emptyNN {
 
             friend class io::Serializer<Type>;
     };
+
+    template <class Type>
+    using LayerPtr = std::unique_ptr<Layer<Type>>;
+
+    template <class Type>
+    using LayerPtrVector = std::vector<LayerPtr<Type>>;
+
 }

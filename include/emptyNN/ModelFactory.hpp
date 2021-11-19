@@ -322,7 +322,7 @@ namespace emptyNN {
         template <class Type>
         Sequential<Type>* LeNet5() {
             auto* s = new Sequential<Type>("LeNet5");
-            s->stackLayers({
+            std::unique_ptr<Layer<Type>> _l[] = {
                 Convolution<Type>({32,32,3},{{5,5,3},6,1},RELU,CPU), //450
                 MaxPool<Type>({28,28,6},{{2,2},2},nullptr,CPU),
                 Convolution<Type>({14,14,6},{{5,5,1},16,1},RELU,CPU), // 400
@@ -330,14 +330,16 @@ namespace emptyNN {
                 Dense<Type>({5,5,16},{120,1,1},RELU,CPU), // 48000
                 Dense<Type>({120,1,1},{84,1,1},RELU,CPU), // 10800
                 Dense<Type>({84,1,1},{10,1,1},SMAX,CPU)   // 840    
-            });
+            };
+            std::vector<std::unique_ptr<Layer<Type>>> _lv{std::make_move_iterator(std::begin(_l)),std::make_move_iterator(std::end(_l))};
+            s->stackLayers(std::move(_lv));
             return s;
         }
 
         template <class Type>
         Sequential<Type>* ResNet34(size_t num_classes) {
             auto* s = new Sequential<Type>("ResNet34");
-            s->stackLayers({
+            LayerPtr<Type> _l[] = {
                 Factory::Layers::Convolution<Type>({224,224,3}, {{7,7,3}, 64, 2,PaddingType::SAME}, nullptr, CPU),
                 Factory::Layers::MaxPool<Type>({224,224,64},{{1,1},2},nullptr,CPU),
 
@@ -363,7 +365,9 @@ namespace emptyNN {
                 
                 Factory::Layers::MaxPool<Type>({7,7,512},{{7,7},1},nullptr,CPU),
                 Factory::Layers::Dense({1,1,512},{1,1,num_classes},RELU,CPU)
-            });            
+            };
+            LayerPtrVector<Type> _lv{std::make_move_iterator(std::begin(_l)),std::make_move_iterator(std::end(_l))};
+            s->stackLayers(std::move(_lv));
             return s;
         }
 

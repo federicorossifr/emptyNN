@@ -24,6 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <exception>
 #include <vector>
 #include <iostream>
+
 #ifdef USE_POSIT
 #include <posit.h>
 #include <anyfloat.hpp>
@@ -35,6 +36,7 @@ namespace emptyNN {
 
     template <class Type>
     using Tensor = std::vector<Type>;
+
 
     typedef struct Shape {
         size_t width;

@@ -28,8 +28,13 @@ int main() {
     Random::globalSeed = 2021;
     Sequential<floatx> seq("Effnet");
 
-    std::vector<std::unique_ptr<Layer<floatx>>> layers;
-    layers.push_back(std::move(Convolution<floatx>({224,224,3},{{3,3,3},6,2,PaddingType::NONE}, nullptr,CPU)));
+    #define RELU Factory::Activations::Elu<floatx>(floatx(1.))
+
+    std::unique_ptr<Layer<floatx>> _l[] = {
+            Convolution<floatx>({224, 224, 3}, {{3, 3, 3}, 6, 2, PaddingType::NONE}, RELU, CPU),
+            Convolution<floatx>({224, 224, 3}, {{3, 3, 3}, 6, 2, PaddingType::NONE}, RELU, CPU)
+    };
+    std::vector<std::unique_ptr<Layer<floatx>>> layers{std::make_move_iterator(std::begin(_l)),std::make_move_iterator(std::end(_l))};
 
     seq.stackLayers(std::move(layers));
     auto in_tensor = Tensor<floatx>(seq.getInputShape().size());

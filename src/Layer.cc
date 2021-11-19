@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace emptyNN {
 
     template <class Type>
-    Layer<Type>::Layer(Shape in,Shape out,std::unique_ptr<Activation<Type>> a): i_shape(in),o_shape(out),activation(std::move(a)) {
+    Layer<Type>::Layer(Shape in,Shape out,std::unique_ptr<Activation<Type>>&& a): i_shape(in),o_shape(out),activation(std::move(a)) {
         i_tensor = Tensor<Type>(in.width*in.height*in.depth);
         o_tensor = Tensor<Type>(out.width*out.height*out.depth);
     }
@@ -30,7 +30,7 @@ namespace emptyNN {
     Layer<Type>::~Layer() {}
 
     template <class Type>
-    Layer<Type>::Layer(Shape in,std::unique_ptr<Activation<Type>> a): i_shape(in),activation(std::move(a)) {
+    Layer<Type>::Layer(Shape in,std::unique_ptr<Activation<Type>>&& a): i_shape(in),activation(std::move(a)) {
         i_tensor = Tensor<Type>(in.width*in.height*in.depth);
     
     }
